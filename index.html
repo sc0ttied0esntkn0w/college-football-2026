@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2026 College Football - Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0f16;--panel:#141b26;--panel2:#1b2433;--border:#26334a;--line:#1f2a3a;--txt:#e8ebef;--mut:#8a94a4;--cyan:#4ea1ff;--green:#36d399;--red:#ff5d6c;--gold:#f5c451;--orange:#ff9d52;--purple:#a78bfa;}
+  *{-webkit-font-smoothing:antialiased;box-sizing:border-box;}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;}
+  .label{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700;}
+  .ptitle{font-size:13px;font-weight:800;letter-spacing:.02em;display:flex;align-items:center;gap:7px;}
+  .tabbtn{position:relative;padding:13px 4px;font-weight:700;font-size:13.5px;color:var(--mut);transition:color .2s;cursor:pointer;background:none;border:none;}
+  .tabbtn.active{color:#fff;}
+  .tabbtn.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2.5px;border-radius:2px;background:var(--cyan);}
+  .chip{display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;letter-spacing:.03em;padding:3px 6px;border-radius:5px;color:#fff;min-width:38px;}
+  .pill{font-size:9px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:5px;}
+  .rchip{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;border-radius:6px;font-weight:800;font-size:12px;}
+  .r-hi{background:rgba(54,211,153,.16);color:#36d399;} .r-md{background:rgba(255,255,255,.08);color:#cbd3df;} .r-lo{background:rgba(255,93,108,.16);color:#ff5d6c;}
+  details{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:13px;}
+  summary{list-style:none;cursor:pointer;outline:none;} summary::-webkit-details-marker{display:none;}
+  .chev{transition:transform .2s;} details[open] .chev{transform:rotate(90deg);}
+  table{border-collapse:collapse;width:100%;} a{text-decoration:none;}
+  .seclabel{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:#fff;padding:4px 9px;border-radius:5px;display:inline-block;margin:14px 0 8px;}
+  .drafterbtn{padding:8px 15px;font-size:12.5px;font-weight:700;border-radius:20px;border:1px solid var(--border);background:var(--panel);color:var(--mut);cursor:pointer;transition:all .15s;}
+  .drafterbtn.active{background:var(--cyan);color:#04121f;border-color:var(--cyan);}
+</style>
+</head>
+<body>
+  <header style="background:linear-gradient(180deg,#0e1622,#0b0f16);border-bottom:1px solid var(--border)" class="sticky top-0 z-10">
+    <div class="max-w-5xl mx-auto px-5 pt-4 pb-0">
+      <div class="flex items-end justify-between flex-wrap gap-2">
+        <div>
+          <div class="label" style="color:var(--gold)">COLLEGE FOOTBALL 2026 - POWER 4 + NOTRE DAME</div>
+          <h1 style="font-size:21px;font-weight:900;letter-spacing:-.01em;margin-top:2px">Blanton&rsquo;s Bowl 2026</h1>
+        </div>
+        <div id="genStamp" style="text-align:right;font-size:11px;color:var(--mut);line-height:1.3"></div>
+      </div>
+      <nav class="flex gap-6 mt-3" style="border-bottom:1px solid var(--line);flex-wrap:wrap">
+        <button class="tabbtn active" data-tab="summary">Summary</button>
+        <button class="tabbtn" data-tab="drafters">Drafters</button>
+        <button class="tabbtn" data-tab="recaps">Recaps</button>
+        <button class="tabbtn" data-tab="previews">Previews</button>
+        <button class="tabbtn" data-tab="aa">All-Americans</button>
+      </nav>
+    </div>
+  </header>
+  <main class="max-w-5xl mx-auto px-5 py-5">
+    <section id="tab-summary"></section>
+    <section id="tab-drafters" class="hidden" style="max-width:800px;margin:0 auto"></section>
+    <section id="tab-recaps" class="hidden" style="max-width:780px;margin:0 auto"></section>
+    <section id="tab-previews" class="hidden" style="max-width:780px;margin:0 auto"></section>
+    <section id="tab-aa" class="hidden" style="max-width:820px;margin:0 auto"></section>
+  </main>
+  <footer class="max-w-5xl mx-auto px-5 pb-9"><p id="foot" style="font-size:11px;color:var(--mut);line-height:1.6"></p></footer>
+
+<script>
+/* ===== TEAM COLOR + ABBREVIATION MAPS (Power 4 + ND + national contenders) ===== */
+var C={
+ 'Iowa State':{b:'#C8102E',d:'#f0687a'},'LSU':{b:'#461D7C',d:'#a982e0'},'Alabama':{b:'#9E1B32',d:'#e0526a'},
+ 'Florida State':{b:'#782F40',d:'#c98aa0'},'Penn State':{b:'#041E42',d:'#5b8ad6'},
+ 'Ohio State':{b:'#BB0000',d:'#ff5d5d'},'Notre Dame':{b:'#0C2340',d:'#C99700'},'Oregon':{b:'#154733',d:'#FEE123'},
+ 'Texas':{b:'#BF5700',d:'#ff9d52'},'Georgia':{b:'#BA0C2F',d:'#e0526a'},'Texas Tech':{b:'#CC0000',d:'#ff5d5d'},
+ 'Indiana':{b:'#990000',d:'#e0526a'},'Miami':{b:'#005030',d:'#F47321'},'Michigan':{b:'#00274C',d:'#FFCB05'},
+ 'Clemson':{b:'#F56600',d:'#ff9d52'},'Tennessee':{b:'#FF8200',d:'#ffab4d'},'Oklahoma':{b:'#841617',d:'#e0526a'},
+ 'Ole Miss':{b:'#14213D',d:'#5b8ad6'},'South Carolina':{b:'#73000A',d:'#e0526a'},'Kansas State':{b:'#512888',d:'#a982e0'},
+ 'Utah':{b:'#CC0000',d:'#ff5d5d'},'SMU':{b:'#354CA1',d:'#7d92e0'},'BYU':{b:'#002E5D',d:'#5b8ad6'},
+ 'Arizona State':{b:'#8C1D40',d:'#FFC627'},'Missouri':{b:'#F1B82D',d:'#ffd45e'},'Louisville':{b:'#AD0000',d:'#e0526a'},
+ 'Nebraska':{b:'#E41C38',d:'#f0687a'},'Auburn':{b:'#0C2340',d:'#E87722'},'Florida':{b:'#0021A5',d:'#FA4616'},
+ 'Baylor':{b:'#154734',d:'#FFB81C'},'TCU':{b:'#4D1979',d:'#a982e0'},'Kansas':{b:'#0051BA',d:'#5b8ad6'},
+ 'Illinois':{b:'#13294B',d:'#E84A27'},'Washington':{b:'#4B2E83',d:'#a982e0'},'USC':{b:'#990000',d:'#FFC72C'},
+ 'Boise State':{b:'#0033A0',d:'#F1632A'},'Wisconsin':{b:'#9B0000',d:'#e0526a'},'Georgia Tech':{b:'#B3A369',d:'#d4c99a'},
+ 'Arkansas':{b:'#9D2235',d:'#e0526a'},'Kentucky':{b:'#0033A0',d:'#5b8ad6'},'Mississippi State':{b:'#660000',d:'#e0526a'},
+ 'Oklahoma State':{b:'#FF7300',d:'#ffab4d'},'Texas A&M':{b:'#500000',d:'#e0526a'},'Vanderbilt':{b:'#1c1c1c',d:'#D4B24C'},
+ 'Iowa':{b:'#000000',d:'#FFCD00'},'Maryland':{b:'#E03A3E',d:'#f0687a'},'Michigan State':{b:'#18453B',d:'#4fbf9a'},
+ 'Minnesota':{b:'#7A0019',d:'#e0526a'},'Northwestern':{b:'#4E2A84',d:'#a982e0'},'Purdue':{b:'#000000',d:'#CEB888'},
+ 'Rutgers':{b:'#CC0033',d:'#f0687a'},'UCLA':{b:'#2D68C4',d:'#7db0f0'},'Arizona':{b:'#003366',d:'#EF4056'},
+ 'Cincinnati':{b:'#E00122',d:'#f0687a'},'Colorado':{b:'#000000',d:'#CFB87C'},'Houston':{b:'#C8102E',d:'#f0687a'},
+ 'UCF':{b:'#000000',d:'#BA9B37'},'West Virginia':{b:'#002855',d:'#EAAA00'},'Boston College':{b:'#98002E',d:'#e0526a'},
+ 'California':{b:'#003262',d:'#FDB515'},'Duke':{b:'#003087',d:'#5b8ad6'},'NC State':{b:'#CC0000',d:'#f0687a'},
+ 'North Carolina':{b:'#13294B',d:'#4B9CD3'},'Pitt':{b:'#003594',d:'#FFB81C'},'Stanford':{b:'#8C1515',d:'#e0526a'},
+ 'Syracuse':{b:'#F76900',d:'#ffab4d'},'Virginia':{b:'#232D4B',d:'#F84C1E'},'Virginia Tech':{b:'#630031',d:'#CF4420'},
+ 'Wake Forest':{b:'#1c1c1c',d:'#9E7E38'},
+ 'Generic':{b:'#1f7a4d',d:'#34d399'}};
+function col(t){return C[t]||C.Generic;}
+var ABV={
+ 'Iowa State':'ISU','LSU':'LSU','Alabama':'ALA','Florida State':'FSU','Penn State':'PSU','Ohio State':'OSU',
+ 'Notre Dame':'ND','Oregon':'ORE','Texas':'TEX','Georgia':'UGA','Texas Tech':'TTU','Indiana':'IND','Miami':'MIA',
+ 'Michigan':'MICH','Clemson':'CLEM','Tennessee':'TENN','Oklahoma':'OU','Ole Miss':'MISS','South Carolina':'SC',
+ 'Kansas State':'KSU','Utah':'UTAH','SMU':'SMU','BYU':'BYU','Arizona State':'ASU','Missouri':'MIZ','Louisville':'LOU',
+ 'Nebraska':'NEB','Auburn':'AUB','Florida':'FLA','Baylor':'BAY','TCU':'TCU','Kansas':'KU','Illinois':'ILL',
+ 'Washington':'WASH','USC':'USC','Boise State':'BSU','Wisconsin':'WIS','Georgia Tech':'GT',
+ 'Arkansas':'ARK','Kentucky':'UK','Mississippi State':'MSST','Oklahoma State':'OKST','Texas A&M':'TAMU',
+ 'Vanderbilt':'VAN','Iowa':'IOWA','Maryland':'MD','Michigan State':'MSU','Minnesota':'MINN','Northwestern':'NW',
+ 'Purdue':'PUR','Rutgers':'RUT','UCLA':'UCLA','Arizona':'ARIZ','Cincinnati':'CIN','Colorado':'COLO','Houston':'HOU',
+ 'UCF':'UCF','West Virginia':'WVU','Boston College':'BC','California':'CAL','Duke':'DUKE','NC State':'NCST',
+ 'North Carolina':'UNC','Pitt':'PITT','Stanford':'STAN','Syracuse':'SYR','Virginia':'UVA','Virginia Tech':'VT','Wake Forest':'WAKE'};
+function ab(t){return ABV[t]||t.slice(0,4).toUpperCase();}
+function tchip(t){var c=col(t);return '<span class="chip" style="background:'+c.b+';color:#fff">'+ab(t)+'</span>';}
+function rc(r){return r>=7?'r-hi':(r<=4.9?'r-lo':'r-md');}
+function fv(v,f){return '<span style="color:'+(f?'#36d399':'#ff9d52')+';font-weight:700">'+v+'</span>';}
+function nu(v){return '<span style="color:#cbd3df">'+v+'</span>';}
+function mv(m){ // ranking movement: '+2' up (green), '-1' down (red), '0' none, 'NR'/'NEW'
+ if(m==='NEW'||m==='NR')return '<span style="font-size:9px;font-weight:800;color:var(--cyan)">'+m+'</span>';
+ var n=parseInt(m,10);if(!n||isNaN(n))return '<span style="font-size:9px;color:var(--mut)">-</span>';
+ var up=n>0;return '<span style="font-size:9px;font-weight:800;color:'+(up?'var(--green)':'var(--red)')+'">'+(up?'▲':'▼')+Math.abs(n)+'</span>';}
+
+/*DATA_START*/
+var BUILT='2026-08-22T15:52:00-05:00';
+var WEEKLABEL='Preseason &middot; Week 0 opens Aug 29, Week 1 kicks off Sept 5&ndash;6';
+var RANK_SRC='Real preseason AP Top 25 (released Monday, Aug 17, 2026, Noon ET) &mdash; now source of truth, replacing the preseason Coaches Poll. Ohio State No. 1 with 40 first-place votes and 1,672 points; Oregon No. 2 (14 votes); Notre Dame jumped to No. 4 (6 votes); Miami picked up 1 first-place vote at No. 7. SEC leads with 9 ranked teams, Big Ten has 8, Big 12 has 4. Clemson fell out of the ranked 25 (still received 112 votes); Louisville entered at No. 24. Movement shown vs. the preseason Coaches Poll. Source of truth switches to the CFP Committee rankings from early November.';
+var STAT=[
+ ['Sept 5','Week 1 kickoff','var(--cyan)'],
+ ['21','drafted teams','var(--gold)'],
+ ['12','CFP field','var(--green)'],
+ ['21/21','draft picks in','var(--purple)']
+];
+/* Group anchor team — Iowa State, not drafted by anyone, covered every week regardless of ranking. */
+var YOURTEAMS=[
+ ['Iowa State',null,'0-0','The anchor &middot; Big 12 &middot; outside the preseason Top 25 &middot; opens home vs Southeast Missouri, Sept 5']
+];
+/* Real preseason AP Top 25 (released Mon Aug 17, 2026, Noon ET) — movement vs. the preseason Coaches Poll it replaces */
+var AP25=[
+ [1,'Ohio State','Big Ten','0-0','0'],[2,'Oregon','Big Ten','0-0','0'],[3,'Georgia','SEC','0-0','0'],
+ [4,'Notre Dame','Ind','0-0','+1'],[5,'Texas','SEC','0-0','-1'],[6,'Indiana','Big Ten','0-0','0'],
+ [7,'Miami','ACC','0-0','0'],[8,'Texas A&amp;M','SEC','0-0','0'],[9,'Ole Miss','SEC','0-0','+1'],
+ [10,'Oklahoma','SEC','0-0','-1'],[11,'LSU','SEC','0-0','+2'],[12,'Texas Tech','Big 12','0-0','0'],
+ [13,'Alabama','SEC','0-0','-2'],[14,'BYU','Big 12','0-0','+1'],[14,'USC','Big Ten','0-0','0'],
+ [16,'Michigan','Big Ten','0-0','0'],[17,'Washington','Big Ten','0-0','+2'],[18,'Penn State','Big Ten','0-0','-1'],
+ [19,'SMU','ACC','0-0','+1'],[20,'Tennessee','SEC','0-0','-2'],[21,'Utah','Big 12','0-0','0'],
+ [22,'Iowa','Big Ten','0-0','0'],[23,'Houston','Big 12','0-0','+1'],[24,'Louisville','ACC','0-0','NEW'],
+ [25,'Missouri','SEC','0-0','0']
+];
+/* 12-team CFP way-too-early projection (CBS Sports, Aug 2026) — based on projected conference-title-game outcomes, not current record */
+var CFP={
+ byes:[['Notre Dame','At-large'],['Georgia','SEC champ (projected)'],['Ohio State','Big Ten champ (projected)'],['Miami','ACC champ (projected)']],
+ first:[
+  [5,'Texas','SEC',12,'Boise State','Group of 5'],
+  [6,'Texas Tech','Big 12',11,'LSU','SEC'],
+  [7,'Indiana','Big Ten',10,'Texas A&amp;M','SEC'],
+  [8,'Ole Miss','SEC',9,'Oregon','Big Ten']
+ ],
+ note:'Way-too-early projection (CBS Sports, Aug 2026) built on projected conference-championship results, not current record — a preseason exercise, not a ranking. Seeds 1-4 earn first-round byes; seeds 5-12 play the opening round on campus, higher seed hosting. Refreshes with the real CFP Committee bracket once rankings begin in November.'
+};
+/* Heisman top 5: real current odds (FanDuel via CBS Sports, Aug 2026) */
+var HEIS=[
+ [1,'CJ Carr','Notre Dame','QB','+800 (preseason favorite)'],
+ [2,'Arch Manning','Texas','QB','+850'],
+ [3,'Jeremiah Smith','Ohio State','WR','+1100'],
+ [4,'Julian Sayin','Ohio State','QB','+1100'],
+ [5,'Josh Hoover','Indiana','QB','+1100']
+];
+/* Key Injuries Watch: [team, player, position, status ('out'|'doubt'|'watch'), note] — across ALL 21 drafted teams,
+   not just the full-coverage ones. Sourced from conference-wide injury roundups (efficient: a handful of
+   conference-level searches surfaces mentions across many drafted teams at once, rather than 21 separate
+   per-team searches). Empty/sparse most weeks, especially preseason — that's expected, not a gap. */
+var INJURIES=[
+ ['Georgia','Dante Dowdell','RB','doubt','Away from team activities following an ATV accident; Kirby Smart says he&rsquo;s &ldquo;doing better&rdquo; but no return timeline given'],
+ ['Georgia','Kyron Jones','DB','watch','On a restricted-reps &ldquo;pitch count&rdquo; for a lingering foot injury that cost him the final 8 games last season'],
+ ['Georgia','Drew Bobo','C','watch','Recovering from Lisfranc foot surgery; starting center, expected ready for the Sept 5 opener'],
+ ['Oklahoma','RB corps (Blaylock/Hatton/Robinson)','RB','watch','All three limited or not fully practicing in fall camp; transfer Lloyd Avant is in line to start the opener vs UTEP if it lingers'],
+ ['Florida','Kelvin Jimenez','RB','out','Contact injury sustained in camp, considered out for the foreseeable future'],
+ ['Florida','Kendall Guervil','DL','out','Knee injury reaggravation; extent still being evaluated']
+];
+/* Conference standings [team, confRecord, overall] — preseason projected order. Big 12 order from CBS Sports win-total predictions; others ordered by the real Coaches Poll. */
+var CONF={
+ 'Big 12':[['Texas Tech','0-0','0-0'],['BYU','0-0','0-0'],['Houston','0-0','0-0'],['Utah','0-0','0-0'],['Oklahoma State','0-0','0-0'],['Arizona State','0-0','0-0']],
+ 'SEC':[['Georgia','0-0','0-0'],['Texas A&amp;M','0-0','0-0'],['Oklahoma','0-0','0-0'],['Ole Miss','0-0','0-0'],['Alabama','0-0','0-0'],['LSU','0-0','0-0']],
+ 'Big Ten':[['Ohio State','0-0','0-0'],['Oregon','0-0','0-0'],['Indiana','0-0','0-0'],['USC','0-0','0-0'],['Michigan','0-0','0-0'],['Penn State','0-0','0-0']],
+ 'ACC':[['Miami','0-0','0-0'],['SMU','0-0','0-0'],['Clemson','0-0','0-0'],['Louisville','0-0','0-0'],['Florida State','0-0','0-0'],['Georgia Tech','0-0','0-0']]
+};
+var STORIES=[
+ ['CJ Carr edges Arch Manning as the Heisman frontrunner','var(--gold)','Notre Dame',['Notre Dame&rsquo;s QB opened preseason favorite at +800 after a 2,741-yard, 24-TD season','Texas&rsquo;s Arch Manning sits a close second at +850','A real changing-of-the-guard story after Manning entered last year as the presumptive favorite']],
+ ['Ohio State opens preseason No. 1 in the real AP Top 25','var(--cyan)','Ohio State',['40 first-place votes and 1,672 points, well clear of the field','User 2 holds Ohio State with the No. 2 overall pick in the draft pool','Opens Sept 5 vs Ball State before a Sept 12 primetime trip to Texas']],
+ ['Big Ten fills 3 of the preseason top 6','var(--green)','Oregon',['Ohio State (1), Oregon (2), and defending champ Indiana (6) all crack the top 6 in the real AP Top 25','Georgia (3), Notre Dame (4), and Texas (5) fill out a stacked top five','A loaded preseason picture before a snap is played']],
+ ['Your Big 12 watch: Iowa State opens at home vs Southeast Missouri','var(--red)','Iowa State',['Sept 5 in Ames &mdash; Iowa State did not crack the real AP Top 25','Big 12 projections (CBS Sports) have the Cyclones in the bottom half of the conference this year','The draft pool doesn&rsquo;t need Iowa State ranked to matter &mdash; it&rsquo;s the anchor team every week regardless']]
+];
+/* RECAPS: full cards for last week's games. Empty — season has not started (today is preseason, before Week 0 on Aug 29). */
+var RECAPS_INTRO='The season has not started yet (today is preseason &mdash; Week 0 kicks off Aug 29, Week 1 proper is Sept 5&ndash;6). Each Sunday once games are underway this shows full recaps for Iowa State plus the week&rsquo;s five games of the week &mdash; the highest-ranked drafted teams (a game between two drafted teams counts once) &mdash; with Penn State always guaranteed a slot. Box score, team stats, scoring summary, and key performers.';
+var RECAPS=[];
+var RECAPS_MINI=[];
+/* PREVIEWS: Iowa State (anchor) + the 5 games of the week (highest-ranked drafted teams: Ohio State 1, Oregon 2, Georgia 3, Texas 4, Notre Dame 5) + Penn State (guaranteed). All dates/spreads/O-U are real, current preseason lines as of Aug 15, 2026. */
+var PREVIEWS_INTRO='Iowa State plus the week&rsquo;s five games of the week &mdash; the highest-ranked drafted teams (Ohio State, Oregon, Georgia, Texas, Notre Dame) &mdash; with Penn State guaranteed a slot. These are the season-opening games, Aug 29&ndash;Sept 6. Spreads and totals are real current lines, not placeholders; treat them as opening numbers that will move before kickoff.';
+var PREVIEWS=[
+ {team:'Iowa State',tracked:true,a:'Southeast Missouri',b:'Iowa State',tag:'Season opener &middot; Ames, Iowa',
+  meta:'Week 1 | Jack Trice Stadium | Sat Sept 5 | Noon',
+  spread:['Line not yet posted by major books as of Aug 15','O/U not yet posted','Iowa State is the heavy expected favorite over an FCS opponent'],
+  storyline:'Iowa State opens at home against FCS Southeast Missouri after missing the preseason Coaches Poll top 25 this year. A clean, low-drama opener before the Cyclones travel to rival Iowa on Sept 12 &mdash; the real test comes in Week 2.',
+  injuries:[['Iowa State','No notable camp injuries flagged in current coverage','ok'],['Southeast Missouri','No notable camp injuries flagged in current coverage','ok']],
+  keys:['Get the new-look offense a clean tune-up rep before the CyHawk rivalry game','Avoid the trap-game letdown with Iowa looming Week 2','Establish the run game behind an experienced offensive line'],
+  pred:['Iowa State comfortably at home','A routine, lopsided opener &mdash; the story is health and rhythm heading into the Iowa rivalry game.']},
+ {team:'Ohio State',tracked:true,a:'Ball State',b:'Ohio State',tag:'Season opener &middot; Columbus',
+  meta:'Week 1 | Ohio Stadium | Sat Sept 5 | 12:30pm',
+  spread:['Ohio State -51 (Blue Chip Analytics power ratings)','O/U 56.5','A massive number reflecting the gap between the preseason No. 1 team and a MAC opponent'],
+  storyline:'User 2&rsquo;s No. 2-overall pick opens preseason No. 1 in the real AP Top 25 (40 first-place votes) against Ball State before the season&rsquo;s first marquee test: a Sept 12 primetime trip to Texas.',
+  injuries:[['Ohio State','No notable camp injuries flagged in current coverage','ok'],['Ball State','No notable camp injuries flagged in current coverage','ok']],
+  keys:['Clean opener before the Sept 12 trip to Texas','Early look at the receiving corps around Jeremiah Smith','Depth chart reps for a team that will be favored in almost every game this year'],
+  pred:['Ohio State in a laugher','Expect a running clock in the second half &mdash; this is about staying healthy for the Texas trip.']},
+ {team:'Oregon',tracked:true,a:'Boise State',b:'Oregon',tag:'Season opener &middot; Eugene',
+  meta:'Week 1 | Autzen Stadium | Sat Sept 5 | 12:30pm CBS',
+  spread:['Oregon -24.5 (Blue Chip Analytics)','O/U 52.0','Boise State is a credible Group of 5 opponent, not a pure cupcake'],
+  storyline:'Oregon opens preseason No. 2 with a real name-brand nonconference test in the &ldquo;Stripe Out Autzen&rdquo; game. Boise State has a history of upsetting bigger programs, which makes this the closest thing to a trap game among the week&rsquo;s marquee openers.',
+  injuries:[['Oregon','No notable camp injuries flagged in current coverage','ok'],['Boise State','No notable camp injuries flagged in current coverage','ok']],
+  keys:['Boise State&rsquo;s track record of neutral/road upsets vs. Power 4 favorites','Oregon&rsquo;s new pieces on defense against a disciplined Group of 5 offense','Setting the tone at home under the lights atmosphere Autzen brings'],
+  pred:['Oregon, but the closest game of the week&rsquo;s marquee slate','A real spread (not a 40+ point number) says this one is worth actually watching.']},
+ {team:'Georgia',tracked:true,a:'Tennessee State',b:'Georgia',tag:'Season opener &middot; Athens',
+  meta:'Week 1 | Sanford Stadium | Sat Sept 5',
+  spread:['Line not yet posted by major books as of Aug 15','O/U not yet posted','Massive favorite expected vs an FCS opponent'],
+  storyline:'Georgia opens preseason No. 3 at home against Tennessee State (a $600K guarantee game) &mdash; a low-stakes tune-up before the Bulldogs&rsquo; SEC slate begins in earnest.',
+  injuries:[['Georgia','No notable camp injuries flagged in current coverage','ok'],['Tennessee State','No notable camp injuries flagged in current coverage','ok']],
+  keys:['First live look at Georgia&rsquo;s quarterback room','Building a rotation before conference play','Standard season-opening health check across the two-deep'],
+  pred:['Georgia in a rout','Nothing about this game moves the SEC race &mdash; it&rsquo;s about staying healthy.']},
+ {team:'Texas',tracked:true,a:'Texas State',b:'Texas',tag:'Season opener &middot; Austin',
+  meta:'Week 1 | DKR-Texas Memorial Stadium | Sat Sept 5 | 3:30pm',
+  spread:['Texas -30.5 (Blue Chip Analytics)','O/U 60.0','A high total reflecting an offense expected to score early and often'],
+  storyline:'Texas opens preseason No. 5 against in-state foe Texas State one week before hosting Ohio State in the season&rsquo;s first true heavyweight matchup (Sept 12). This is a get-right game with a much bigger date already circled.',
+  injuries:[['Texas','No notable camp injuries flagged in current coverage','ok'],['Texas State','No notable camp injuries flagged in current coverage','ok']],
+  keys:['Quarterback rhythm and pace before the Ohio State showdown','Limiting starters&rsquo; snaps to stay fresh for Week 2','In-state bragging rights, low competitive stakes'],
+  pred:['Texas comfortably','The real intrigue is one week away: Ohio State comes to Austin on Sept 12.']},
+ {team:'Notre Dame',tracked:true,a:'Notre Dame',b:'Wisconsin',tag:'Shamrock Series &middot; Lambeau Field, Green Bay',
+  meta:'Week 1 | Lambeau Field | Sun Sept 6 | 7:30pm',
+  spread:['Notre Dame -16.5','O/U 46.5','A real, notable number for a true road/neutral atmosphere game'],
+  storyline:'A genuinely unique setting &mdash; Notre Dame and Wisconsin play the season opener at Lambeau Field as part of the Shamrock Series. Notre Dame enters preseason No. 4 in the real AP Top 25 with Heisman favorite CJ Carr at QB after a 2,741-yard, 24-TD season.',
+  injuries:[['Notre Dame','No notable camp injuries flagged in current coverage','ok'],['Wisconsin','No notable camp injuries flagged in current coverage','ok']],
+  keys:['CJ Carr&rsquo;s first game as the preseason Heisman favorite','A true road environment at Lambeau Field despite the neutral-site billing','Wisconsin looking to be a spoiler in a nationally televised opener'],
+  pred:['Notre Dame, comfortably but not a blowout','The venue is the story as much as the game itself.']},
+ {team:'Penn State',tracked:true,a:'Marshall',b:'Penn State',tag:'Season opener &middot; State College',
+  meta:'Week 1 | Beaver Stadium | Sat Sept 5 | 3:30pm FS1',
+  spread:['Penn State -24.5 (Blue Chip Analytics)','O/U 54.5','User 2&rsquo;s Round-2 pick opens as a big favorite'],
+  storyline:'Penn State, User 2&rsquo;s second draft pick, opens preseason No. 18 at home against Marshall &mdash; White Out season still weeks away, but an early measuring-stick chance for a team many expect to push for the CFP again.',
+  injuries:[['Penn State','No notable camp injuries flagged in current coverage','ok'],['Marshall','No notable camp injuries flagged in current coverage','ok']],
+  keys:['Clean opener before a Sept 12 road trip to Temple','New-look coaching staff/scheme installation reps','Building depth before Big Ten play starts'],
+  pred:['Penn State comfortably','A tune-up game &mdash; not much signal for the season ahead either way.']}
+];
+/* TEAM LINES: [away, home, time, spread, note, team-to-highlight] — compact one-line entries covering every drafted
+   team whose game isn't already a full Recaps/Previews card. Used to populate the Drafters tab for teams outside
+   the fixed full-coverage set (Iowa State + Penn State) and the games-of-week rotation. Every drafted team needs
+   an entry here each week, or their drafter's tab shows nothing for that team. */
+var OTHER=[
+ ['NC State','Virginia','Sat Aug 29 &middot; 3:30pm ET &middot; ESPN','Virginia -5.5, O/U 53.5','NC State (User 7&rsquo;s Round 3 pick, the last of the 21) opens on the road at Virginia in a Week 0 matchup, a week before the rest of the pool kicks off.','NC State'],
+ ['TCU','North Carolina','Sat Aug 29 &middot; Aviva Stadium, Dublin','Line not yet posted','Week 0 opener across the Atlantic &mdash; the 5th straight year college football has kicked off in Dublin.','TCU'],
+ ['San Jose State','USC','Sat Aug 29 &middot; NBC/Peacock','Line not yet posted','USC (User 4&rsquo;s pick) opens Week 0 at home &mdash; a full week before most of the country.','USC'],
+ ['Miami','Stanford','Fri Sept 4 &middot; ESPN','Line not yet posted','Miami (User 4&rsquo;s pick, preseason No. 7) opens on the road in prime time.','Miami'],
+ ['Clemson','LSU','Sat Sept 5 &middot; ABC &middot; College GameDay','Line not yet posted','A real marquee opener &mdash; LSU (User 5&rsquo;s pick, now No. 11 in the real AP Top 25) hosts Clemson (unranked, fell out of the Top 25 but still drew 112 votes) under Lane Kiffin with GameDay in Baton Rouge.','LSU'],
+ ['East Carolina','Alabama','Sat Sept 5 &middot; noon','Line not yet posted','Alabama (User 7&rsquo;s pick, preseason No. 13) opens at home.','Alabama'],
+ ['Colorado','Georgia Tech','Sat Sept 5','Line not yet posted','Colorado (User 1&rsquo;s pick) opens on the road &mdash; the second leg of a home-and-home with Georgia Tech.','Colorado'],
+ ['Ole Miss','Louisville','Sat Sept 5 or Sun Sept 6 &middot; Nissan Stadium, Nashville (neutral)','Line not yet posted','Ole Miss (User 1&rsquo;s pick) opens at a neutral site against an ACC opponent in Lane Kiffin&rsquo;s return-adjacent slate; exact day (Sat/Sun) still TBD as of this update.','Ole Miss'],
+ ['UTEP','Oklahoma','Fri Sept 4 &middot; 7pm CT','Line not yet posted','Oklahoma (User 1&rsquo;s pick) opens at home on a Friday night in Norman.','Oklahoma'],
+ ['Abilene Christian','Texas Tech','Sat Sept 5 &middot; 6pm CT','Line not yet posted','Texas Tech (User 3&rsquo;s pick, preseason No. 12) opens at home in Lubbock.','Texas Tech'],
+ ['Furman','Tennessee','Sat Sept 5','Line not yet posted','Tennessee (User 3&rsquo;s pick) opens at home in Knoxville.','Tennessee'],
+ ['SMU','Florida State','Mon Sept 7 &middot; 6:30pm CT &middot; ESPN','Line not yet posted','SMU (User 5&rsquo;s pick, preseason No. 19) opens on the road at Florida State in a Monday-night ACC opener.','SMU'],
+ ['Western Michigan','Michigan','Sat Sept 5','Line not yet posted','Michigan (User 4&rsquo;s pick, preseason No. 16) opens at home &mdash; hosts Oklahoma the following week (Sept 12).','Michigan'],
+ ['Florida Atlantic','Florida','Sat Sept 5 &middot; 7:45pm','Line not yet posted','Florida (User 6&rsquo;s pick) opens at home in Gainesville.','Florida'],
+ ['Missouri State','Texas A&amp;M','Sat Sept 5 &middot; 6pm CT &middot; ESPN','Line not yet posted','Texas A&amp;M (User 2&rsquo;s pick, preseason No. 8) opens at home in College Station.','Texas A&amp;M'],
+ ['North Texas','Indiana','Sat Sept 5 &middot; Noon ET &middot; FOX','Line not yet posted','Indiana (User 6&rsquo;s pick, preseason No. 6, defending Big Ten runner-up) opens at home in Bloomington.','Indiana']
+];
+/* DRAFT POOL: winner-take-all, most combined wins across each drafter's 3 teams.
+   All 21 of 21 picks confirmed as of 2026-08-16 &mdash; User 7 closed his roster with NC State. */
+var DRAFT={
+ metric:'Winner-take-all &middot; most combined regular-season wins across each drafter&rsquo;s 3 teams.',
+ status:'Draft complete &mdash; all 21 of 21 picks in. User 2 held the No. 2 overall pick (took Ohio State). User 7 closed his roster with NC State (Round 3, pick #21), the last pick on the board. All records are 0-0 (preseason, before Week 0).',
+ drafters:[
+  ['User 1',[['Colorado',''],['Ole Miss',''],['Oklahoma','']],0],
+  ['User 2',[['Ohio State',''],['Penn State',''],['Texas A&amp;M','']],0],
+  ['User 3',[['Texas',''],['Texas Tech',''],['Tennessee','']],0],
+  ['User 4',[['Miami',''],['USC',''],['Michigan','']],0],
+  ['User 5',[['Georgia',''],['LSU',''],['SMU','']],0],
+  ['User 6',[['Notre Dame',''],['Indiana',''],['Florida','']],0],
+  ['User 7',[['Oregon',''],['Alabama',''],['NC State','']],0]
+ ]
+};
+var NEWS={
+ stories:[
+  ['Real AP Top 25 is out &mdash; now the dashboard&rsquo;s source of truth','Ohio State opens No. 1 with 40 first-place votes and 1,672 points. Notre Dame jumped to No. 4, Texas slid to No. 5, and Clemson fell out of the ranked 25 entirely (still drew 112 votes) as Louisville entered at No. 24. Source of truth switches again to the CFP Committee rankings from early November.'],
+  ['Draft is complete &mdash; all 21 picks in','User 7 closed out the board with NC State (Oregon, Alabama, NC State), the last of the 21 picks. All 7 drafters now have full rosters: User 1 (Colorado, Ole Miss, Oklahoma), User 2 (Ohio State, Penn State, Texas A&amp;M), User 3 (Texas, Texas Tech, Tennessee), User 4 (Miami, USC, Michigan), User 5 (Georgia, LSU, SMU), User 6 (Notre Dame, Indiana, Florida), User 7 (Oregon, Alabama, NC State).'],
+  ['Heisman: real changing of the guard','CJ Carr (Notre Dame) opened as the preseason favorite at +800, edging out last year&rsquo;s presumptive favorite Arch Manning (Texas) at +850.'],
+  ['Season opens Aug 29, in force Sept 5&ndash;6','Week 0 is just USC-San Jose State and TCU-North Carolina in Dublin. Nearly everyone else, including all 5 of this week&rsquo;s games of the week plus Iowa State and Penn State, opens Sept 5&ndash;6.']
+ ],
+ watch:[
+  ['ESPN College Football','https://www.espn.com/college-football/','Scores, rankings, and recaps'],
+  ['College Football Playoff','https://collegefootballplayoff.com/','Official CFP rankings and bracket'],
+  ['AP Top 25','https://apnews.com/hub/ap-top-25-college-football-poll','The weekly AP poll'],
+  ['The Athletic - CFB','https://www.nytimes.com/athletic/college-football/','Analysis and features']
+ ],
+ outlook:'This dashboard now covers the whole group, not just one drafter &mdash; every drafted team gets its own line or card each week, organized by drafter on the Drafters tab. All 21 picks are in. Once Week 0/1 is actually played (starting Aug 29), the weekly refresh fills Recaps, updates rankings and the CFP bracket, and recomputes the Draft Pool standings. <b>Kickoff: Aug 29 (Week 0), full slate Sept 5&ndash;6.</b>'
+};
+/*DATA_END*/
+/* ===== RENDERERS ===== */
+function chev(){return '<svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+function seclabel(t,c){return '<span class="seclabel" style="background:'+c.b+';color:#fff">'+t+'</span>';}
+function statStrip(){return '<div style="display:grid;grid-template-columns:repeat('+STAT.length+',1fr);gap:10px;margin-bottom:16px">'+
+ STAT.map(function(s){return '<div class="panel" style="padding:12px 10px;text-align:center"><div style="font-size:24px;font-weight:900;color:'+s[2]+';line-height:1">'+s[0]+'</div><div class="label" style="margin-top:4px">'+s[1]+'</div></div>';}).join('')+'</div>';}
+function yourTeamsPanel(){
+ var rows=YOURTEAMS.map(function(x,i){var c=col(x[0]);
+  return '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;'+(i?'border-top:1px solid var(--line)':'')+'">'+tchip(x[0])+
+   '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800">'+x[0]+' <span style="font-size:10px;color:'+c.d+';font-weight:700">'+(x[1]?'No. '+x[1]:'NR')+'</span></div><div style="font-size:10.5px;color:var(--mut)">'+x[3]+'</div></div>'+
+   '<div style="font-size:13px;font-weight:800;color:var(--mut)">'+x[2]+'</div></div>';}).join('');
+ return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--gold)">The Anchor <span style="font-size:10px;color:var(--mut);font-weight:600">covered every week, ranked or not</span></div>'+rows+'</div>';
+}
+function rankingPanel(){
+ function rowsFor(arr){return arr.map(function(r){var c=col(r[1]);
+  return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid var(--line)">'+
+   '<span style="font-size:12px;font-weight:800;color:var(--mut);width:20px;text-align:right">'+r[0]+'</span>'+tchip(r[1])+
+   '<span style="flex:1;min-width:0;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+r[1]+' <span style="font-size:9px;color:var(--mut);font-weight:500">'+r[2]+'</span></span>'+
+   '<span style="font-size:10px;color:var(--mut);width:34px;text-align:right">'+r[3]+'</span><span style="width:34px;text-align:right">'+mv(r[4])+'</span></div>';}).join('');}
+ var half=Math.ceil(AP25.length/2);
+ return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--cyan)">Top 25 <span style="font-size:10px;color:var(--mut);font-weight:600">projected</span></div>'+
+  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px"><div>'+rowsFor(AP25.slice(0,half))+'</div><div>'+rowsFor(AP25.slice(half))+'</div></div>'+
+  '<div style="font-size:9px;color:var(--mut);margin-top:9px;line-height:1.5">'+RANK_SRC+'</div></div>';
+}
+function cfpPanel(){
+ var byes=CFP.byes.map(function(b,i){var c=col(b[0]);return '<div class="panel" style="padding:9px 10px;background:var(--panel2);border-left:3px solid var(--gold)"><div style="display:flex;align-items:center;gap:7px"><span style="font-size:11px;font-weight:900;color:var(--gold)">'+(i+1)+'</span>'+tchip(b[0])+'<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+b[0]+'</div><div style="font-size:9px;color:var(--mut)">'+b[1]+'</div></div><span class="pill" style="background:rgba(245,196,81,.16);color:var(--gold)">BYE</span></div></div>';}).join('');
+ var games=CFP.first.map(function(g){var ch=col(g[1]),cl=col(g[4]);
+  return '<div class="panel" style="padding:9px 11px;background:var(--panel2)">'+
+   '<div style="display:flex;align-items:center;gap:7px;padding:2px 0"><span style="font-size:10px;font-weight:800;color:var(--mut);width:16px">'+g[0]+'</span>'+tchip(g[1])+'<span style="flex:1;font-size:12px;font-weight:700">'+g[1]+' <span style="font-size:9px;color:var(--mut);font-weight:500">'+g[2]+'</span></span></div>'+
+   '<div style="font-size:8px;color:var(--mut);text-align:center;letter-spacing:.08em;padding:1px 0">HOSTS</div>'+
+   '<div style="display:flex;align-items:center;gap:7px;padding:2px 0"><span style="font-size:10px;font-weight:800;color:var(--mut);width:16px">'+g[3]+'</span>'+tchip(g[4])+'<span style="flex:1;font-size:12px;font-weight:700">'+g[4]+' <span style="font-size:9px;color:var(--mut);font-weight:500">'+g[5]+'</span></span></div></div>';}).join('');
+ return '<div class="panel" style="padding:13px 15px;margin-bottom:12px"><div class="ptitle" style="color:var(--gold)">Projected CFP Bracket <span style="font-size:10px;color:var(--mut);font-weight:600">12-team field</span></div>'+
+  '<div class="label" style="margin:10px 0 6px">First-round byes &middot; seeds 1-4</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">'+byes+'</div>'+
+  '<div class="label" style="margin:12px 0 6px">First round &middot; seeds 5-12 (higher seed hosts)</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">'+games+'</div>'+
+  '<div style="font-size:9px;color:var(--mut);margin-top:9px;line-height:1.5">'+CFP.note+'</div></div>';
+}
+function heismanPanel(){
+ var rows=HEIS.map(function(p,i){var c=col(p[2]);return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;'+(i?'border-top:1px solid var(--line)':'')+'"><span style="font-size:14px;font-weight:900;color:var(--gold);width:18px">'+p[0]+'</span>'+tchip(p[2])+'<div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:700">'+p[1]+' <span style="font-size:10px;color:var(--mut);font-weight:500">'+p[3]+'</span></div><div style="font-size:10px;color:'+c.d+'">'+p[2]+'</div></div><div style="font-size:10.5px;color:var(--mut);text-align:right;max-width:120px">'+p[4]+'</div></div>';}).join('');
+ return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--gold)">Heisman Watch <span style="font-size:10px;color:var(--mut);font-weight:600">top 5</span></div>'+rows+'</div>';
+}
+function injuriesPanel(){
+ if(!INJURIES.length){
+  return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--red)">Key Injuries Watch <span style="font-size:10px;color:var(--mut);font-weight:600">all 21 drafted teams</span></div><p style="font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5">Nothing notable reported across the drafted-team pool as of this update.</p></div>';
+ }
+ var rows=INJURIES.map(function(x,i){var c=col(x[0]);var st=x[3];
+  var clr=st==='out'?'var(--red)':(st==='doubt'?'var(--orange)':'var(--cyan)');
+  var lab=st==='out'?'OUT':(st==='doubt'?'DOUBTFUL':'WATCH');
+  return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;'+(i?'border-top:1px solid var(--line)':'')+'">'+tchip(x[0])+'<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700">'+x[1]+' <span style="font-size:10px;color:var(--mut);font-weight:500">'+x[2]+'</span></div><div style="font-size:10px;color:var(--mut)">'+x[4]+'</div></div><span class="pill" style="background:'+clr+'1f;color:'+clr+'">'+lab+'</span></div>';}).join('');
+ return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--red)">Key Injuries Watch <span style="font-size:10px;color:var(--mut);font-weight:600">all 21 drafted teams</span></div>'+rows+'</div>';
+}
+function confMini(name,rows){
+ var head='<tr style="color:var(--mut);font-size:9px;text-transform:uppercase"><th style="text-align:left;padding:3px 0">'+name+'</th><th>Conf</th><th>Overall</th></tr>';
+ var body=rows.map(function(r,i){var c=col(r[0]);return '<tr style="border-top:1px solid var(--line)"><td style="text-align:left;padding:4px 0;font-size:11.5px;font-weight:700"><span style="color:var(--mut)">'+(i+1)+'. </span><span style="color:'+c.d+'">'+r[0]+'</span></td><td style="text-align:center;font-size:11px;color:var(--mut)">'+r[1]+'</td><td style="text-align:center;font-size:11px;color:var(--mut)">'+r[2]+'</td></tr>';}).join('');
+ return '<div class="panel" style="padding:11px 13px"><table>'+head+body+'</table></div>';
+}
+function confPanel(){
+ return '<div><div class="ptitle" style="color:var(--cyan);margin-bottom:8px">Conference Standings <span style="font-size:10px;color:var(--mut);font-weight:600">Big 12 featured &middot; projected</span></div>'+
+  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+confMini('Big 12',CONF['Big 12'])+confMini('SEC',CONF['SEC'])+confMini('Big Ten',CONF['Big Ten'])+confMini('ACC',CONF['ACC'])+'</div></div>';
+}
+function storiesPanel(){
+ var rows=STORIES.map(function(s){return '<div style="padding:9px 0;border-top:1px solid var(--line)"><div style="font-size:12.5px;font-weight:800;color:'+s[1]+';display:flex;align-items:center;gap:7px">'+tchip(s[2])+s[0]+'</div>'+
+  '<ul style="margin:5px 0 0 4px;padding:0;list-style:none">'+s[3].map(function(b){return '<li style="font-size:11px;color:var(--mut);padding:1.5px 0;padding-left:11px;position:relative"><span style="position:absolute;left:0;color:'+s[1]+'">&bull;</span>'+b+'</li>';}).join('')+'</ul></div>';}).join('');
+ return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--gold)">Biggest Stories</div>'+rows+'</div>';
+}
+/* ---- Recaps ---- */
+function statTable(stats,c,a,b){
+ var head='<tr style="background:var(--panel2)"><td style="text-align:center;font-weight:800;font-size:11px;padding:5px;color:'+c.d+'">'+ab(a)+'</td><td style="text-align:center;font-size:9px;color:var(--mut);padding:5px">STAT</td><td style="text-align:center;font-weight:800;font-size:11px;padding:5px;color:'+c.d+'">'+ab(b)+'</td></tr>';
+ var rows=stats.map(function(s){return '<tr style="border-top:1px solid var(--line)"><td style="text-align:center;font-weight:700;font-size:12px;padding:4px">'+s[1]+'</td><td style="text-align:center;font-size:9.5px;color:var(--mut);text-transform:uppercase;padding:4px">'+s[0]+'</td><td style="text-align:center;font-weight:700;font-size:12px;padding:4px">'+s[2]+'</td></tr>';}).join('');
+ return '<div class="panel" style="overflow:hidden;padding:0"><table>'+head+rows+'</table></div>';
+}
+function driveTable(m,c){
+ return '<div class="panel" style="padding:0;overflow:hidden">'+m.map(function(x,i){return '<div style="display:flex;gap:10px;padding:7px 11px;'+(i?'border-top:1px solid var(--line)':'')+'"><span style="font-size:11px;font-weight:800;color:'+c.d+';width:52px;flex-shrink:0">'+x[0]+'</span><div><span style="font-size:11.5px;font-weight:700">'+x[1]+'</span> <span style="font-size:11px;color:var(--mut)">'+x[2]+'</span><div style="font-size:10.5px;color:var(--mut)">'+x[3]+'</div></div></div>';}).join('')+'</div>';
+}
+function perfTable(arr){
+ return '<div class="panel" style="padding:4px 11px">'+arr.map(function(x,i){return '<div style="display:flex;align-items:center;gap:9px;padding:6px 0;'+(i?'border-top:1px solid var(--line)':'')+'"><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">'+x[0]+' <span style="color:var(--mut);font-weight:400;font-size:10.5px">'+x[1]+'</span></div><div style="font-size:10.5px;color:var(--mut)">'+x[2]+'</div></div></div>';}).join('')+'</div>';
+}
+function starBox(m,c){return '<div class="panel" style="padding:13px;text-align:center;border:1px solid '+c.b+'"><div class="label" style="margin-bottom:3px">Player of the Game</div><div style="font-size:15px;font-weight:900">'+m[0]+'</div><div style="font-size:11px;color:'+c.d+';font-weight:700;margin:1px 0 7px">'+m[1]+'</div><p style="font-size:11.5px;color:var(--mut);line-height:1.55">'+m[2]+'</p></div>';}
+function recapCard(m){var c=col(m.team);var open=m.tracked?' open':'';
+ var body='<div style="padding:4px 16px 16px">'+
+  '<div style="text-align:center;margin:6px 0 8px"><div style="font-size:24px;font-weight:900">'+m.a+' <span style="color:'+c.d+'">'+m.sa+'</span> - <span style="color:'+c.d+'">'+m.sb+'</span> '+m.b+'</div>'+
+  '<div style="font-size:10px;color:var(--mut)">'+m.meta+'</div></div>'+
+  (m.summary&&m.summary.length?seclabel('Recap',c)+m.summary.map(function(p){return '<p style="font-size:12px;line-height:1.6;color:var(--txt);margin-bottom:8px">'+p+'</p>';}).join(''):'')+
+  (m.stats?seclabel('Team Stats',c)+statTable(m.stats,c,m.a,m.b):'')+
+  (m.scoring?seclabel('Scoring Summary',c)+driveTable(m.scoring,c):'')+
+  (m.perfA?'<div style="display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:4px"><div>'+seclabel('Key - '+m.a,c)+perfTable(m.perfA)+'</div><div>'+seclabel('Key - '+m.b,c)+perfTable(m.perfB)+'</div></div>':'')+
+  (m.star?'<div style="margin-top:13px">'+starBox(m.star,c)+'</div>':'')+'</div>';
+ return '<details'+open+'><summary><div style="height:4px;background:'+c.b+'"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px">'+
+  '<div style="display:flex;align-items:center;gap:10px">'+tchip(m.a)+'<div><div style="font-size:9px;letter-spacing:.06em;color:var(--mut)">'+(m.tracked?'TRACKED &middot; ':'')+(m.meta?m.meta.split(' | ')[0]:'')+'</div><div style="font-size:15px;font-weight:900">'+m.a+' '+m.sa+'-'+m.sb+' '+m.b+'</div></div>'+tchip(m.b)+'</div>'+chev()+'</div></summary>'+body+'</details>';
+}
+function recapMini(m){var c=col(m.team);
+ return '<div class="panel" style="padding:13px;display:flex;gap:12px;border-left:4px solid '+c.b+'"><div style="text-align:center;flex-shrink:0"><div style="font-size:18px;font-weight:900;color:'+c.d+';line-height:1">'+m.sa+'-'+m.sb+'</div></div><div><div style="font-size:12.5px;font-weight:800">'+m.a+' <span style="color:var(--mut)">v</span> '+m.b+' <span style="font-size:10px;color:var(--mut);font-weight:400">- '+m.date+'</span></div><p style="font-size:11.5px;color:var(--mut);margin-top:2px;line-height:1.5">'+m.note+'</p></div></div>';}
+/* ---- Previews ---- */
+function spreadBlock(s){function cell(t,inner){return '<div style="background:var(--panel2);border-radius:8px;padding:8px;text-align:center"><div class="label" style="margin-bottom:3px">'+t+'</div><div style="font-size:13px;font-weight:800;line-height:1.4">'+inner+'</div></div>';}
+ return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+cell('Spread',fv(s[0],true))+cell('Total',nu(s[1]))+'</div><p style="font-size:10px;color:var(--mut);margin-top:5px">'+s[2]+'</p>';}
+function injBlock2(arr){return '<div class="panel" style="padding:4px 12px">'+arr.map(function(x,i){var st=x[1];var clr=st==='out'?'var(--red)':(st==='doubt'?'var(--orange)':'var(--mut)');var lab=st==='out'?'OUT':(st==='doubt'?'DOUBT':'OK');
+ return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;'+(i?'border-top:1px solid var(--line)':'')+'"><span style="font-size:11.5px"><b>'+x[0]+'</b></span><span class="pill" style="background:'+clr+'1f;color:'+clr+'">'+lab+'</span></div>';}).join('')+'</div>';}
+function predBox(p,c){return '<div class="panel" style="padding:12px;text-align:center;border:1px solid '+c.b+'"><div class="label" style="margin-bottom:2px">Score Prediction</div><div style="font-size:16px;font-weight:900;color:'+c.d+'">'+p[0]+'</div><p style="font-size:11.5px;color:var(--mut);line-height:1.5;margin-top:5px">'+p[1]+'</p></div>';}
+function previewCard(p){var c=col(p.team);var open=p.tracked?' open':'';
+ var body='<div style="padding:6px 16px 16px">'+
+  '<div style="text-align:center;margin:4px 0 6px"><div style="font-size:18px;font-weight:900">'+p.a+' <span style="color:var(--mut);font-weight:600">vs</span> '+p.b+'</div><div style="font-size:11px;color:'+c.d+';font-weight:700">'+p.tag+'</div><div style="font-size:10px;color:var(--mut)">'+p.meta+'</div></div>'+
+  seclabel('Betting Line',c)+spreadBlock(p.spread)+
+  seclabel('The Storyline',c)+'<p style="font-size:12px;line-height:1.6">'+p.storyline+'</p>'+
+  seclabel('Keys to the Game',c)+'<ul style="margin:0;padding:0;list-style:none">'+p.keys.map(function(b){return '<li style="font-size:11.5px;color:var(--mut);padding:2px 0;padding-left:12px;position:relative"><span style="position:absolute;left:0;color:'+c.d+'">&bull;</span>'+b+'</li>';}).join('')+'</ul>'+
+  seclabel('Injury Report',c)+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><div style="font-size:11px;font-weight:700;margin-bottom:4px">'+p.a+'</div>'+injBlock2([p.injuries[0]])+'</div><div><div style="font-size:11px;font-weight:700;margin-bottom:4px">'+p.b+'</div>'+injBlock2([p.injuries[1]])+'</div></div>'+
+  '<div style="margin-top:13px">'+predBox(p.pred,c)+'</div></div>';
+ return '<details'+open+'><summary><div style="height:4px;background:'+c.b+'"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px">'+
+  '<div style="display:flex;align-items:center;gap:10px">'+tchip(p.a)+'<div><div style="font-size:9px;letter-spacing:.06em;color:var(--mut)">'+(p.tracked?'TRACKED &middot; ':'')+p.tag+'</div><div style="font-size:15px;font-weight:900">'+p.a+' vs '+p.b+'</div></div>'+tchip(p.b)+'</div>'+chev()+'</div></summary>'+body+'</details>';
+}
+/* ---- Compact team lines (used by the Drafters tab for teams outside full coverage) ---- */
+function compactLine(g){var cp=col(g[5]);
+ return '<div class="panel" style="padding:11px 14px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;flex-wrap:wrap;gap:4px"><div style="display:flex;align-items:center;gap:7px">'+tchip(g[0])+'<span style="font-size:12.5px;font-weight:800">'+g[0]+'</span><span style="color:var(--mut);font-size:10.5px">at</span><span style="font-size:12.5px;font-weight:800">'+g[1]+'</span>'+tchip(g[1])+'</div><span class="label">'+g[2]+'</span></div>'+
+  '<div style="font-size:10.5px;color:var(--mut);margin-bottom:5px">Line: '+g[3]+'</div><p style="font-size:11px;color:var(--txt);line-height:1.5">'+g[4]+'</p></div>';}
+/* ---- Draft Pool standings (compact — lives at the bottom of Summary) ---- */
+function draftMini(){
+ var ranked=DRAFT.drafters.slice().sort(function(a,b){return b[2]-a[2];});
+ var head='<tr style="color:var(--mut);font-size:9px;text-transform:uppercase"><th style="text-align:left;padding:3px 0">Drafter</th><th style="text-align:left">Teams</th><th style="text-align:right">Wins</th></tr>';
+ var body=ranked.map(function(d,i){
+  var teams=d[1].map(function(t){return t[0]==='TBD'?'TBD':ab(t[0]);}).join(', ');
+  return '<tr style="border-top:1px solid var(--line)'+(i===0?';background:rgba(245,196,81,.07)':'')+'"><td style="text-align:left;padding:6px 0;font-size:12px;font-weight:800"><span style="color:'+(i===0?'var(--gold)':'var(--mut)')+'">'+(i+1)+'.</span> '+d[0]+'</td>'+
+   '<td style="text-align:left;font-size:10px;color:var(--mut);padding:6px 4px">'+teams+'</td>'+
+   '<td style="text-align:right;font-size:14px;font-weight:900;color:var(--green);padding:6px 0">'+d[2]+'</td></tr>';}).join('');
+ return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--gold);margin-bottom:4px">Draft Pool Standings <span style="font-size:10px;color:var(--mut);font-weight:600">winner-take-all &middot; most combined wins</span></div>'+
+  '<p style="font-size:10.5px;color:var(--mut);line-height:1.5;margin-bottom:6px">'+DRAFT.status+'</p>'+
+  '<table>'+head+body+'</table></div>';
+}
+/* ---- Drafters tab: 7-way switcher, one pane per drafter, each showing their 3 schools ---- */
+function teamBlockForDrafter(team){
+ if(team==='TBD')return '<div class="panel" style="padding:16px;text-align:center;color:var(--mut);font-size:12px;margin-bottom:8px">Pick not yet made.</div>';
+ var rec=RECAPS.filter(function(m){return m.a===team||m.b===team;});
+ var prev=PREVIEWS.filter(function(p){return p.a===team||p.b===team;});
+ var compact=OTHER.filter(function(g){return g[0]===team||g[1]===team;});
+ var html='<div style="margin-bottom:6px;display:flex;align-items:center;gap:8px">'+tchip(team)+'<span style="font-size:13px;font-weight:800">'+team+'</span></div>';
+ if(rec.length)html+=rec.map(recapCard).join('');
+ if(prev.length)html+=prev.map(previewCard).join('');
+ if(!rec.length&&!prev.length){
+  html+=compact.length?compact.map(compactLine).join(''):'<div class="panel" style="padding:16px;text-align:center;color:var(--mut);font-size:12px;margin-bottom:8px">No update yet this week.</div>';
+ }
+ return html;
+}
+function drafterPane(name){
+ var d=DRAFT.drafters.filter(function(x){return x[0]===name;})[0];
+ if(!d)return '';
+ var teams=d[1].map(function(t){return teamBlockForDrafter(t[0]);}).join('<div style="height:4px"></div>');
+ return '<div class="panel" style="padding:11px 14px;margin-bottom:14px;border-left:4px solid var(--gold);display:flex;align-items:center;justify-content:space-between"><div><span class="label" style="color:var(--gold)">Combined Wins</span><div style="font-size:24px;font-weight:900;color:var(--green)">'+d[2]+'</div></div><div style="font-size:10.5px;color:var(--mut);text-align:right;max-width:220px">'+DRAFT.metric+'</div></div>'+teams;
+}
+function draftersTab(){
+ var switcher=DRAFT.drafters.map(function(d,i){return '<button class="drafterbtn'+(i===0?' active':'')+'" data-drafter="'+d[0]+'">'+d[0]+'</button>';}).join('');
+ var panes=DRAFT.drafters.map(function(d,i){return '<div class="drafterpane'+(i===0?'':' hidden')+'" data-drafter="'+d[0]+'">'+drafterPane(d[0])+'</div>';}).join('');
+ return '<div id="drafterSwitcher" style="position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;margin-bottom:4px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line)">'+switcher+'</div>'+panes;
+}
+
+/* ---- Preseason All-Americans (static preseason data; kept outside the weekly-splice markers) ---- */
+var AA={
+ src:'ESPN 2026 Preseason All-America (first team)',
+ offense:[
+  ['QB','Julian Sayin','Ohio State'],['RB','Kewan Lacy','Ole Miss'],['RB','Jadan Baugh','Florida'],
+  ['WR','Jeremiah Smith','Ohio State'],['WR','Cam Coleman','Texas'],['TE','Terrance Carter Jr.','Texas Tech'],
+  ['OT','Trevor Goosby','Texas'],['OG','Kade Pieper','Iowa'],['C','Drew Bobo','Georgia'],
+  ['OG','Anthonie Knapp','Notre Dame'],['OT','Carter Smith','Indiana'],['AP','Malachi Toney','Miami']
+ ],
+ defense:[
+  ['EDGE','Colin Simmons','Texas'],['DT','A’Mauri Washington','Oregon'],['DT','Ahmad Moten','Miami'],
+  ['EDGE','Dylan Stewart','South Carolina'],['LB','Rasheem Biles','Texas'],['LB','Xavier Atkins','Auburn'],
+  ['LB','Sammy Brown','Clemson'],['CB','Leonard Moore','Notre Dame'],['CB','Brice Pollock','Texas Tech'],
+  ['S','KJ Bolden','Georgia'],['S','Ty Benefield','LSU']
+ ],
+ special:[
+  ['K','Tate Sandell','Oklahoma'],['P','Evan Crenshaw','Troy'],['RET','Ryan Niblett','Texas']
+ ]
+};
+function aaGroup(title,arr,clr){
+ var rows=arr.map(function(p,i){var c=col(p[2]);return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;'+(i?'border-top:1px solid var(--line)':'')+'"><span style="font-size:10px;font-weight:800;color:var(--mut);width:40px">'+p[0]+'</span>'+tchip(p[2])+'<div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:700">'+p[1]+'</div><div style="font-size:10px;color:'+c.d+'">'+p[2]+'</div></div></div>';}).join('');
+ return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:'+clr+'">'+title+'</div>'+rows+'</div>';
+}
+function aaPanel(){
+ return '<p style="font-size:11px;color:var(--mut);margin-bottom:12px">Preseason All-America first team &middot; source: '+AA.src+'. This is a preseason honor and stays fixed for the season; an in-season / postseason team can replace it later.</p>'+
+  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">'+aaGroup('Offense',AA.offense,'var(--gold)')+aaGroup('Defense',AA.defense,'var(--cyan)')+'</div>'+
+  aaGroup('Special Teams',AA.special,'var(--green)');
+}
+
+/* ===== MOUNT ===== */
+document.getElementById('tab-summary').innerHTML=statStrip()+
+ '<div style="margin-bottom:12px">'+yourTeamsPanel()+'</div>'+
+ '<div style="display:grid;grid-template-columns:1.15fr .85fr;gap:12px;margin-bottom:12px">'+rankingPanel()+storiesPanel()+'</div>'+
+ cfpPanel()+
+ '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px"><div>'+heismanPanel()+'</div><div>'+confPanel()+'</div></div>'+
+ '<div style="margin-bottom:12px">'+injuriesPanel()+'</div>'+
+ '<div style="margin-bottom:12px">'+draftMini()+'</div>'+
+ '<div style="display:grid;gap:14px">'+
+ '<div style="display:grid;grid-template-columns:1fr 1fr;gap:13px">'+
+ '<div class="panel" style="padding:15px"><div class="ptitle" style="color:var(--gold);margin-bottom:4px">Top Storylines</div>'+NEWS.stories.map(function(s){return '<div style="padding:7px 0;border-top:1px solid var(--line)"><div style="font-size:13px;font-weight:800">'+s[0]+'</div><p style="font-size:11px;color:var(--mut);line-height:1.45;margin-top:2px">'+s[1]+'</p></div>';}).join('')+'</div>'+
+ '<div class="panel" style="padding:15px"><div class="ptitle" style="color:var(--cyan);margin-bottom:4px">Watch &amp; Follow</div>'+NEWS.watch.map(function(w){return '<a href="'+w[1]+'" target="_blank" rel="noopener" style="display:block;padding:7px 0;border-top:1px solid var(--line)"><div style="font-size:13px;font-weight:700;color:var(--cyan)">'+w[0]+'</div><div style="font-size:10.5px;color:var(--mut)">'+w[2]+'</div></a>';}).join('')+'</div></div>'+
+ '<div class="panel" style="padding:15px;border-left:4px solid var(--gold)"><div class="ptitle" style="color:var(--gold);margin-bottom:4px">What to Watch Next</div><p style="font-size:12px;line-height:1.6">'+NEWS.outlook+'</p></div></div>';
+document.getElementById('tab-recaps').innerHTML=
+ (typeof RECAPS_INTRO!=='undefined'?'<p style="font-size:11px;color:var(--mut);margin-bottom:12px">'+RECAPS_INTRO+'</p>':'')+
+ (RECAPS.length?RECAPS.map(recapCard).join(''):'<div class="panel" style="padding:22px;text-align:center;color:var(--mut);font-size:12px">No games played yet. Recaps appear here after Week 1.</div>')+
+ (RECAPS_MINI.length?'<div class="label" style="margin:16px 0 8px">Other Results</div><div style="display:grid;gap:10px">'+RECAPS_MINI.map(recapMini).join('')+'</div>':'');
+document.getElementById('tab-previews').innerHTML=
+ (typeof PREVIEWS_INTRO!=='undefined'?'<p style="font-size:11px;color:var(--mut);margin-bottom:12px">'+PREVIEWS_INTRO+'</p>':'')+
+ (PREVIEWS.length?PREVIEWS.map(previewCard).join(''):'<div class="panel" style="padding:22px;text-align:center;color:var(--mut);font-size:12px">Previews populate each Sunday for the week ahead.</div>');
+document.getElementById('tab-drafters').innerHTML=draftersTab();
+document.getElementById('tab-aa').innerHTML=aaPanel();
+var btns=document.querySelectorAll('.tabbtn');var map={summary:'tab-summary',drafters:'tab-drafters',recaps:'tab-recaps',previews:'tab-previews',aa:'tab-aa'};
+btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.classList.remove('active');});b.classList.add('active');
+ Object.keys(map).forEach(function(k){document.getElementById(map[k]).classList.add('hidden');});document.getElementById(map[b.dataset.tab]).classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});});});
+var dbtns=document.querySelectorAll('.drafterbtn');
+dbtns.forEach(function(b){b.addEventListener('click',function(){dbtns.forEach(function(x){x.classList.remove('active');});b.classList.add('active');
+ document.querySelectorAll('.drafterpane').forEach(function(p){p.classList.toggle('hidden',p.dataset.drafter!==b.dataset.drafter);});});});
+function syncStickyTop(){var dsw=document.getElementById('drafterSwitcher');var hdr=document.querySelector('header');
+ if(dsw&&hdr)dsw.style.top=hdr.offsetHeight+'px';}
+syncStickyTop();window.addEventListener('resize',syncStickyTop);
+var built=new Date(typeof BUILT!=='undefined'?BUILT:'2026-08-15T04:00:00-05:00');
+var s=built.toLocaleString('en-US',{weekday:'long',month:'long',day:'numeric',hour:'numeric',minute:'2-digit'})+' CT';
+document.getElementById('genStamp').innerHTML=(typeof WEEKLABEL!=='undefined'?WEEKLABEL:'Preseason')+'<br>'+s;
+document.getElementById('foot').innerHTML='Generated '+s+' &middot; 2026 College Football &middot; Personal use only.<br>Rankings: AP / CFP Committee. Odds &amp; win totals: FanDuel, DraftKings, BetMGM (indicative). Stats: ESPN, CFBData, official box scores.';
+</script>
+</body>
+</html>
