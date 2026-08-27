@@ -182,6 +182,7 @@ var CONF={
  'ACC':[['Miami','0-0','0-0'],['SMU','0-0','0-0'],['Clemson','0-0','0-0'],['Louisville','0-0','0-0'],['Florida State','0-0','0-0'],['Georgia Tech','0-0','0-0']]
 };
 var STORIES=[
+ ['College football kicks off in Ireland','var(--green)','🍀',['The 2026 season opens Sat Aug 29 with TCU vs North Carolina at Aviva Stadium, Dublin &mdash; the Aer Lingus College Football Classic, the sport&rsquo;s international opener','TCU (9&ndash;4 last year under Sonny Dykes) is about a touchdown favorite over Bill Belichick&rsquo;s North Carolina (4&ndash;8 in his first season)','Last year&rsquo;s Dublin game was won by this pool&rsquo;s anchor, Iowa State, 24&ndash;21 over Kansas State &mdash; there&rsquo;s a bonus preview card for the full write-up']],
  ['Indiana raises a banner: the defending national champions open the season','var(--gold)','Indiana',['The Hoosiers beat No. 1 Ohio State 13&ndash;10 for the Big Ten title, then Miami 27&ndash;21 for the CFP crown &mdash; the program&rsquo;s first national championship','Curt Cignetti reloaded through the portal; TCU transfer Josh Hoover takes over at QB for departed Heisman winner Fernando Mendoza','Preseason No. 6; opens at home vs North Texas on Sept 5 &mdash; a User 6 pick']],
  ['Penn State and Iowa State both open year one under new head coaches','var(--cyan)','Penn State',['Matt Campbell&rsquo;s first game at Penn State is Sept 5 vs Marshall','Jimmy Rogers opens his first year at Iowa State &mdash; the shared anchor &mdash; against FCS Southeast Missouri','Penn State is Fck Cancer!&rsquo;s Round-2 pick; Iowa State is not drafted by anyone']],
  ['CJ Carr edges Arch Manning as the Heisman frontrunner','var(--purple)','Notre Dame',['Notre Dame&rsquo;s QB is the preseason favorite at +750, just ahead of Texas&rsquo;s Arch Manning at +775','Ohio State&rsquo;s Jeremiah Smith is the best non-QB on the board at +1300','A real changing of the guard after Manning entered last year as the presumptive favorite']],
@@ -195,8 +196,16 @@ var RECAPS_MINI=[];
 /* PREVIEWS: the five always-covered teams (Iowa State, Penn State, Indiana, Michigan, Colorado)
    plus the highest-ranked drafted teams beyond them (Ohio State No. 1, Oregon No. 2).
    Spreads/totals are Blue Chip Analytics projections as of Aug 27, 2026 &mdash; not closing lines. */
-var PREVIEWS_INTRO='Full cards for the five always-covered teams &mdash; Iowa State (anchor), Penn State, Indiana, Michigan and Colorado &mdash; plus the top-ranked drafted teams beyond them (Ohio State, Oregon). These are the season openers, Sept 3&ndash;7. Spreads and totals are current Blue Chip Analytics projections as of Aug 27; treat them as opening numbers that will move before kickoff.';
+var PREVIEWS_INTRO='Leads with a bonus card &mdash; TCU vs North Carolina in Dublin, college football&rsquo;s Week 0 international opener (neither is a drafted team). Then full cards for the five always-covered teams &mdash; Iowa State (anchor), Penn State, Indiana, Michigan and Colorado &mdash; plus the top-ranked drafted teams beyond them (Ohio State, Oregon). Openers run Aug 29&ndash;Sept 7. Spreads and totals are current lines as of Aug 27 (Blue Chip Analytics projections for the drafted-team games); treat them as opening numbers that will move before kickoff.';
 var PREVIEWS=[
+ {team:'TCU',emoji:'🍀',tracked:true,a:'TCU',b:'North Carolina',tag:'Aer Lingus College Football Classic &middot; Aviva Stadium, Dublin, Ireland',
+  meta:'Week 0 | Aviva Stadium, Dublin | Sat Aug 29 | Noon ET (5:00pm local) | ESPN',
+  spread:['TCU -7.5','O/U 47.5','Consensus around a touchdown; a few books have shaded to TCU -6.5'],
+  storyline:'College football&rsquo;s international opener. TCU went 9&ndash;4 in 2025 &mdash; back-to-back nine-win seasons under fifth-year coach Sonny Dykes &mdash; and faces a North Carolina team that went 4&ndash;8 in Bill Belichick&rsquo;s debut season and now enters year two. A bonus card: neither team is in the draft pool, but this is the game that kicks off the whole season, a week before the pool&rsquo;s slate.',
+  injuries:[['TCU &mdash; no notable injuries flagged in current coverage','ok'],['North Carolina &mdash; no notable injuries flagged in current coverage','ok']],
+  keys:['A cross-Atlantic travel and body-clock test for both teams','Whether Belichick&rsquo;s year-two North Carolina looks more competitive than the 4&ndash;8 debut','TCU covering a touchdown-ish number against an ACC opponent on a neutral field'],
+  pred:['TCU by about a touchdown','The Horned Frogs are the steadier program right now; a neutral-site number around TCU -7.5 feels about right.'],
+  funfact:'Last year&rsquo;s Dublin opener (2025 Aer Lingus College Football Classic, Aug 23, 2025, Aviva Stadium): Iowa State &mdash; this pool&rsquo;s anchor team &mdash; beat Kansas State 24&ndash;21, with QB Rocco Becht named Player of the Match.'},
  {team:'Iowa State',tracked:true,a:'Southeast Missouri',b:'Iowa State',tag:'Season opener &middot; Ames, Iowa',
   meta:'Week 1 | Jack Trice Stadium | Sat Sept 5 | Noon CT',
   spread:['Iowa State -29.5 (Blue Chip Analytics)','O/U 53.5','Heavy favorite over an FCS opponent in Jimmy Rogers&rsquo; debut'],
@@ -395,16 +404,16 @@ function spreadBlock(s){function cell(t,inner){return '<div style="background:va
 function injBlock2(arr){return '<div class="panel" style="padding:4px 12px">'+arr.map(function(x,i){var st=x[1];var clr=st==='out'?'var(--red)':(st==='doubt'?'var(--orange)':'var(--mut)');var lab=st==='out'?'OUT':(st==='doubt'?'DOUBT':'OK');
  return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;'+(i?'border-top:1px solid var(--line)':'')+'"><span style="font-size:11.5px"><b>'+x[0]+'</b></span><span class="pill" style="background:'+clr+'1f;color:'+clr+'">'+lab+'</span></div>';}).join('')+'</div>';}
 function predBox(p,c){return '<div class="panel" style="padding:12px;text-align:center;border:1px solid '+c.b+'"><div class="label" style="margin-bottom:2px">Score Prediction</div><div style="font-size:16px;font-weight:900;color:'+c.d+'">'+p[0]+'</div><p style="font-size:11.5px;color:var(--mut);line-height:1.5;margin-top:5px">'+p[1]+'</p></div>';}
-function previewCard(p){var c=col(p.team);var open=p.tracked?' open':'';
+function previewCard(p){var c=p.emoji?{b:'#1f7a4d',d:'#36d399'}:col(p.team);var open=p.tracked?' open':'';
  var body='<div style="padding:6px 16px 16px">'+
   '<div style="text-align:center;margin:4px 0 6px"><div style="font-size:18px;font-weight:900">'+p.a+' <span style="color:var(--mut);font-weight:600">vs</span> '+p.b+'</div><div style="font-size:11px;color:'+c.d+';font-weight:700">'+p.tag+'</div><div style="font-size:10px;color:var(--mut)">'+p.meta+'</div></div>'+
   seclabel('Betting Line',c)+spreadBlock(p.spread)+
   seclabel('The Storyline',c)+'<p style="font-size:12px;line-height:1.6">'+p.storyline+'</p>'+
   seclabel('Keys to the Game',c)+'<ul style="margin:0;padding:0;list-style:none">'+p.keys.map(function(b){return '<li style="font-size:11.5px;color:var(--mut);padding:2px 0;padding-left:12px;position:relative"><span style="position:absolute;left:0;color:'+c.d+'">&bull;</span>'+b+'</li>';}).join('')+'</ul>'+
   seclabel('Injury Report',c)+'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px"><div><div style="font-size:11px;font-weight:700;margin-bottom:4px">'+p.a+'</div>'+injBlock2([p.injuries[0]])+'</div><div><div style="font-size:11px;font-weight:700;margin-bottom:4px">'+p.b+'</div>'+injBlock2([p.injuries[1]])+'</div></div>'+
-  '<div style="margin-top:13px">'+predBox(p.pred,c)+'</div></div>';
+  '<div style="margin-top:13px">'+predBox(p.pred,c)+'</div>'+(p.funfact?seclabel('Fun Fact',c)+'<p style="font-size:11.5px;color:var(--mut);line-height:1.55">'+p.funfact+'</p>':'')+'</div>';
  return '<details'+open+'><summary><div style="height:4px;background:'+c.b+'"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px">'+
-  '<div style="display:flex;align-items:center;gap:10px">'+tchip(p.a)+'<div><div style="font-size:9px;letter-spacing:.06em;color:var(--mut)">'+(p.tracked?'TRACKED &middot; ':'')+p.tag+'</div><div style="font-size:15px;font-weight:900">'+p.a+' vs '+p.b+'</div></div>'+tchip(p.b)+'</div>'+chev()+'</div></summary>'+body+'</details>';
+  '<div style="display:flex;align-items:center;gap:10px">'+(p.emoji?'<span style="font-size:22px;line-height:1">'+p.emoji+'</span>':tchip(p.a))+'<div><div style="font-size:9px;letter-spacing:.06em;color:var(--mut)">'+(p.tracked?'TRACKED &middot; ':'')+p.tag+'</div><div style="font-size:15px;font-weight:900">'+p.a+' vs '+p.b+'</div></div>'+(p.emoji?'':tchip(p.b))+'</div>'+chev()+'</div></summary>'+body+'</details>';
 }
 /* ---- Compact team lines (used by the Drafters tab for teams outside full coverage) ---- */
 function compactLine(g){var cp=col(g[5]);
