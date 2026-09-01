@@ -6,3 +6,6 @@ tools/
 .claude/
 .agents/
 skills-lock.json
+
+# safety net: catches any stray .bak file (e.g. accidental backups) so it can never slip into a commit
+*.bak
