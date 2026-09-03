@@ -111,7 +111,7 @@ function mv(m){ // ranking movement: '+2' up (green), '-1' down (red), '0' none,
  var up=n>0;return '<span style="font-size:9px;font-weight:800;color:'+(up?'var(--green)':'var(--red)')+'">'+(up?'▲':'▼')+Math.abs(n)+'</span>';}
 
 /*DATA_START*/
-var BUILT='2026-08-30T18:35:00-05:00';
+var BUILT='2026-09-02T19:30:00-05:00';
 var WEEKLABEL='Week 0 in the books (TCU&ndash;UNC in Dublin, USC, and NC State all played Aug 29) &middot; the pool&rsquo;s regular slate opens Thu Sept 3 (Colorado at Georgia Tech), full weekend Sept 5&ndash;6';
 var RANK_SRC='Real preseason AP Top 25 (released Monday, Aug 17, 2026, Noon ET) &mdash; the source of truth now, replacing the preseason Coaches Poll. Ohio State is No. 1 with 40 first-place votes and 1,672 points; Oregon No. 2 (14 votes); Georgia 3, Notre Dame 4, Texas 5; defending national champion Indiana opens No. 6 (8 first-place votes); Miami, which lost the January title game to Indiana, is No. 7 (1 vote). The SEC leads with 9 ranked teams, the Big Ten has 8. Week 0 (Aug 29) is now complete, but the AP does not update its poll until after Week 1 &mdash; this ranking still reflects the preseason ballot. Source of truth switches to the CFP Committee rankings from early November.';
 var STAT=[
@@ -153,15 +153,15 @@ var CFP={
  ],
  note:'Way-too-early projection (CBS Sports, Aug 2026) built on projected conference-championship results, not current record &mdash; a preseason exercise, not a ranking. Seeds 1-4 earn first-round byes; seeds 5-12 play the opening round on campus, higher seed hosting. Refreshes with the real CFP Committee bracket once rankings begin in November.'
 };
-/* Heisman: current odds (FanDuel via CBS Sports / NBC Sports, late Aug 2026). Only 1-2 carry
-   firm posted numbers this early; 3-5 are ticket-share / market risers. Board held steady
-   through Week 0 - no drafted-team riser posted firm enough odds to displace the top 5. */
+/* Heisman: current odds (FanDuel/BetMGM via CBS Sports / Yahoo Sports / Fox Sports, Sept 2 2026,
+   day before Week 1 openers begin). CJ Carr has edged ahead of Arch Manning as favorite; both
+   moved in slightly from their preseason numbers. Board otherwise held through Week 0. */
 var HEIS=[
- [1,'CJ Carr','Notre Dame','QB','+750 (preseason favorite)'],
- [2,'Arch Manning','Texas','QB','+750 to +775, depending on book'],
+ [1,'CJ Carr','Notre Dame','QB','+700 &mdash; narrow favorite entering Week 1'],
+ [2,'Arch Manning','Texas','QB','+750'],
  [3,'Jeremiah Smith','Ohio State','WR','+1300 &mdash; best non-QB on the board'],
- [4,'Julian Sayin','Ohio State','QB','among the early Heisman ticket-share leaders'],
- [5,'Josh Hoover','Indiana','QB','TCU transfer QB for the defending champs &mdash; preseason dark horse']
+ [4,'Julian Sayin','Ohio State','QB','around 12-1 &mdash; among the early Heisman ticket-share leaders'],
+ [5,'Josh Hoover','Indiana','QB','around 13-1 &mdash; TCU transfer QB for the defending champs']
 ];
 /* Key Injuries Watch: [team, player, position, status ('out'|'doubt'|'watch'), note] across ALL 21
    drafted teams. Sparse in preseason &mdash; that is expected, not a gap. */
@@ -170,7 +170,7 @@ var INJURIES=[
  ['Notre Dame','Quincy Porter','WR','doubt','Former five-star transfer had a minor procedure after winter patella surgery; may not be ready for the Sept 6 opener at Lambeau Field'],
  ['Georgia','Dante Dowdell','RB','doubt','Away from team activities after an ATV accident; Kirby Smart says he is &ldquo;doing better&rdquo; but has given no return timeline'],
  ['Georgia','Kyron Jones','DB','watch','On a restricted-reps &ldquo;pitch count&rdquo; for a lingering foot injury that cost him the final 8 games last season'],
- ['Georgia','Drew Bobo','C','watch','Recovering from Lisfranc foot surgery; starting center, expected ready for the Sept 5 opener'],
+ ['Georgia','Drew Bobo','C','watch','Recovering from Lisfranc foot surgery; on track to start the Sept 5 opener per this week&rsquo;s reporting'],
  ['Oklahoma','RB corps (Blaylock / Hatton / Robinson)','RB','watch','All three limited or not fully practicing in fall camp; transfer Lloyd Avant is in line to start the opener vs UTEP if it lingers'],
  ['Alabama','AK Dear','RB','out','Lower-body injury expected to keep him out several weeks, into the Sept 5 opener vs East Carolina'],
  ['Florida','Kelvin Jimenez','RB','out','Contact injury sustained in camp, considered out for the foreseeable future'],
@@ -186,11 +186,12 @@ var CONF={
  'ACC':[['Miami','0-0','0-0'],['SMU','0-0','0-0'],['Clemson','0-0','0-0'],['Louisville','0-0','0-0'],['Florida State','0-0','0-0'],['Georgia Tech','0-0','0-0']]
 };
 var STORIES=[
+ ['Game of the Week: No. 9 Ole Miss vs. No. 24 Louisville','var(--orange)','Ole Miss',['The only Week 1 matchup between two ranked teams &mdash; every other drafted-team opener is against an unranked or FCS opponent','Neutral site: Nissan Stadium, Nashville, Sunday Sept 6, 7:30pm ET','Spread: Ole Miss -6.5, O/U 55.5','Ole Miss (User 1, No. 9) starts QB Trinidad Chambliss, a preseason Heisman riser; Louisville (No. 24) is the newest team to the poll (marked NEW in the AP25 movement column)']],
  ['North Carolina upsets TCU 15-10 to open the season in Dublin','var(--green)','🍀',['Bill Belichick&rsquo;s Tar Heels out-lasted the Horned Frogs in a sloppy, low-scoring Aer Lingus College Football Classic at Aviva Stadium','QB Billy Edwards Jr. threw for 232 yards; Jaylen McGill&rsquo;s 9-yard run was the game&rsquo;s only touchdown from scrimmage, plus two Aeron Burrell field goals and a safety','Last year&rsquo;s Dublin game was won by this pool&rsquo;s anchor, Iowa State, 24&ndash;21 over Kansas State &mdash; see the bonus recap card for the full write-up']],
  ['USC romps, NC State falls as Week 0 wraps up (Aug 29)','var(--cyan)','USC',['USC (Push the Button) opened at home with a 42&ndash;26 win over San Jose State &mdash; Jayden Maiava went 25-for-29 for 286 yards and 2 TDs and USC built a 35&ndash;3 lead before backups let it get closer late','NC State (Block&rsquo;s Round 3 pick, the last of the 21) fell 34&ndash;8 on the road at Virginia &mdash; the Cavaliers&rsquo; first win over the Wolfpack at Scott Stadium since 2006, behind transfer QB Beau Pribula (155 pass yds/2 TD, 110 rush yds)','USC is back Fri Sept 4 at home vs Fresno State (23.5-pt favorite); NC State hosts Richmond on Sept 12']],
  ['Indiana raises a banner: the defending national champions open the season','var(--gold)','Indiana',['The Hoosiers beat No. 1 Ohio State 13&ndash;10 for the Big Ten title, then Miami 27&ndash;21 for the CFP crown &mdash; the program&rsquo;s first national championship','Curt Cignetti reloaded through the portal; TCU transfer Josh Hoover takes over at QB for departed Heisman winner Fernando Mendoza','Preseason No. 6; opens at home vs North Texas on Sept 5 &mdash; a User 6 pick']],
  ['Penn State and Iowa State both open year one under new head coaches','var(--cyan)','Penn State',['Matt Campbell&rsquo;s first game at Penn State is Sept 5 vs Marshall','Jimmy Rogers opens his first year at Iowa State &mdash; the shared anchor &mdash; against FCS Southeast Missouri','Penn State is Fck Cancer!&rsquo;s Round-2 pick; Iowa State is not drafted by anyone']],
- ['CJ Carr edges Arch Manning as the Heisman frontrunner','var(--purple)','Notre Dame',['Notre Dame&rsquo;s QB is the preseason favorite at +750, just ahead of Texas&rsquo;s Arch Manning','Ohio State&rsquo;s Jeremiah Smith is the best non-QB on the board at +1300','A real changing of the guard after Manning entered last year as the presumptive favorite']],
+ ['CJ Carr edges ahead of Arch Manning as Week 1 arrives','var(--purple)','Notre Dame',['Notre Dame&rsquo;s QB has moved to a narrow favorite at +700, just ahead of Texas&rsquo;s Arch Manning at +750','Ohio State&rsquo;s Jeremiah Smith is the best non-QB on the board at +1300','Both open Week 1 on national TV &mdash; Notre Dame vs Wisconsin at Lambeau (Sun), Texas vs Texas State (Sat)']],
  ['The Big Ten stacks the preseason top six','var(--green)','Oregon',['Ohio State (1), Oregon (2) and champion Indiana (6) all sit in the top six of the AP Top 25','Georgia (3), Notre Dame (4) and Texas (5) fill out the top five','18 of the pool&rsquo;s 21 drafted teams are ranked in the preseason 25']]
 ];
 /* RECAPS: Week 0 is complete, but none of it involves the fixed-five or games-of-the-week teams
@@ -211,8 +212,9 @@ var RECAPS=[
 var RECAPS_MINI=[];
 /* PREVIEWS: the five always-covered teams (Iowa State, Penn State, Indiana, Michigan, Colorado)
    plus the highest-ranked drafted teams beyond them (Ohio State No. 1, Oregon No. 2). The Dublin
-   bonus card has moved to Recaps now that TCU-UNC is final. Spreads/totals current as of Aug 29. */
-var PREVIEWS_INTRO='Full cards for the five always-covered teams &mdash; Iowa State (anchor), Penn State, Indiana, Michigan and Colorado &mdash; plus the top-ranked drafted teams beyond them (Ohio State, Oregon). Openers run Sept 3&ndash;6. Spreads and totals are current lines as of Aug 29 (Blue Chip Analytics projections for the drafted-team games); treat them as numbers that will keep moving before kickoff.';
+   bonus card has moved to Recaps now that TCU-UNC is final. Spreads/totals current as of Sept 2 -
+   the day before the Colorado-Georgia Tech opener kicks off the pool's regular slate. */
+var PREVIEWS_INTRO='Full cards for the five always-covered teams &mdash; Iowa State (anchor), Penn State, Indiana, Michigan and Colorado &mdash; plus the top-ranked drafted teams beyond them (Ohio State, Oregon). Openers run Sept 3&ndash;6. Spreads and totals are current lines as of Sept 2 (Blue Chip Analytics projections for the drafted-team games); treat them as numbers that will keep moving before kickoff.';
 var PREVIEWS=[
  {team:'Iowa State',tracked:true,a:'Southeast Missouri',b:'Iowa State',tag:'Season opener &middot; Ames, Iowa',
   meta:'Week 1 | Jack Trice Stadium | Sat Sept 5 | Noon CT',
@@ -223,14 +225,14 @@ var PREVIEWS=[
   pred:['Iowa State comfortably at home','A routine, lopsided opener &mdash; the story is the new staff and health heading into CyHawk week.']},
  {team:'Penn State',tracked:true,a:'Marshall',b:'Penn State',tag:'Season opener &middot; State College',
   meta:'Week 1 | Beaver Stadium | Sat Sept 5 | 3:30pm CT | FS1',
-  spread:['Penn State -24.5 (Blue Chip Analytics)','O/U 54.5','Fck Cancer!&rsquo;s Round-2 pick opens as a big favorite'],
+  spread:['Penn State -24.5 (Blue Chip Analytics)','O/U 52.5','Fck Cancer!&rsquo;s Round-2 pick opens as a big favorite'],
   storyline:'Matt Campbell&rsquo;s first game as Penn State&rsquo;s head coach. Penn State opens No. 18 in the AP Top 25 against Marshall before a Sept 12 road trip to Temple.',
   injuries:[['Marshall &mdash; none reported','ok'],['Penn State &mdash; OL Alex Tatsch, DB Jeremiah Cooper limited, racing the opener','doubt']],
   keys:['Campbell&rsquo;s scheme installation reps against a Sun Belt opponent','A reworked backfield led by Carson Hansen, back from an August scrimmage absence','Building depth and rhythm before Big Ten play'],
   pred:['Penn State comfortably','A tune-up &mdash; the real story is how different this team looks under Campbell, not the scoreboard.']},
  {team:'Indiana',tracked:true,a:'North Texas',b:'Indiana',tag:'Season opener &middot; Bloomington &middot; defending national champions',
   meta:'Week 1 | Memorial Stadium | Sat Sept 5 | Noon ET | FOX',
-  spread:['Indiana -41 (Blue Chip Analytics)','O/U 55.5','Champions open as a five-touchdown-plus favorite'],
+  spread:['Indiana -40.5 (Blue Chip Analytics)','O/U 55.5','Champions open as a five-touchdown-plus favorite'],
   storyline:'The defending national champions raise a banner. Curt Cignetti&rsquo;s Hoosiers beat No. 1 Ohio State 13&ndash;10 for the Big Ten title and Miami 27&ndash;21 for the CFP crown &mdash; the program&rsquo;s first &mdash; then reloaded through the portal, headlined by TCU transfer QB Josh Hoover (3,472 yards, 29 TD last year) in for departed Heisman winner Fernando Mendoza. Indiana opens No. 6 against North Texas.',
   injuries:[['North Texas &mdash; none reported','ok'],['Indiana &mdash; no notable camp injuries flagged','ok']],
   keys:['Hoover&rsquo;s first start running Cignetti&rsquo;s offense','All-America LT Carter Smith and WR Charlie Becker anchor the supporting cast','A defense that finished top-10 last year breaking in new pieces'],
@@ -244,21 +246,21 @@ var PREVIEWS=[
   pred:['Michigan by three-plus scores','Keep it clean and healthy &mdash; the season really starts Sept 12 vs Oklahoma.']},
  {team:'Colorado',tracked:true,a:'Colorado',b:'Georgia Tech',tag:'Season opener &middot; Atlanta &middot; Thursday night',
   meta:'Week 1 | Bobby Dodd Stadium | Thu Sept 3 | 8:00pm ET | ESPN',
-  spread:['Georgia Tech -6.5 (FanDuel, Aug 30)','O/U 50.5','Colorado opens as a road underdog; the line has ticked in slightly from GT -7.5 at open'],
+  spread:['Georgia Tech -6.5 (FanDuel, Sept 2)','O/U 51','Colorado opens as a road underdog; spread has held steady in the 6.5-7 range since late August'],
   storyline:'Deion Sanders&rsquo; Buffaloes open on the road in a Thursday-night season kickoff, the second leg of a home-and-home with Georgia Tech. Sophomore QB Julian Lewis takes over full-time with a loaded receiver room (Danny Scudero, Texas transfer DeAndre Moore, Joseph Williams); the offensive line is the biggest question.',
   injuries:[['Colorado &mdash; no notable camp injuries flagged','ok'],['Georgia Tech &mdash; none reported','ok']],
   keys:['Julian Lewis in his first full season as the starter &mdash; on the road, on a short week','Whether a rebuilt offensive line can hold up','Scudero and DeAndre Moore giving Lewis a high-end target group'],
-  pred:['Close &mdash; Colorado can win it outright','A one-score road dog in a coin-flip opener; the most competitive game on the drafted-team slate.']},
+  pred:['Close &mdash; Colorado can win it outright','A one-score road dog in a coin-flip opener; the most competitive game on the drafted-team slate, and it kicks off the pool tomorrow night.']},
  {team:'Ohio State',tracked:true,a:'Ball State',b:'Ohio State',tag:'Season opener &middot; Columbus',
   meta:'Week 1 | Ohio Stadium | Sat Sept 5 | 12:30pm ET | BTN',
-  spread:['Ohio State -51 (Blue Chip Analytics)','O/U 56.5','A massive number: preseason No. 1 vs a MAC opponent'],
+  spread:['Ohio State -50.5 (Blue Chip Analytics)','O/U 56.5','A massive number: preseason No. 1 vs a MAC opponent'],
   storyline:'Fck Cancer!&rsquo;s No. 2-overall pick opens preseason No. 1 in the AP Top 25 (40 first-place votes) against Ball State, one week before the season&rsquo;s first marquee test: a Sept 12 primetime trip to Texas.',
   injuries:[['Ball State &mdash; none reported','ok'],['Ohio State &mdash; no notable camp injuries flagged','ok']],
   keys:['Clean, healthy reps before the Sept 12 trip to Texas','Early look at the passing game around Jeremiah Smith','Depth-chart snaps for a team that will be favored in nearly every game'],
   pred:['Ohio State in a laugher','Running clock in the second half &mdash; this is about staying healthy for Texas.']},
  {team:'Oregon',tracked:true,a:'Boise State',b:'Oregon',tag:'Season opener &middot; Eugene',
   meta:'Week 1 | Autzen Stadium | Sat Sept 5 | 12:30pm PT | CBS',
-  spread:['Oregon -24.5 (Blue Chip Analytics)','O/U 52','Boise State is a credible Group of 5 opponent, not a pure cupcake'],
+  spread:['Oregon -24.5 (Blue Chip Analytics)','O/U 51.5','Boise State is a credible Group of 5 opponent, not a pure cupcake'],
   storyline:'Oregon opens preseason No. 2 with a real name-brand nonconference test. Boise State has a history of springing road upsets on Power 4 favorites, which makes this the closest thing to a trap game among the week&rsquo;s marquee openers.',
   injuries:[['Boise State &mdash; none reported','ok'],['Oregon &mdash; no notable camp injuries flagged','ok']],
   keys:['Boise State&rsquo;s track record in neutral/road games vs Power 4 favorites','Oregon&rsquo;s new pieces on defense against a disciplined Group of 5 offense','Setting a tone at home under the lights'],
@@ -268,29 +270,30 @@ var PREVIEWS=[
    for every drafted team whose game is not already a full Previews card. Every drafted team needs an
    entry here each week or its drafter&rsquo;s tab shows nothing for that team. USC and NC State already
    played Week 0 (Aug 29) - their lines below are recap-style (final score) plus the next game. Other
-   lines are Blue Chip Analytics projections as of Aug 29, 2026 unless noted. */
+   lines are Blue Chip Analytics/market projections refreshed Sept 2, 2026 where a fresh line could be
+   confidently sourced; a few (flagged in the status banner) are carried over from Aug 29/30. */
 var OTHER=[
  ['San Jose State','USC','FINAL (Aug 29, Week 0)','USC 42, San Jose State 26','USC (Push the Button) opened at home with a win &mdash; Jayden Maiava threw for 286 yds/2 TD and a 35-3 lead held up despite a late push. Next: home vs Fresno State, Fri Sept 4 (6pm PT, FOX), a 23.5-pt favorite.','USC'],
  ['NC State','Virginia','FINAL (Aug 29, Week 0)','Virginia 34, NC State 8','NC State (Block&rsquo;s Round 3 pick, the last of the 21) opened on the road with a loss &mdash; Virginia&rsquo;s first win over the Wolfpack at Scott Stadium since 2006. Next: home vs Richmond, Sept 12.','NC State'],
- ['Notre Dame','Wisconsin','Sun Sept 6 &middot; 7:30pm ET &middot; Lambeau Field, Green Bay','Notre Dame -20.5, O/U 47.5','Notre Dame (User 6, No. 4) opens the Shamrock Series at Lambeau with Heisman favorite CJ Carr at QB.','Notre Dame'],
- ['Tennessee State','Georgia','Sat Sept 5 &middot; 3:00pm ET','Georgia -47.5, O/U 56.5','Georgia (plevas82, No. 3) opens at home vs an FCS opponent &mdash; a tune-up before the SEC slate.','Georgia'],
+ ['Notre Dame','Wisconsin','Sun Sept 6 &middot; 7:30pm ET &middot; Lambeau Field, Green Bay','Notre Dame -20.5, O/U 47.5','Notre Dame (User 6, No. 4) opens the Shamrock Series at Lambeau with Heisman co-favorite CJ Carr at QB.','Notre Dame'],
+ ['Tennessee State','Georgia','Sat Sept 5 &middot; 3:00pm ET','Georgia -44.5, O/U 55.5','Georgia (plevas82, No. 3) opens at home vs an FCS opponent &mdash; a tune-up before the SEC slate.','Georgia'],
  ['Texas State','Texas','Sat Sept 5 &middot; 2:30pm CT','Texas -30.5, O/U 60.0','Texas (User 3, No. 5) opens vs in-state Texas State, one week before hosting Ohio State on Sept 12.','Texas'],
- ['Clemson','LSU','Sat Sept 5 &middot; 6:30pm CT &middot; ABC &middot; College GameDay','LSU -10.5, O/U 51.0','LSU (plevas82, No. 11) hosts Clemson with GameDay in Baton Rouge &mdash; Clemson drew 112 votes but missed the Top 25.','LSU'],
+ ['Clemson','LSU','Sat Sept 5 &middot; 6:30pm CT &middot; ABC &middot; College GameDay','LSU -10.0, O/U 50.5','LSU (plevas82, No. 11) hosts Clemson with GameDay in Baton Rouge &mdash; Clemson drew 112 votes but missed the Top 25.','LSU'],
  ['Ole Miss','Louisville','Sun Sept 6 &middot; 6:30pm CT &middot; Nissan Stadium, Nashville (neutral)','Ole Miss -6.5, O/U 55.5','Ole Miss (User 1, No. 9) opens at a neutral site vs an ACC opponent; QB Trinidad Chambliss is a preseason Heisman riser.','Ole Miss'],
  ['UTEP','Oklahoma','Fri Sept 4 &middot; 7:00pm CT','Oklahoma -40.5, O/U 50.5','Oklahoma (User 1, No. 10) opens at home on a Friday night in Norman.','Oklahoma'],
  ['East Carolina','Alabama','Sat Sept 5 &middot; 11:00am CT','Alabama -28.5, O/U 54.0','Alabama (Block, No. 13) opens at home vs East Carolina; RB AK Dear (lower body) is already ruled out for several weeks.','Alabama'],
  ['Abilene Christian','Texas Tech','Sat Sept 5 &middot; 6:00pm CT','Texas Tech -42.5, O/U 59.5','Texas Tech (User 3, No. 12) opens at home in Lubbock.','Texas Tech'],
  ['Furman','Tennessee','Sat Sept 5 &middot; 3:30pm ET','Tennessee -46.5, O/U 66.5','Tennessee (User 3, No. 20) opens at home vs an FCS opponent in Knoxville.','Tennessee'],
- ['SMU','Florida State','Mon Sept 7 &middot; 7:30pm ET &middot; ESPN','SMU -2.0, O/U 53.0','SMU (plevas82, No. 19) opens on the road at Florida State &mdash; as a slim 2-point favorite &mdash; in a Monday-night ACC opener.','SMU'],
+ ['SMU','Florida State','Mon Sept 7 &middot; 7:30pm ET &middot; ESPN','SMU -3.0, O/U 53.5','SMU (plevas82, No. 19) opens on the road at Florida State &mdash; as a 3-point favorite &mdash; in a Monday-night ACC opener.','SMU'],
  ['Florida Atlantic','Florida','Sat Sept 5 &middot; 7:45pm ET','Florida -26.5, O/U 59.5','Florida (User 6) opens at home in Gainesville.','Florida'],
- ['Missouri State','Texas A&amp;M','Sat Sept 5 &middot; 6:00pm CT &middot; ESPN','Texas A&amp;M -40.5, O/U 52.5','Texas A&amp;M (Fck Cancer!, No. 8) opens at home in College Station.','Texas A&amp;M'],
- ['Miami','Stanford','Fri Sept 4 &middot; ESPN','Miami -21.5, O/U 48.0','Miami (Push the Button, No. 7) opens on the road in prime time; the Hurricanes lost the January title game to Indiana.','Miami']
+ ['Missouri State','Texas A&amp;M','Sat Sept 5 &middot; 6:00pm CT &middot; ESPN','Texas A&amp;M -41.5, O/U 52.5','Texas A&amp;M (Fck Cancer!, No. 8) opens at home in College Station.','Texas A&amp;M'],
+ ['Miami','Stanford','Fri Sept 4 &middot; ESPN','Miami -23.5, O/U 48.0','Miami (Push the Button, No. 7) opens on the road in prime time; the Hurricanes lost the January title game to Indiana.','Miami']
 ];
 /* DRAFT POOL: winner-take-all, most combined regular-season wins across each drafter&rsquo;s 3 teams.
    All 21 of 21 picks confirmed. Rosters and drafter labels are frozen; only the trailing win counts move. */
 var DRAFT={
  metric:'Winner-take-all &middot; most combined regular-season wins across each drafter&rsquo;s 3 teams.',
- status:'Draft complete &mdash; all 21 of 21 picks in. Fck Cancer! held the No. 2 overall pick (took Ohio State). Block closed his roster with NC State (Round 3, pick #21). Standings start moving: USC&rsquo;s Week 0 win puts Push the Button on the board first at 1 win; NC State&rsquo;s Week 0 loss leaves Block at 0. Everyone else is still 0-0 &mdash; the rest of the pool opens Sept 3&ndash;6.',
+ status:'Draft complete &mdash; all 21 of 21 picks in. Fck Cancer! held the No. 2 overall pick (took Ohio State). Block closed his roster with NC State (Round 3, pick #21). Standings start moving: USC&rsquo;s Week 0 win puts Push the Button on the board first at 1 win; NC State&rsquo;s Week 0 loss leaves Block at 0. Everyone else is still 0-0 &mdash; the rest of the pool opens Sept 3&ndash;6, starting with Colorado at Georgia Tech tomorrow night.',
  drafters:[
   ['User 1',[['Colorado',''],['Ole Miss',''],['Oklahoma','']],0],
   ['Fck Cancer!',[['Ohio State',''],['Penn State',''],['Texas A&amp;M','']],0],
@@ -306,7 +309,7 @@ var NEWS={
   ['Indiana enters as the defending national champion','Curt Cignetti&rsquo;s Hoosiers beat Ohio State 13&ndash;10 for the Big Ten title and Miami 27&ndash;21 for the CFP crown &mdash; the program&rsquo;s first. TCU transfer Josh Hoover replaces Heisman winner Fernando Mendoza at QB. Indiana opens No. 6 in the AP Top 25 and is a User 6 pick.'],
   ['New head coaches at Penn State and Iowa State','Both programs open year one under new staffs: Matt Campbell at Penn State (Fck Cancer!&rsquo;s Round-2 pick) and Jimmy Rogers at Iowa State (the shared anchor).'],
   ['The real AP Top 25 is the source of truth until November','Ohio State opened No. 1 (40 first-place votes); Oregon 2, Georgia 3, Notre Dame 4, Texas 5, Indiana 6, Miami 7. 18 of the pool&rsquo;s 21 drafted teams are ranked. The CFP Committee rankings take over from early November.'],
-  ['Week 0 is in the books, the pool&rsquo;s slate opens Sept 3&ndash;7','North Carolina beat TCU 15&ndash;10 in Dublin; USC beat San Jose State 42&ndash;26; Virginia beat NC State 34&ndash;8. Colorado at Georgia Tech &mdash; Thursday Sept 3, 8pm ET, ESPN &mdash; kicks off the rest of the pool&rsquo;s slate. Nearly everyone else opens Sept 5&ndash;6.']
+  ['Week 0 is in the books, the pool&rsquo;s slate opens Sept 3&ndash;7','North Carolina beat TCU 15&ndash;10 in Dublin; USC beat San Jose State 42&ndash;26; Virginia beat NC State 34&ndash;8. Colorado at Georgia Tech &mdash; Thursday Sept 3, 8pm ET, ESPN &mdash; kicks off the rest of the pool&rsquo;s slate tomorrow night. Nearly everyone else opens Sept 5&ndash;6.']
  ],
  watch:[
   ['ESPN College Football','https://www.espn.com/college-football/','Scores, rankings, and recaps'],
@@ -314,7 +317,7 @@ var NEWS={
   ['AP Top 25','https://apnews.com/hub/ap-top-25-college-football-poll','The weekly AP poll'],
   ['The Athletic - CFB','https://www.nytimes.com/athletic/college-football/','Analysis and features']
  ],
- outlook:'Every drafted team gets a line or card each week, organized by drafter on the Drafters tab. All 21 picks are in; USC and NC State are the only two with a game in the books so far &mdash; USC&rsquo;s win already puts Push the Button on top of the Draft Pool standings at 1. Once the rest of the pool kicks off (Sept 3&ndash;6) the weekly refresh fills Recaps, updates the AP Top 25 and the CFP bracket, and keeps recomputing the Draft Pool standings. <b>Kickoff: Colorado at Georgia Tech, Thursday Sept 3.</b>'
+ outlook:'Every drafted team gets a line or card each week, organized by drafter on the Drafters tab. All 21 picks are in; USC and NC State are the only two with a game in the books so far &mdash; USC&rsquo;s win already puts Push the Button on top of the Draft Pool standings at 1. Once the rest of the pool kicks off (Sept 3&ndash;6) the weekly refresh fills Recaps, updates the AP Top 25 and the CFP bracket, and keeps recomputing the Draft Pool standings. <b>Kickoff: Colorado at Georgia Tech, tomorrow night (Thursday Sept 3).</b>'
 };
 /*DATA_END*/
 /* ===== RENDERERS ===== */
