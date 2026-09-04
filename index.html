@@ -62,7 +62,7 @@
 <script>
 /* ===== TEAM COLOR + ABBREVIATION MAPS (Power 4 + ND + national contenders) ===== */
 var C={
- 'Iowa State':{b:'#C8102E',d:'#f0687a'},'LSU':{b:'#461D7C',d:'#a982e0'},'Alabama':{b:'#9E1B32',d:'#e0526a'},
+ 'Iowa State':{b:'#C8102E',d:'#F1BE48'},'LSU':{b:'#461D7C',d:'#a982e0'},'Alabama':{b:'#9E1B32',d:'#e0526a'},
  'Florida State':{b:'#782F40',d:'#c98aa0'},'Penn State':{b:'#041E42',d:'#5b8ad6'},
  'Ohio State':{b:'#BB0000',d:'#ff5d5d'},'Notre Dame':{b:'#0C2340',d:'#C99700'},'Oregon':{b:'#154733',d:'#FEE123'},
  'Texas':{b:'#BF5700',d:'#ff9d52'},'Georgia':{b:'#BA0C2F',d:'#e0526a'},'Texas Tech':{b:'#CC0000',d:'#ff5d5d'},
@@ -76,7 +76,7 @@ var C={
  'Illinois':{b:'#13294B',d:'#E84A27'},'Washington':{b:'#4B2E83',d:'#a982e0'},'USC':{b:'#990000',d:'#FFC72C'},
  'Boise State':{b:'#0033A0',d:'#F1632A'},'Wisconsin':{b:'#9B0000',d:'#e0526a'},'Georgia Tech':{b:'#B3A369',d:'#d4c99a'},
  'Arkansas':{b:'#9D2235',d:'#e0526a'},'Kentucky':{b:'#0033A0',d:'#5b8ad6'},'Mississippi State':{b:'#660000',d:'#e0526a'},
- 'Oklahoma State':{b:'#FF7300',d:'#ffab4d'},'Texas A&M':{b:'#500000',d:'#e0526a'},'Vanderbilt':{b:'#1c1c1c',d:'#D4B24C'},
+ 'Oklahoma State':{b:'#FF7300',d:'#ffab4d'},'Texas A&amp;M':{b:'#500000',d:'#e0526a'},'Vanderbilt':{b:'#1c1c1c',d:'#D4B24C'},
  'Iowa':{b:'#000000',d:'#FFCD00'},'Maryland':{b:'#E03A3E',d:'#f0687a'},'Michigan State':{b:'#18453B',d:'#4fbf9a'},
  'Minnesota':{b:'#7A0019',d:'#e0526a'},'Northwestern':{b:'#4E2A84',d:'#a982e0'},'Purdue':{b:'#000000',d:'#CEB888'},
  'Rutgers':{b:'#CC0033',d:'#f0687a'},'UCLA':{b:'#2D68C4',d:'#7db0f0'},'Arizona':{b:'#003366',d:'#EF4056'},
@@ -95,13 +95,13 @@ var ABV={
  'Kansas State':'KSU','Utah':'UTAH','SMU':'SMU','BYU':'BYU','Arizona State':'ASU','Missouri':'MIZ','Louisville':'LOU',
  'Nebraska':'NEB','Auburn':'AUB','Florida':'FLA','Baylor':'BAY','TCU':'TCU','Kansas':'KU','Illinois':'ILL',
  'Washington':'WASH','USC':'USC','Boise State':'BSU','Wisconsin':'WIS','Georgia Tech':'GT',
- 'Arkansas':'ARK','Kentucky':'UK','Mississippi State':'MSST','Oklahoma State':'OKST','Texas A&M':'TAMU',
+ 'Arkansas':'ARK','Kentucky':'UK','Mississippi State':'MSST','Oklahoma State':'OKST','Texas A&amp;M':'TAMU',
  'Vanderbilt':'VAN','Iowa':'IOWA','Maryland':'MD','Michigan State':'MSU','Minnesota':'MINN','Northwestern':'NW',
  'Purdue':'PUR','Rutgers':'RUT','UCLA':'UCLA','Arizona':'ARIZ','Cincinnati':'CIN','Colorado':'COLO','Houston':'HOU',
  'UCF':'UCF','West Virginia':'WVU','Boston College':'BC','California':'CAL','Duke':'DUKE','NC State':'NCST',
  'North Carolina':'UNC','Pitt':'PITT','Stanford':'STAN','Syracuse':'SYR','Virginia':'UVA','Virginia Tech':'VT','Wake Forest':'WAKE'};
 function ab(t){return ABV[t]||t.slice(0,4).toUpperCase();}
-function tchip(t){var c=col(t);return '<span class="chip" style="background:'+c.b+';color:#fff">'+ab(t)+'</span>';}
+function tchip(t){var c=col(t);return '<span class="chip" style="background:'+c.b+';color:'+(t==='Iowa State'?'#F1BE48':'#fff')+'">'+ab(t)+'</span>';}
 function rc(r){return r>=7?'r-hi':(r<=4.9?'r-lo':'r-md');}
 function fv(v,f){return '<span style="color:'+(f?'#36d399':'#ff9d52')+';font-weight:700">'+v+'</span>';}
 function nu(v){return '<span style="color:#cbd3df">'+v+'</span>';}
@@ -289,10 +289,12 @@ var OTHER=[
  ['Missouri State','Texas A&amp;M','Sat Sept 5 &middot; 6:00pm CT &middot; ESPN','Texas A&amp;M -41.5, O/U 52.5','Texas A&amp;M (Fck Cancer!, No. 8) opens at home in College Station.','Texas A&amp;M'],
  ['Miami','Stanford','Fri Sept 4 &middot; ESPN','Miami -23.5, O/U 48.0','Miami (Push the Button, No. 7) opens on the road in prime time; the Hurricanes lost the January title game to Indiana.','Miami']
 ];
-/* DRAFT POOL: winner-take-all, most combined regular-season wins across each drafter&rsquo;s 3 teams.
+/* DRAFT POOL: the pool has exactly one winner &mdash; whichever drafter&rsquo;s team wins the CFP National
+   Championship. No tiebreaker, no second place; if no drafted team wins the title, the pool has no winner
+   that season. Total Wins below is a leaderboard only and does not decide the pool.
    All 21 of 21 picks confirmed. Rosters and drafter labels are frozen; only the trailing win counts move. */
 var DRAFT={
- metric:'Winner-take-all &middot; most combined regular-season wins across each drafter&rsquo;s 3 teams.',
+ metric:'Combined regular-season wins &mdash; leaderboard only. The pool has one winner: whichever drafter&rsquo;s team wins the CFP National Championship. No tiebreaker, no second place; if no drafted team wins it, the pool has no winner.',
  status:'Draft complete &mdash; all 21 of 21 picks in. Fck Cancer! held the No. 2 overall pick (took Ohio State). Block closed his roster with NC State (Round 3, pick #21). Standings start moving: USC&rsquo;s Week 0 win puts Push the Button on the board first at 1 win; NC State&rsquo;s Week 0 loss leaves Block at 0. Everyone else is still 0-0 &mdash; the rest of the pool opens Sept 3&ndash;6, starting with Colorado at Georgia Tech tomorrow night.',
  drafters:[
   ['GoBuffs!',[['Colorado',''],['Ole Miss',''],['Oklahoma','']],0],
@@ -440,7 +442,7 @@ function draftMini(){
   return '<tr style="border-top:1px solid var(--line)'+(i===0?';background:rgba(245,196,81,.07)':'')+'"><td style="text-align:left;padding:6px 0;font-size:12px;font-weight:800"><span style="color:'+(i===0?'var(--gold)':'var(--mut)')+'">'+(i+1)+'.</span> '+d[0]+'</td>'+
    '<td style="text-align:left;font-size:10px;color:var(--mut);padding:6px 4px">'+teams+'</td>'+
    '<td style="text-align:right;font-size:14px;font-weight:900;color:var(--green);padding:6px 0">'+d[2]+'</td></tr>';}).join('');
- return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--gold);margin-bottom:4px">Draft Pool Total Wins <span style="font-size:10px;color:var(--mut);font-weight:600">winner-take-all</span></div>'+
+ return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--gold);margin-bottom:4px">Draft Pool Total Wins <span style="font-size:10px;color:var(--mut);font-weight:600">leaderboard only &mdash; doesn&rsquo;t decide the pool</span></div>'+
   '<p style="font-size:10.5px;color:var(--mut);line-height:1.5;margin-bottom:6px">'+DRAFT.status+'</p>'+
   '<table>'+head+body+'</table></div>';
 }
