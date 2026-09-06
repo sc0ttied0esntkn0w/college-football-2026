@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CFP Field Tracker — Mockup</title>
+<style>
+  :root{--bg:#0b0f16;--panel:#141b26;--panel2:#1b2433;--border:#26334a;--line:#1f2a3a;--txt:#e8ebef;--mut:#8a94a4;--cyan:#4ea1ff;--green:#36d399;--red:#ff5d6c;--gold:#f5c451;--orange:#ff9d52;--purple:#a78bfa;}
+  *{box-sizing:border-box;}
+  body{margin:0;padding:28px;background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;}
+  .wrap{max-width:720px;margin:0 auto;}
+  h1{font-size:20px;margin:0 0 4px;}
+  .sub{font-size:12px;color:var(--mut);line-height:1.6;margin:0 0 22px;}
+  .tier-hdr{display:flex;align-items:center;gap:9px;margin:26px 0 10px;}
+  .tier-hdr:first-of-type{margin-top:0;}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .tier-hdr .t{font-size:13px;font-weight:800;letter-spacing:.03em;}
+  .tier-hdr .n{font-size:11px;color:var(--mut);font-weight:600;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .row{display:flex;align-items:center;gap:11px;padding:10px 14px;border-top:1px solid var(--line);}
+  .row:first-child{border-top:none;}
+  .chip{display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;letter-spacing:.03em;padding:4px 7px;border-radius:6px;color:#fff;min-width:44px;flex:none;}
+  .name{font-weight:700;font-size:13px;flex:none;}
+  .drafter{font-size:11px;color:var(--mut);margin-left:2px;}
+  .right{margin-left:auto;text-align:right;font-size:10.5px;color:var(--mut);line-height:1.4;flex:none;max-width:220px;}
+  .right b{color:var(--txt);font-weight:700;}
+  .tag{display:inline-block;font-size:8.5px;font-weight:800;letter-spacing:.06em;padding:2px 6px;border-radius:4px;margin-left:6px;}
+  .note{font-size:11.5px;color:var(--mut);line-height:1.65;margin-top:26px;padding-top:16px;border-top:1px solid var(--line);}
+  code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:11px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>CFP Field Tracker</h1>
+  <p class="sub">Way-too-early projection (CBS Sports, Aug 2026) built on projected conference-championship results, not current record. Refreshes with the real CFP Committee bracket once rankings begin in November. Replaces the All-Americans tab.</p>
+
+  <div class="tier-hdr"><div class="dot" style="background:var(--green)"></div><div class="t" style="color:var(--green)">IN THE FIELD</div><div class="n">11 of 21 drafted teams</div></div>
+  <div class="panel">
+    <div class="row"><span class="chip" style="background:#0C2340;color:#C99700">ND</span><span class="name">Notre Dame</span><span class="drafter">User 6</span><span class="right"><span class="tag" style="background:rgba(54,211,153,.15);color:var(--green)">BYE</span><br>At-large</span></div>
+    <div class="row"><span class="chip" style="background:#BA0C2F">UGA</span><span class="name">Georgia</span><span class="drafter">plevas82</span><span class="right"><span class="tag" style="background:rgba(54,211,153,.15);color:var(--green)">BYE</span><br>SEC champ (proj.)</span></div>
+    <div class="row"><span class="chip" style="background:#BB0000">OSU</span><span class="name">Ohio State</span><span class="drafter">Fck Cancer!</span><span class="right"><span class="tag" style="background:rgba(54,211,153,.15);color:var(--green)">BYE</span><br>Big Ten champ (proj.)</span></div>
+    <div class="row"><span class="chip" style="background:#005030;color:#F47321">MIA</span><span class="name">Miami</span><span class="drafter">Push the Button</span><span class="right"><span class="tag" style="background:rgba(54,211,153,.15);color:var(--green)">BYE</span><br>ACC champ (proj.)</span></div>
+    <div class="row"><span class="chip" style="background:#BF5700">TEX</span><span class="name">Texas</span><span class="drafter">User 3</span><span class="right"><b>Seed 5</b><br>hosts (12) Boise State</span></div>
+    <div class="row"><span class="chip" style="background:#CC0000">TTU</span><span class="name">Texas Tech</span><span class="drafter">User 3</span><span class="right"><b>Seed 6</b><br>hosts (11) LSU</span></div>
+    <div class="row"><span class="chip" style="background:#990000">IND</span><span class="name">Indiana</span><span class="drafter">User 6</span><span class="right"><b>Seed 7</b><br>hosts (10) Texas A&amp;M</span></div>
+    <div class="row"><span class="chip" style="background:#14213D;color:#5b8ad6">MISS</span><span class="name">Ole Miss</span><span class="drafter">GoBuffs!</span><span class="right"><b>Seed 8</b><br>at (9) Oregon</span></div>
+    <div class="row"><span class="chip" style="background:#154733;color:#FEE123">ORE</span><span class="name">Oregon</span><span class="drafter">Block</span><span class="right"><b>Seed 9</b><br>hosts (8) Ole Miss</span></div>
+    <div class="row"><span class="chip" style="background:#500000;color:#e0526a">TAMU</span><span class="name">Texas A&amp;M</span><span class="drafter">Fck Cancer!</span><span class="right"><b>Seed 10</b><br>at (7) Indiana</span></div>
+    <div class="row"><span class="chip" style="background:#461D7C;color:#a982e0">LSU</span><span class="name">LSU</span><span class="drafter">plevas82</span><span class="right"><b>Seed 11</b><br>at (6) Texas Tech</span></div>
+  </div>
+
+  <div class="tier-hdr"><div class="dot" style="background:var(--gold)"></div><div class="t" style="color:var(--gold)">ON THE BUBBLE</div><div class="n">7 of 21 drafted teams &mdash; ranked, not currently projected in</div></div>
+  <div class="panel">
+    <div class="row"><span class="chip" style="background:#841617;color:#e0526a">OU</span><span class="name">Oklahoma</span><span class="drafter">GoBuffs!</span><span class="right">AP <b>No. 10</b></span></div>
+    <div class="row"><span class="chip" style="background:#9E1B32;color:#e0526a">ALA</span><span class="name">Alabama</span><span class="drafter">Block</span><span class="right">AP <b>No. 13</b></span></div>
+    <div class="row"><span class="chip" style="background:#990000;color:#FFC72C">USC</span><span class="name">USC</span><span class="drafter">Push the Button</span><span class="right">AP <b>No. 14</b></span></div>
+    <div class="row"><span class="chip" style="background:#00274C;color:#FFCB05">MICH</span><span class="name">Michigan</span><span class="drafter">Push the Button</span><span class="right">AP <b>No. 16</b></span></div>
+    <div class="row"><span class="chip" style="background:#041E42;color:#5b8ad6">PSU</span><span class="name">Penn State</span><span class="drafter">Fck Cancer!</span><span class="right">AP <b>No. 18</b></span></div>
+    <div class="row"><span class="chip" style="background:#354CA1;color:#7d92e0">SMU</span><span class="name">SMU</span><span class="drafter">plevas82</span><span class="right">AP <b>No. 19</b></span></div>
+    <div class="row"><span class="chip" style="background:#FF8200;color:#ffab4d">TENN</span><span class="name">Tennessee</span><span class="drafter">User 3</span><span class="right">AP <b>No. 20</b></span></div>
+  </div>
+
+  <div class="tier-hdr"><div class="dot" style="background:var(--mut)"></div><div class="t" style="color:var(--mut)">OUTSIDE THE FIELD</div><div class="n">3 of 21 drafted teams &mdash; unranked</div></div>
+  <div class="panel">
+    <div class="row"><span class="chip" style="background:#000000;color:#CFB87C">COLO</span><span class="name">Colorado</span><span class="drafter">GoBuffs!</span><span class="right">Unranked</span></div>
+    <div class="row"><span class="chip" style="background:#0021A5;color:#FA4616">FLA</span><span class="name">Florida</span><span class="drafter">User 6</span><span class="right">Unranked</span></div>
+    <div class="row"><span class="chip" style="background:#CC0000;color:#f0687a">NCST</span><span class="name">NC State</span><span class="drafter">Block</span><span class="right">Unranked</span></div>
+  </div>
+
+  <div class="note">
+    Mockup only, but every team, drafter, seed, and rank above is pulled straight from your real <code>DRAFT</code>, <code>CFP</code>, and <code>AP25</code> data &mdash; nothing invented. Layout reuses your existing <code>.panel</code>/<code>.chip</code> language, just organized as three status tiers instead of one flat list. "Outside the Field" avoids the word "eliminated" on purpose &mdash; it's Week 1 and this whole bracket is CBS's preseason projection, not a real committee ranking yet, so nobody's actually out of anything.<br><br>
+    Build note: this needs no new weekly research. <code>CFP.byes</code>/<code>CFP.first</code> and <code>AP25</code> already get refreshed for the Summary tab &mdash; this tab just re-slices that same data per-team instead of building anything new. The only added logic is a lookup that buckets each of the 21 drafted teams into one of the three tiers by cross-referencing those two arrays, same pattern as <code>TEAM2DRAFTER</code>/<code>poolMatchups()</code>.
+  </div>
+</div>
+</body>
+</html>

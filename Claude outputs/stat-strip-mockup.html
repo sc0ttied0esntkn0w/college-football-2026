@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Stat Strip — Mockup</title>
+<style>
+  :root{--bg:#0b0f16;--panel:#141b26;--border:#26334a;--txt:#e8ebef;--mut:#8a94a4;--cyan:#4ea1ff;--green:#36d399;--gold:#f5c451;--purple:#a78bfa;}
+  *{box-sizing:border-box;}
+  body{margin:0;padding:28px;background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;}
+  .wrap{max-width:640px;margin:0 auto;}
+  .label-hdr{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;}
+  .strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:8px;}
+  .tile{padding:12px 10px;text-align:center;}
+  .tile .val{font-size:24px;font-weight:900;line-height:1;}
+  .tile .lbl{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700;margin-top:4px;}
+  .note{font-size:11.5px;color:var(--mut);line-height:1.65;margin-top:20px;padding-top:16px;border-top:1px solid #1f2a3a;}
+  code{background:#1b2433;padding:1px 5px;border-radius:4px;font-size:11px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="label-hdr">Current (as of tonight)</div>
+  <div class="strip">
+    <div class="panel tile"><div class="val" style="color:var(--cyan)">21</div><div class="lbl">drafted teams</div></div>
+    <div class="panel tile"><div class="val" style="color:var(--gold)">12</div><div class="lbl">CFP field</div></div>
+    <div class="panel tile"><div class="val" style="color:var(--green)">21/21</div><div class="lbl">draft picks in</div></div>
+  </div>
+  <div class="label-hdr" style="margin-top:26px">Proposed replacement</div>
+  <div class="strip">
+    <div class="panel tile"><div class="val" style="color:var(--cyan)">Sept 5</div><div class="lbl">week 1 kickoff</div></div>
+    <div class="panel tile"><div class="val" style="color:var(--gold)">14</div><div class="lbl">teams ranked</div></div>
+    <div class="panel tile"><div class="val" style="color:var(--green)">0</div><div class="lbl">pool matchups</div></div>
+    <div class="panel tile"><div class="val" style="color:var(--purple)">6</div><div class="lbl">in the CFP field</div></div>
+  </div>
+
+  <div class="note">
+    Same <code>.panel</code> tile, same 24px-bold-number-over-small-caption layout as today &mdash; nothing new visually, just new content. Values shown are illustrative, not live:<br><br>
+    &bull; <b>Week 1 kickoff</b> keeps the existing first tile's slot/color, just relabeled for what today actually is.<br>
+    &bull; <b>Teams ranked</b> (14) &mdash; a plausible AP Top 25 count for the 21 drafted teams; the real number comes from data you already refresh weekly.<br>
+    &bull; <b>Pool matchups</b> is honestly <code>0</code> for this exact week &mdash; Week 1 has no crossovers, the first one is Sept 12 (Texas&ndash;Ohio State + Oklahoma&ndash;Michigan, so that week it'd read <code>2</code>). Showing 0 now isn't a bug, it's accurate for right now.<br>
+    &bull; <b>In the CFP field</b> (6) &mdash; of the 21 drafted teams, how many are currently in the projected 12-team playoff field. Pulled from the same CFP-field data already gathered weekly for the Summary tab's CFP bracket panel &mdash; no new research. This is the one tied directly to the pool's actual win condition (whose team could still win the whole thing), without being a second leaderboard.<br><br>
+    Four tiles instead of the old four &mdash; same count, so the grid layout doesn't need to change, just the content of each cell.
+  </div>
+</div>
+</body>
+</html>

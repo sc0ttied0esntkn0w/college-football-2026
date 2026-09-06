@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Pool Matchup Teaser — Mockup v2</title>
+<style>
+  :root{--bg:#0b0f16;--panel:#141b26;--panel2:#1b2433;--border:#26334a;--line:#1f2a3a;--txt:#e8ebef;--mut:#8a94a4;--cyan:#4ea1ff;--green:#36d399;--red:#ff5d6c;--gold:#f5c451;--orange:#ff9d52;--purple:#a78bfa;}
+  *{box-sizing:border-box;}
+  body{margin:0;padding:28px;background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;}
+  .wrap{max-width:620px;margin:0 auto;}
+  .label-hdr{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;}
+  .teaser{padding:16px;text-align:center;margin-bottom:16px;position:relative;cursor:pointer;transition:border-color .15s;}
+  .teaser:hover{border-color:var(--gold);}
+  .teaser .hint{position:absolute;top:10px;right:14px;font-size:9.5px;color:var(--mut);font-weight:700;}
+  .teaser .teams{font-size:22px;font-weight:900;}
+  .teaser .teams span{color:var(--mut);font-weight:600;}
+  .teaser .subtitle{font-size:12px;color:var(--gold);font-weight:800;margin-top:5px;letter-spacing:.01em;}
+  .teaser .meta{font-size:11px;color:var(--mut);margin-top:4px;}
+  .stub{padding:14px 16px;margin-bottom:16px;opacity:.35;}
+  .stub .ptitle{color:var(--gold);font-size:12px;font-weight:800;margin-bottom:8px;}
+  .stub .row{font-size:11px;color:var(--mut);padding:4px 0;border-top:1px solid var(--line);}
+  .note{font-size:11.5px;color:var(--mut);line-height:1.65;margin-top:22px;padding-top:16px;border-top:1px solid var(--line);}
+  code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:11px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="label-hdr">Summary tab &mdash; top of page</div>
+
+  <div class="panel teaser">
+    <div class="hint">TAP FOR FULL PREVIEW &rarr;</div>
+    <div class="teams">Texas <span>vs</span> Ohio State</div>
+    <div class="subtitle">Pool Matchup &middot; plevas82 vs GoBuffs!</div>
+    <div class="meta">Ohio Stadium &middot; Sat Sept 12 &middot; 12:00pm ET</div>
+  </div>
+
+  <div class="panel stub">
+    <div class="ptitle">Top 25</div>
+    <div class="row">1. Ohio State</div>
+    <div class="row">2. Penn State</div>
+    <div class="row">3. Georgia</div>
+    <div class="row">&hellip;</div>
+  </div>
+
+  <div class="note">
+    Sits above the Top 25 panel, same <code>.panel</code> card style already used everywhere else on the page &mdash; not a new visual language, just a new placement. Header treatment (centered team names, colored subtitle, muted meta line below) is pulled directly from the existing <code>previewCard()</code> expanded-body layout you screenshotted &mdash; same fonts, same structure, just repurposed: the subtitle slot that normally holds "Season opener &middot; Ames, Iowa" now holds the drafter matchup instead, and "Week 1 |" is dropped from the meta line per your ask.<br><br>
+    One real build note, not just styling: making this clickable to jump straight to the Previews tab (or that drafter's pane) needs a small bit of new JS &mdash; the tab-switching code already exists (<code>data-tab="previews"</code> buttons), so this would trigger that same mechanism programmatically rather than requiring the user to click the tab button themselves. Worth deciding: does tapping it jump to the Previews tab generally, or to one specific drafter's pane in Drafters (and if the latter, which of the two drafters in the matchup)?
+  </div>
+</div>
+</body>
+</html>
