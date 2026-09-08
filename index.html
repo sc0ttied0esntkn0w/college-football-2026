@@ -111,9 +111,9 @@ function mv(m){ // ranking movement: '+2' up (green), '-1' down (red), '0' none,
  var up=n>0;return '<span style="font-size:9px;font-weight:800;color:'+(up?'var(--green)':'var(--red)')+'">'+(up?'▲':'▼')+Math.abs(n)+'</span>';}
 
 /*DATA_START*/
-var BUILT='2026-09-07T09:15:00-05:00';
-var WEEKLABEL='Week 1 complete except SMU&ndash;Florida State (Mon night); Notre Dame beat Wisconsin 41-13 and Ole Miss beat Louisville 41-38 in Sunday-night thrillers &middot; Week 2 previews below kick off Sept 12, headlined by two Pool Matchups';
-var RANK_SRC='Real preseason AP Top 25 (released Monday, Aug 17, 2026, Noon ET) &mdash; still the poll of record. The AP does not issue its first in-season update until the full Week 1 slate wraps (Monday night&rsquo;s SMU&ndash;Florida State is the only game left); win-loss records below reflect games played through Sunday Sept 6, but ranks and movement are unchanged from the preseason ballot. Ohio State remains No. 1, Oregon No. 2, Georgia 3, Notre Dame 4, Texas 5, defending champion Indiana 6, Miami 7. Source of truth switches to the CFP Committee rankings from early November.';
+var BUILT='2026-09-08T11:20:00-05:00';
+var WEEKLABEL='Week 1 is fully complete &mdash; SMU beat Florida State 27-24 on a late field goal in Monday night&rsquo;s finale; Notre Dame beat Wisconsin 41-13 and Ole Miss beat Louisville 41-38 in Sunday-night thrillers &middot; Week 2 previews below kick off Sept 12, headlined by two Pool Matchups';
+var RANK_SRC='Real first regular-season AP Top 25, released Tuesday Sept 8, 2026, 2pm ET &mdash; replaces the preseason ballot as the poll of record now that the full Week 1 slate has wrapped. Ohio State stays No. 1; Georgia jumps to No. 2 and Notre Dame to No. 3 after Sunday-night wins; Oregon falls to No. 6 after needing a fourth-down stop to hold off Boise State; Michigan (Push the Button) fell out of the rankings entirely despite its last-play win over Western Michigan. Virginia enters at No. 25. Movement column below is versus the Aug 17 preseason ballot. Source of truth switches to the CFP Committee rankings from early November.';
 /* Stat strip: tile 0 is the current week's kickoff (date/label, same cyan slot as
    the old "Week 0 final" tile); tiles 1-3 are LIVE COUNTS filled in after DATA_END
    (drafted teams ranked / this week's pool matchups / drafted teams in the CFP field). */
@@ -124,24 +124,24 @@ var STAT=[
    Deliberately NOT Penn State. [team, rank-or-null, 'W-L', blurb] */
 var YOURTEAMS=[
  ['Iowa State',null,'1-0','Big 12 &middot; unranked in the preseason AP Top 25 &middot; won 38-10 over Southeast Missouri State in Jimmy Rogers&rsquo; debut (QB Jaylen Raynor: 2 pass TD, 2 rush TD) &middot; at Iowa (CyHawk Trophy), Sat Sept 12'],
- ['Indiana',6,'1-0','Big Ten &middot; No. 6 AP &middot; reigning national champion &middot; routed North Texas 52-16 &mdash; Josh Hoover 231 yds/4 TD in his Hoosiers debut &middot; hosts Howard, Sat Sept 12 (Noon ET)'],
- ['Michigan',16,'1-0','Big Ten &middot; No. 16 AP &middot; survived Western Michigan 13-12 on a last-play, 47-yard Bryce Underwood-to-JJ Buchanan touchdown &middot; hosts No. 10 Oklahoma, Sat Sept 12 (Noon ET, FOX Big Noon)'],
+ ['Indiana',5,'1-0','Big Ten &middot; No. 5 AP &middot; reigning national champion &middot; routed North Texas 52-16 &mdash; Josh Hoover 231 yds/4 TD in his Hoosiers debut &middot; hosts Howard, Sat Sept 12 (Noon ET)'],
+ ['Michigan',null,'1-0','Big Ten &middot; fell out of the Top 25 entirely in the first regular-season AP poll despite the win &middot; survived Western Michigan 13-12 on a last-play, 47-yard Bryce Underwood-to-JJ Buchanan touchdown &middot; hosts No. 11 Oklahoma, Sat Sept 12 (Noon ET, FOX Big Noon)'],
  ['Colorado',null,'1-0','Big 12 &middot; unranked &middot; Deion Sanders / QB Julian Lewis &middot; won at Georgia Tech 14-13 on a TD with 37 seconds left plus a blocked field goal &middot; hosts Weber State, Sat Sept 12']
 ];
-/* Real preseason AP Top 25 (released Mon Aug 17, 2026, Noon ET) &mdash; ranks/movement unchanged;
-   the AP does not update its poll until the full Week 1 slate (through Monday Sept 7) wraps.
-   W-L columns reflect games played through Sunday Sept 6. Movement column is still vs. the
-   preseason Coaches Poll it replaced. */
+/* Real first regular-season AP Top 25, released Tue Sept 8, 2026, 2pm ET &mdash; replaces the
+   preseason ballot (Mon Aug 17) as the poll of record. W-L columns reflect games played through
+   Monday Sept 7. Movement column is vs. that Aug 17 preseason ballot. Michigan (drafted, Push
+   the Button) fell out of the rankings entirely; Virginia enters at No. 25 (unranked preseason). */
 var AP25=[
- [1,'Ohio State','Big Ten','1-0','0'],[2,'Oregon','Big Ten','1-0','0'],[3,'Georgia','SEC','1-0','0'],
- [4,'Notre Dame','Ind','1-0','+1'],[5,'Texas','SEC','1-0','-1'],[6,'Indiana','Big Ten','1-0','0'],
- [7,'Miami','ACC','1-0','0'],[8,'Texas A&amp;M','SEC','1-0','0'],[9,'Ole Miss','SEC','1-0','+1'],
- [10,'Oklahoma','SEC','1-0','-1'],[11,'LSU','SEC','1-0','+2'],[12,'Texas Tech','Big 12','1-0','0'],
- [13,'Alabama','SEC','1-0','-2'],[14,'BYU','Big 12','1-0','+1'],[14,'USC','Big Ten','2-0','0'],
- [16,'Michigan','Big Ten','1-0','0'],[17,'Washington','Big Ten','0-0','+2'],[18,'Penn State','Big Ten','1-0','-1'],
- [19,'SMU','ACC','0-0','+1'],[20,'Tennessee','SEC','1-0','-2'],[21,'Utah','Big 12','TBD','0'],
- [22,'Iowa','Big Ten','1-0','0'],[23,'Houston','Big 12','TBD','+1'],[24,'Louisville','ACC','0-1','NEW'],
- [25,'Missouri','SEC','TBD','0']
+ [1,'Ohio State','Big Ten','1-0','0'],[2,'Georgia','SEC','1-0','+1'],[3,'Notre Dame','Ind','1-0','+1'],
+ [4,'Texas','SEC','1-0','+1'],[5,'Indiana','Big Ten','1-0','+1'],[6,'Oregon','Big Ten','1-0','-4'],
+ [7,'Miami','ACC','1-0','0'],[8,'LSU','SEC','1-0','+3'],[9,'Ole Miss','SEC','1-0','0'],
+ [10,'Texas A&amp;M','SEC','1-0','-2'],[11,'Oklahoma','SEC','1-0','-1'],[12,'Alabama','SEC','1-0','+1'],
+ [13,'Texas Tech','Big 12','1-0','-1'],[14,'USC','Big Ten','2-0','0'],[15,'BYU','Big 12','1-0','-1'],
+ [16,'Penn State','Big Ten','1-0','+2'],[17,'SMU','ACC','1-0','+2'],[18,'Tennessee','SEC','1-0','+2'],
+ [19,'Washington','Big Ten','1-0','-2'],[20,'Utah','Big 12','1-0','+1'],[21,'Iowa','Big Ten','1-0','+1'],
+ [22,'Houston','Big 12','1-0','+1'],[23,'Missouri','SEC','1-0','+2'],[24,'Louisville','ACC','0-1','0'],
+ [25,'Virginia','ACC','1-0','NEW']
 ];
 /* 12-team CFP way-too-early projection (CBS Sports, Aug 2026) — based on projected conference-title-game outcomes, not current record. Unchanged this cycle - the AP hasn't moved yet and the real CFP Committee bracket doesn't start until November. */
 var CFP={
@@ -180,26 +180,26 @@ var INJURIES=[
    stays 0-0 for everyone; Overall updated for games played through Sunday Sept 6. Order is the
    preseason projected order (Big 12 from CBS Sports win totals, others from the real AP ballot). */
 var CONF={
- 'Big 12':[['Texas Tech','0-0','1-0'],['BYU','0-0','1-0'],['Houston','0-0','TBD'],['Utah','0-0','TBD'],['Oklahoma State','0-0','TBD'],['Arizona State','0-0','TBD']],
+ 'Big 12':[['Texas Tech','0-0','1-0'],['BYU','0-0','1-0'],['Houston','0-0','1-0'],['Utah','0-0','1-0'],['Oklahoma State','0-0','TBD'],['Arizona State','0-0','TBD']],
  'SEC':[['Georgia','0-0','1-0'],['Texas A&amp;M','0-0','1-0'],['Oklahoma','0-0','1-0'],['Ole Miss','0-0','1-0'],['Alabama','0-0','1-0'],['LSU','0-0','1-0']],
  'Big Ten':[['Ohio State','0-0','1-0'],['Oregon','0-0','1-0'],['Indiana','0-0','1-0'],['USC','0-0','2-0'],['Michigan','0-0','1-0'],['Penn State','0-0','1-0']],
- 'ACC':[['Miami','0-0','1-0'],['SMU','0-0','0-0'],['Clemson','0-0','0-1'],['Louisville','0-0','0-1'],['Florida State','0-0','0-0'],['Georgia Tech','0-0','0-1']]
+ 'ACC':[['Miami','0-0','1-0'],['SMU','0-0','1-0'],['Clemson','0-0','0-1'],['Louisville','0-0','0-1'],['Florida State','0-0','0-1'],['Georgia Tech','0-0','0-1']]
 };
 var STORIES=[
- ['Michigan survives a last-play miracle to open 1-0','var(--cyan)','Michigan',['Bryce Underwood found JJ Buchanan for a 47-yard touchdown as time expired to beat Western Michigan 13-12','Western Michigan thought it had the upset when Underwood&rsquo;s prior Hail Mary sailed out of bounds &mdash; replay showed a second still on the clock','Michigan (Push the Button) hosts No. 10 Oklahoma next Saturday in a Pool Matchup with real CFP stakes']],
+ ['Michigan survives a last-play miracle to open 1-0','var(--cyan)','Michigan',['Bryce Underwood found JJ Buchanan for a 47-yard touchdown as time expired to beat Western Michigan 13-12','Western Michigan thought it had the upset when Underwood&rsquo;s prior Hail Mary sailed out of bounds &mdash; replay showed a second still on the clock','Michigan (Push the Button) hosts No. 11 Oklahoma next Saturday in a Pool Matchup with real CFP stakes']],
  ['Colorado steals a Thursday-night opener at Georgia Tech','var(--gold)','Colorado',['Julian Lewis hit Charlie Williams for a 20-yard touchdown with 37 seconds left, then Boo Carter blocked Georgia Tech&rsquo;s potential game-winning field goal as time expired','Colorado (GoBuffs!) is unranked but has a signature road win to open Deion Sanders&rsquo; season','Next: Weber State visits Boulder on Sept 12']],
  ['The defending champs and the two Ohio State-tier favorites all cruise','var(--green)','Indiana',['Indiana 52, North Texas 16 (Josh Hoover: 231 yds, 4 TD in his Hoosiers debut) &mdash; the banner-raising game','Ohio State 56, Ball State 3 (Julian Sayin 320 yds/3 TD, Jeremiah Smith 8 rec/151 yds/2 TD)','Penn State 45, Marshall 0 &mdash; a shutout in Matt Campbell&rsquo;s Beaver Stadium debut (Rocco Becht: 271 yds, 4 TD)']],
  ['Oregon needed all four quarters to hold off Boise State','var(--orange)','Oregon',['No. 2 Oregon won 34-27, getting a fourth-down stop with under 2:30 left to seal it','Dante Moore threw for a career-high 378 yards and 3 TD (28-of-37) as Oregon piled up 497 total yards','The tightest game among the pool&rsquo;s marquee Week 1 openers &mdash; a warning sign heading into a Big Ten title chase']],
- ['Notre Dame and Ole Miss both survive Sunday-night thrillers','var(--purple)','Notre Dame',['Notre Dame (Cignatty, No. 4) trailed 13-10 at halftime before pulling away to beat Wisconsin 41-13 at Lambeau Field &mdash; CJ Carr went 19-of-29 for 239 yards and 2 TD','Ole Miss (GoBuffs!, No. 9) needed a Lucas Carneiro 48-yard field goal as time expired to edge Louisville 41-38 in Nashville; QB Trinidad Chambliss threw for 336 yards and 3 TD plus a rushing score','SMU (plevas82, No. 19) closes the full Week 1 slate Monday night at Florida State']],
- ['Week 2 headliner: two Pool Matchups on the same Saturday','var(--red)','Ohio State',['Ohio State (Fck Cancer!, No. 1) at Texas (NotGamblingNCAA, No. 5), Sat Sept 12, 7:30pm ET &mdash; a rubber match in a rivalry that has produced two Ohio State wins in the last 20 months','Oklahoma (GoBuffs!, No. 10) at Michigan (Push the Button, No. 16), Sat Sept 12, Noon ET, FOX Big Noon &mdash; a true pick&rsquo;em between two 1-0 drafted teams','Both games double as Pool Matchups &mdash; whoever wins each one takes an early edge in two different drafters&rsquo; columns']],
+ ['Notre Dame, Ole Miss and SMU all survive to close out Week 1','var(--purple)','Notre Dame',['Notre Dame (Cignatty, No. 3) trailed 13-10 at halftime before pulling away to beat Wisconsin 41-13 at Lambeau Field &mdash; CJ Carr went 19-of-29 for 239 yards and 2 TD','Ole Miss (GoBuffs!, No. 9) needed a Lucas Carneiro 48-yard field goal as time expired to edge Louisville 41-38 in Nashville; QB Trinidad Chambliss threw for 336 yards and 3 TD plus a rushing score','SMU (plevas82, No. 17) closed out the full Week 1 slate Monday night, beating Florida State 27-24 on a Nick Reed field goal with 21 seconds left']],
+ ['Week 2 headliner: two Pool Matchups on the same Saturday','var(--red)','Ohio State',['Ohio State (Fck Cancer!, No. 1) at Texas (NotGamblingNCAA, No. 4), Sat Sept 12, 7:30pm ET &mdash; a rubber match in a rivalry that has produced two Ohio State wins in the last 20 months','Oklahoma (GoBuffs!, No. 11) at Michigan (Push the Button, unranked after Tuesday&rsquo;s poll despite its Week 1 win), Sat Sept 12, Noon ET, FOX Big Noon &mdash; a true pick&rsquo;em between two 1-0 drafted teams','Both games double as Pool Matchups &mdash; whoever wins each one takes an early edge in two different drafters&rsquo; columns']],
  ['Heisman board reshuffles after a loaded Week 1','var(--cyan)','Miami',['CJ Carr (Notre Dame) remains the narrow favorite at +700 after closing out Week 1 with a win over Wisconsin','Miami&rsquo;s Darian Mensah (5 TD passes in his Hurricanes debut), Oregon&rsquo;s Dante Moore (378-yard escape act) and Ole Miss&rsquo;s Trinidad Chambliss (4 total TD in a walk-off win) all surged into the conversation','Arch Manning gets his first real test of the season next week at home against Ohio State']]
 ];
 /* RECAPS: full cards for the fixed five (all of whom played Sept 3-5) plus the two highest-ranked
    other drafted teams' games (Ohio State No. 1, Oregon No. 2) - same rotation logic as the
-   preseason cycle, now with real results. Notre Dame and Ole Miss finished Sunday night but
-   weren't in this week's full-card tier; their results are compact FINAL lines in OTHER. Monday
-   night's SMU-Florida State is the only Week 1 game left as of this refresh. */
-var RECAPS_INTRO='The fixed five (Iowa State, Penn State, Indiana, Michigan, Colorado) plus this week&rsquo;s two highest-ranked other drafted teams (Ohio State, Oregon) all played Sept 3-5 &mdash; full cards below. Notre Dame and Ole Miss also finished Sunday night (see their FINAL lines on the Drafters tab / Summary stories); Monday night&rsquo;s SMU-Florida State is the only Week 1 game left.';
+   preseason cycle, now with real results. Notre Dame, Ole Miss and SMU finished Sunday/Monday
+   night but weren't in this week's full-card tier; their results are compact FINAL lines in
+   OTHER. Week 1 is now fully complete as of this refresh. */
+var RECAPS_INTRO='The fixed five (Iowa State, Penn State, Indiana, Michigan, Colorado) plus this week&rsquo;s two highest-ranked other drafted teams (Ohio State, Oregon) all played Sept 3-5 &mdash; full cards below. Notre Dame, Ole Miss and SMU also finished out the rest of Week 1 Sunday/Monday night (see their FINAL lines on the Drafters tab / Summary stories) &mdash; Week 1 is now fully complete.';
 var RECAPS=[
  {team:'Iowa State',tracked:true,a:'Southeast Missouri',b:'Iowa State',sa:'10',sb:'38',
   meta:'Week 1 | Jack Trice Stadium, Ames | Sat Sept 5',
@@ -243,11 +243,11 @@ var RECAPS_MINI=[];
    Oklahoma State, isn't a Pool Matchup or a top-ranked-vs-top-ranked game) and moves to a
    compact OTHER line instead. Spreads current as of Sept 6; several Week-2 lines a week out
    aren't fully posted yet and are flagged as such rather than invented. */
-var PREVIEWS_INTRO='Full cards for the five always-covered teams &mdash; Iowa State (anchor), Penn State, Indiana, Michigan and Colorado &mdash; plus this week&rsquo;s headline Pool Matchup: preseason No. 1 Ohio State at No. 5 Texas. Michigan&rsquo;s own game (vs Oklahoma) is also a Pool Matchup. Games run Sat Sept 12. A few lines a week out aren&rsquo;t fully posted yet and are noted as such rather than guessed.';
+var PREVIEWS_INTRO='Full cards for the five always-covered teams &mdash; Iowa State (anchor), Penn State, Indiana, Michigan and Colorado &mdash; plus this week&rsquo;s headline Pool Matchup: No. 1 Ohio State at No. 4 Texas, per the real Top 25 released today. Michigan&rsquo;s own game (vs No. 11 Oklahoma) is also a Pool Matchup. Games run Sat Sept 12. A few lines a week out aren&rsquo;t fully posted yet and are noted as such rather than guessed.';
 var PREVIEWS=[
  {team:'Iowa State',tracked:true,a:'Iowa State',b:'Iowa',tag:'CyHawk Trophy rivalry &middot; Iowa City',
   meta:'Week 2 | Kinnick Stadium | Sat Sept 12',
-  spread:['Iowa -12.5 (FanDuel)','O/U not yet posted','Iowa favored comfortably in Jimmy Rogers&rsquo; first true road test and first rivalry game'],
+  spread:['Iowa -14.5 (FanDuel)','O/U 41.5','Iowa favored comfortably in Jimmy Rogers&rsquo; first true road test and first rivalry game'],
   storyline:'Jimmy Rogers&rsquo; first real test: a road trip into the CyHawk rivalry off a clean 38-10 win over Southeast Missouri State. Iowa, under an established Kirk Ferentz program, is a sizable favorite &mdash; the spread reflects the gap between a veteran staff and a first-year one, trophy game or not.',
   injuries:[['Iowa State &mdash; no notable camp injuries flagged','ok'],['Iowa &mdash; none reported','ok']],
   keys:['Whether Rogers&rsquo; offense can sustain drives against a veteran Iowa defense','Iowa State&rsquo;s first true true road environment of the Rogers era','A trophy rivalry game that matters regardless of the records involved'],
@@ -261,7 +261,7 @@ var PREVIEWS=[
   pred:['Penn State comfortably','A second consecutive rout looks likely before the schedule turns real in Big Ten play.']},
  {team:'Indiana',tracked:true,a:'Howard',b:'Indiana',tag:'Season home stand &middot; Bloomington',
   meta:'Week 2 | Memorial Stadium | Sat Sept 12 | Noon ET',
-  spread:['Indiana a heavy favorite','O/U not yet posted','Defending champions against an FCS opponent; full line not yet posted a week out'],
+  spread:['Indiana -40.5 (FanDuel)','O/U 58.5','Defending champions installed as a massive favorite over an FCS opponent'],
   storyline:'Indiana raised its championship banner and routed North Texas 52-16 to open defense of its title; Howard visits Bloomington in the second of two get-right games before the schedule turns. Josh Hoover was sharp in his debut (231 yds, 4 TD) and should get every chance to build on it.',
   injuries:[['Howard &mdash; none reported','ok'],['Indiana &mdash; no notable camp injuries flagged','ok']],
   keys:['Continued rhythm for QB Josh Hoover','Backup reps once the game is in hand','Staying healthy before the schedule stiffens'],
@@ -269,7 +269,7 @@ var PREVIEWS=[
  {team:'Michigan',tracked:true,a:'Oklahoma',b:'Michigan',tag:'Pool Matchup &middot; FOX Big Noon &middot; Ann Arbor',
   meta:'Week 2 | Michigan Stadium | Sat Sept 12 | Noon ET, FOX',
   spread:['Michigan -2.5 (FanDuel)','O/U 46.5','A true toss-up between two 1-0 drafted teams'],
-  storyline:'The Big Noon showcase, and a Pool Matchup: Oklahoma (GoBuffs!, No. 10 preseason) visits Michigan (Push the Button, No. 16) after both survived Week 1 tests &mdash; Oklahoma blanked UTEP 51-0 behind John Mateer&rsquo;s three touchdown passes, while Michigan needed a last-second 47-yard touchdown from Bryce Underwood to escape Western Michigan 13-12. Whoever wins takes an early edge in two different drafters&rsquo; columns.',
+  storyline:'The Big Noon showcase, and a Pool Matchup: No. 11 Oklahoma (GoBuffs!) visits Michigan (Push the Button, which fell out of the Top 25 entirely in today&rsquo;s first regular-season poll despite winning) after both survived Week 1 tests &mdash; Oklahoma blanked UTEP 51-0 behind John Mateer&rsquo;s three touchdown passes, while Michigan needed a last-second 47-yard touchdown from Bryce Underwood to escape Western Michigan 13-12. Whoever wins takes an early edge in two different drafters&rsquo; columns.',
   injuries:[['Oklahoma &mdash; no notable camp injuries flagged','ok'],['Michigan &mdash; no notable camp injuries flagged','ok']],
   keys:['Michigan&rsquo;s offense needs a cleaner performance than the WMU escape','Oklahoma&rsquo;s John Mateer against a Michigan defense that hasn&rsquo;t really been tested yet','A true pick&rsquo;em line in one of the best early-season slots on the schedule'],
   pred:['Pick&rsquo;em, could go either way','The line says toss-up, and both teams have already shown some vulnerability &mdash; a great early measuring-stick game.']},
@@ -283,48 +283,47 @@ var PREVIEWS=[
  {team:'Ohio State',tracked:true,a:'Ohio State',b:'Texas',tag:'Pool Matchup &middot; Primetime &middot; Austin',
   meta:'Week 2 | DKR-Texas Memorial Stadium | Sat Sept 12 | 7:30pm ET',
   spread:['Texas -1.5 (FanDuel)','O/U 47.5','The season&rsquo;s first top-10 showdown, and a Pool Matchup'],
-  storyline:'Preseason No. 1 Ohio State (Fck Cancer!) travels to No. 5 Texas (NotGamblingNCAA) in the biggest game of the young season and a direct Pool Matchup &mdash; the third meeting between these two programs in 20 months, with Ohio State having won both previous games (the January 2025 CFP semifinal and last August&rsquo;s opener). Julian Sayin and Jeremiah Smith torched Ball State in Week 1; Arch Manning and Texas cruised past Texas State. Texas opened as a slight home favorite.',
+  storyline:'No. 1 Ohio State (Fck Cancer!) travels to No. 4 Texas (NotGamblingNCAA) in the biggest game of the young season and a direct Pool Matchup &mdash; the third meeting between these two programs in 20 months, with Ohio State having won both previous games (the January 2025 CFP semifinal and last August&rsquo;s opener). Julian Sayin and Jeremiah Smith torched Ball State in Week 1; Arch Manning and Texas cruised past Texas State. Texas opened as a slight home favorite.',
   injuries:[['Ohio State &mdash; no notable camp injuries flagged','ok'],['Texas &mdash; no notable camp injuries flagged','ok']],
   keys:['Arch Manning&rsquo;s first true measuring-stick game of the season','Whether Ohio State&rsquo;s defense can slow down a full Texas offense','Whoever wins takes control of both the early AP race and this Pool Matchup'],
   pred:['Too close to call','A near pick&rsquo;em line for a game that could shape the rest of both teams&rsquo; seasons &mdash; appointment viewing.']}
 ];
 /* TEAM LINES: compact one-line entries for every drafted team not already covered by a full
    Previews card (Oklahoma and Texas are covered above, inside the Michigan and Ohio State
-   cards). Notre Dame and Ole Miss are now FINAL results below; SMU-Florida State (Monday night)
-   is the only Week 1 game still upcoming as of this refresh. Everything else is a completed
-   Week 1 result plus the Week 2 look-ahead. */
+   cards). Notre Dame, Ole Miss and SMU are all now FINAL results below - Week 1 is fully
+   complete as of this refresh. Everything else is a completed Week 1 result plus the Week 2
+   look-ahead. */
 var OTHER=[
  ['Louisville','Ole Miss','FINAL (Sept 6, Week 1)','Ole Miss 41, Louisville 38','Ole Miss (GoBuffs!, No. 9) needed a Lucas Carneiro 48-yard field goal as time expired to win it; QB Trinidad Chambliss threw for 336 yards/3 TD plus a rushing score. Next: home vs Charlotte, Sat Sept 12.','Ole Miss'],
- ['Wisconsin','Notre Dame','FINAL (Sept 6, Week 1)','Notre Dame 41, Wisconsin 13','Notre Dame (Cignatty, No. 4) trailed 13-10 at halftime before pulling away at Lambeau Field; Heisman favorite CJ Carr went 19-of-29 for 239 yards and 2 TD. Next: home vs Rice, Sat Sept 12.','Notre Dame'],
- ['SMU','Florida State','Mon Sept 7 &middot; 7:30pm ET &middot; ESPN','SMU -3.0, O/U 53.5','SMU (plevas82, No. 19) opens on the road at Florida State to close out the full Week 1 slate.','SMU'],
- ['Abilene Christian','Texas Tech','FINAL (Sept 5, Week 1)','Texas Tech 33, Abilene Christian 10','Texas Tech (NotGamblingNCAA, No. 12) survived a scare from a game FCS foe (Will Hammond: 298 pass yds). Next: at Oregon State, Sat Sept 12 (Texas Tech -27.5).','Texas Tech'],
- ['Furman','Tennessee','FINAL (Sept 5, Week 1)','Tennessee 56, Furman 9','Tennessee (NotGamblingNCAA, No. 20) cruised behind freshman QB Faizon Brandon (226 pass yds/3 TD, 68 rush yds/2 TD). Next: at Georgia Tech, Sat Sept 12 (Tennessee -8.5).','Tennessee'],
- ['East Carolina','Alabama','FINAL (Sept 5, Week 1)','Alabama 48, East Carolina 10','Alabama (Block, No. 13) opened at home; RB AK Dear remains out several weeks. Next: at Kentucky, Sat Sept 12 (Alabama an early -10).','Alabama'],
+ ['Wisconsin','Notre Dame','FINAL (Sept 6, Week 1)','Notre Dame 41, Wisconsin 13','Notre Dame (Cignatty, No. 3) trailed 13-10 at halftime before pulling away at Lambeau Field; Heisman favorite CJ Carr went 19-of-29 for 239 yards and 2 TD. Next: home vs Rice, Sat Sept 12.','Notre Dame'],
+ ['SMU','Florida State','FINAL (Sept 7, Week 1)','SMU 27, Florida State 24','SMU (plevas82, No. 17) closed out the full Week 1 slate with a road win, capped by a Nick Reed field goal with 21 seconds left. Next: home vs UC Davis, Sat Sept 12.','SMU'],
+ ['Abilene Christian','Texas Tech','FINAL (Sept 5, Week 1)','Texas Tech 33, Abilene Christian 10','Texas Tech (NotGamblingNCAA, No. 13) survived a scare from a game FCS foe (Will Hammond: 298 pass yds). Next: at Oregon State, Sat Sept 12 (Texas Tech -27.5).','Texas Tech'],
+ ['Furman','Tennessee','FINAL (Sept 5, Week 1)','Tennessee 56, Furman 9','Tennessee (NotGamblingNCAA, No. 18) cruised behind freshman QB Faizon Brandon (226 pass yds/3 TD, 68 rush yds/2 TD). Next: at Georgia Tech, Sat Sept 12 (Tennessee -8.5).','Tennessee'],
+ ['East Carolina','Alabama','FINAL (Sept 5, Week 1)','Alabama 48, East Carolina 10','Alabama (Block, No. 12) opened at home; RB AK Dear remains out several weeks. Next: at Kentucky, Sat Sept 12 (Alabama an early -10).','Alabama'],
  ['Miami','Stanford','FINAL (Sept 4, Week 1)','Miami 45, Stanford 6','Miami (Push the Button, No. 7) got 5 TD passes from Darian Mensah in his Hurricanes debut. Next: home vs Bethune-Cookman, Sat Sept 12.','Miami'],
  ['Fresno State','USC','FINAL (Sept 4, Week 1)','USC 39, Fresno State 0','USC (Push the Button) has outscored two opponents 81-26 to open 2-0. Next: home vs Louisiana, Sat Sept 12 (USC -28.5).','USC'],
- ['Tennessee State','Georgia','FINAL (Sept 5, Week 1)','Georgia 63, Tennessee State 3','Georgia (plevas82, No. 3) opened with a rout. Next: home vs Western Kentucky, Sat Sept 12 (Georgia -35.5).','Georgia'],
- ['Clemson','LSU','FINAL (Sept 5, Week 1)','LSU 51, Clemson 10','LSU (plevas82, No. 11) blew out Clemson in Baton Rouge behind Lane Kiffin&rsquo;s offense. Next: home vs Louisiana Tech, Sat Sept 12 (LSU -37.5).','LSU'],
+ ['Tennessee State','Georgia','FINAL (Sept 5, Week 1)','Georgia 63, Tennessee State 3','Georgia (plevas82, No. 2) opened with a rout. Next: home vs Western Kentucky, Sat Sept 12 (Georgia -35.5).','Georgia'],
+ ['Clemson','LSU','FINAL (Sept 5, Week 1)','LSU 51, Clemson 10','LSU (plevas82, No. 8) blew out Clemson in Baton Rouge behind Lane Kiffin&rsquo;s offense. Next: home vs Louisiana Tech, Sat Sept 12 (LSU -37.5).','LSU'],
  ['Florida Atlantic','Florida','FINAL (Sept 5, Week 1)','Florida 66, Florida Atlantic 21','Florida (Cignatty) scored its most points in a season opener since 1994. Next: home vs Campbell, Sat Sept 12.','Florida'],
- ['Missouri State','Texas A&amp;M','FINAL (Sept 5, Week 1)','Texas A&amp;M 50, Missouri State 0','Texas A&amp;M (Fck Cancer!, No. 8) posted a shutout in College Station. Next: home vs Arizona State, Sat Sept 12 (Texas A&amp;M -15.5).','Texas A&amp;M'],
- ['Richmond','NC State','Sat Sept 12','Line not yet posted','NC State (Block&rsquo;s Round 3 pick, the last of the 21) looks to bounce back from its Week 0 loss to Virginia when it hosts FCS Richmond.','NC State'],
- ['Oregon','Oklahoma State','Sat Sept 12 &middot; Boone Pickens Stadium','Oregon -20.5, O/U 60.5','Oregon (Block, No. 2) survived Boise State 34-27 in Week 1 (Dante Moore: 378 pass yds) and drops out of this week&rsquo;s full-coverage tier for a lower-profile Big 12 road trip.','Oregon']
+ ['Missouri State','Texas A&amp;M','FINAL (Sept 5, Week 1)','Texas A&amp;M 50, Missouri State 0','Texas A&amp;M (Fck Cancer!, No. 10) posted a shutout in College Station. Next: home vs Arizona State, Sat Sept 12 (Texas A&amp;M -15.5).','Texas A&amp;M'],
+ ['Richmond','NC State','Fri Sept 11 &middot; 7:00pm ET &middot; ESPNU','NC State -30.5, O/U 49.5','NC State (Block&rsquo;s Round 3 pick, the last of the 21) looks to bounce back from its Week 0 loss to Virginia when it hosts FCS Richmond.','NC State'],
+ ['Oregon','Oklahoma State','Sat Sept 12 &middot; Boone Pickens Stadium','Oregon -20.5, O/U 60.5','Oregon (Block, No. 6) survived Boise State 34-27 in Week 1 (Dante Moore: 378 pass yds) and drops out of this week&rsquo;s full-coverage tier for a lower-profile Big 12 road trip.','Oregon']
 ];
 /* DRAFT POOL: the pool has exactly one winner &mdash; whichever drafter&rsquo;s team wins the CFP National
    Championship. No tiebreaker, no second place; if no drafted team wins the title, the pool has no winner
    that season. Total Wins below is a leaderboard only and does not decide the pool.
    All 21 of 21 picks confirmed. Rosters and drafter labels are frozen; only the trailing win counts move.
-   Win totals below reflect games played through Sunday Sept 6 - GoBuffs! and Cignatty each gained a
-   win from Ole Miss and Notre Dame's Sunday-night victories. Only plevas82's SMU (Monday night) is
-   still to play. */
+   Win totals below reflect games played through Monday Sept 7 - Week 1 is now fully complete;
+   plevas82 gained a win when SMU beat Florida State Monday night. */
 var DRAFT={
  metric:'Combined regular-season wins &mdash; leaderboard only. The pool has one winner: whichever drafter&rsquo;s team wins the CFP National Championship. No tiebreaker, no second place; if no drafted team wins it, the pool has no winner.',
- status:'Draft complete &mdash; all 21 of 21 picks in. Week 1 is complete except SMU-Florida State (Monday night). Push the Button leads the leaderboard at 4 wins (Miami, USC x2, Michigan all won). Fck Cancer!, NotGamblingNCAA, GoBuffs! and Cignatty sit at 3 apiece after Ole Miss and Notre Dame both won Sunday night. plevas82 and Block are at 2 &mdash; plevas82&rsquo;s SMU still has to play Monday night, and Block&rsquo;s NC State already dropped a game in Week 0.',
+ status:'Draft complete &mdash; all 21 of 21 picks in. Week 1 is now fully complete. Push the Button leads the leaderboard at 4 wins (Miami, USC x2, Michigan all won). Fck Cancer!, NotGamblingNCAA, GoBuffs!, plevas82 and Cignatty sit at 3 apiece after Ole Miss, Notre Dame and SMU all won Sunday/Monday night. Block trails at 2 &mdash; NC State already dropped a game in Week 0.',
  drafters:[
   ['GoBuffs!',[['Colorado',''],['Ole Miss',''],['Oklahoma','']],3],
   ['Fck Cancer!',[['Ohio State',''],['Penn State',''],['Texas A&amp;M','']],3],
   ['NotGamblingNCAA',[['Texas',''],['Texas Tech',''],['Tennessee','']],3],
   ['Push the Button',[['Miami',''],['USC',''],['Michigan','']],4],
-  ['plevas82',[['Georgia',''],['LSU',''],['SMU','']],2],
+  ['plevas82',[['Georgia',''],['LSU',''],['SMU','']],3],
   ['Cignatty',[['Notre Dame',''],['Indiana',''],['Florida','']],3],
   ['Block',[['Oregon',''],['Alabama',''],['NC State','']],2]
  ]
@@ -333,7 +332,7 @@ var NEWS={
  stories:[
   ['Michigan and Colorado both survive dramatic openers','Michigan beat Western Michigan 13-12 on a 47-yard touchdown pass on the final snap; Colorado won at Georgia Tech 14-13 on a late touchdown plus a blocked field goal. Both drafted teams (Push the Button and GoBuffs!) start 1-0 the hard way.'],
   ['The favorites mostly rolled: Indiana, Ohio State, Penn State, Georgia, Texas A&amp;M and more all won by 30+','The defending champion Hoosiers, preseason No. 1 Buckeyes, and new-coach Penn State Nittany Lions all posted lopsided wins. Full recap cards for the fixed five plus Ohio State and Oregon are on the Recaps tab.'],
-  ['Notre Dame and Ole Miss both win Sunday-night thrillers; only SMU-Florida State remains','Notre Dame (CJ Carr: 239 pass yds, 2 TD) beat Wisconsin 41-13 at Lambeau Field after trailing at halftime; Ole Miss won 41-38 over Louisville on a 48-yard field goal as time expired, with Trinidad Chambliss throwing for 336 yards and 3 TD. SMU closes the full Week 1 slate Monday night at Florida State.'],
+  ['Notre Dame, Ole Miss and SMU all win to close out Week 1','Notre Dame (CJ Carr: 239 pass yds, 2 TD) beat Wisconsin 41-13 at Lambeau Field after trailing at halftime; Ole Miss won 41-38 over Louisville on a 48-yard field goal as time expired, with Trinidad Chambliss throwing for 336 yards and 3 TD. SMU closed the full Week 1 slate Monday night, beating Florida State 27-24 on a late field goal.'],
   ['Week 2 headliner: two Pool Matchups on the same Saturday (Sept 12)','Ohio State at Texas (a rivalry rubber match with two top-5 preseason teams) and Oklahoma at Michigan (FOX Big Noon, a true pick&rsquo;em) both pit one drafter&rsquo;s team against another&rsquo;s. See the Previews tab for full cards on both.']
  ],
  watch:[
@@ -342,7 +341,7 @@ var NEWS={
   ['AP Top 25','https://apnews.com/hub/ap-top-25-college-football-poll','The weekly AP poll'],
   ['The Athletic - CFB','https://www.nytimes.com/athletic/college-football/','Analysis and features']
  ],
- outlook:'Week 1 is nearly complete &mdash; 20 of 21 drafted teams have played, with only SMU-Florida State (Monday night) left. Push the Button leads the Draft Pool leaderboard at 4 wins, with four drafters tied at 3 after Sunday night. <b>Next up: two Pool Matchups on Saturday Sept 12 &mdash; Ohio State at Texas, and Oklahoma at Michigan.</b>'
+ outlook:'Week 1 is now fully complete &mdash; all 21 drafted teams have played. Push the Button leads the Draft Pool leaderboard at 4 wins, with five drafters tied at 3 after SMU closed out Monday night. <b>Next up: two Pool Matchups on Saturday Sept 12 &mdash; Ohio State at Texas, and Oklahoma at Michigan.</b>'
 };
 /*DATA_END*/
 /* ===== RENDERERS ===== */
