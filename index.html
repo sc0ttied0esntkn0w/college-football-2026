@@ -112,9 +112,9 @@ function mv(m){ // ranking movement: '+2' up (green), '-1' down (red), '0' none,
 
 /*DATA_START*/
 /*DATA_START*/
-var BUILT='2026-09-13T11:40:00-05:00';
+var BUILT='2026-09-15T14:15:00-05:00';
 var WEEKLABEL='Week 2 complete &mdash; Texas 24, Ohio State 23; Michigan 17, Oklahoma 10; Oklahoma State 39, Oregon 31; Iowa 16, Iowa State 13 &middot; Week 3: LSU at Ole Miss (Magnolia Bowl, Pool Matchup), games run Sept 18-19';
-var RANK_SRC='Media consensus post-Week 2 ballot (CBS Sports&rsquo; &ldquo;Tomorrow&rsquo;s Top 25 Today,&rdquo; published Sunday Sept 13, 2026), reflecting Saturday&rsquo;s results &mdash; Texas&rsquo;s historic comeback over Ohio State, Michigan&rsquo;s upset of Oklahoma, and Oklahoma State&rsquo;s outright upset of Oregon. The AP&rsquo;s own official ballot had not posted publicly as of this refresh &mdash; see the WARNINGS banner. Movement column is versus last week&rsquo;s released AP Top 25 (Sept 8). Source of truth switches to the CFP Committee rankings from early November.';
+var RANK_SRC='The real, official AP Top 25 (released Sunday Sept 13, 2026, by the AP media panel), confirmed on this Sept 15 refresh against multiple independent wire/outlet reprints of the actual ballot &mdash; replacing the CBS Sports projection this dashboard carried as an unconfirmed stand-in. Texas moved to No. 1 on its comeback over Ohio State, Michigan re-entered at No. 19 after beating Oklahoma, and Oklahoma State&rsquo;s upset of Oregon dropped Oregon to No. 21. Movement column is versus the actual AP Top 25 from Sept 8. Source of truth switches to the CFP Committee rankings from early November.';
 /* Stat strip: tile 0 is the current week's kickoff (date/label, same cyan slot as
    the old "Week 0 final" tile); tiles 1-3 are LIVE COUNTS filled in after DATA_END
    (drafted teams ranked / this week's pool matchups / drafted teams in the CFP field). */
@@ -126,24 +126,30 @@ var STAT=[
 var YOURTEAMS=[
  ['Iowa State',null,'1-1','Big 12 &middot; unranked &middot; fell 16-13 at Iowa in a tightly played CyHawk Trophy game, decided by a Caden Buhr 42-yard field goal with 15 seconds left &middot; QB Jaylen Raynor threw a touchdown pass and had Jimmy Rogers&rsquo; team in front for a stretch of the second quarter &middot; hosts Bowling Green, Sat Sept 19'],
  ['Indiana',4,'2-0','Big Ten &middot; No. 4 &middot; reigning national champion &middot; routed Howard 55-0 in a game shortened to a 10-minute fourth quarter by mutual agreement &middot; Josh Hoover threw 4 TD passes (3 to Charlie Becker) before sitting the second half &middot; hosts Western Kentucky, Sat Sept 19'],
- ['Michigan',17,'2-0','Big Ten &middot; No. 17 (re-enters the rankings) &middot; knocked off No. 11 Oklahoma 17-10 &mdash; Jordan Marshall&rsquo;s tiebreaking 1-yard run, set up by a fourth-quarter interception, and a 38-yard Bryce Underwood touchdown run did the damage &middot; hosts UTEP, Sat Sept 19'],
+ ['Michigan',19,'2-0','Big Ten &middot; No. 19 (re-enters the rankings) &middot; knocked off No. 11 Oklahoma 17-10 &mdash; Jordan Marshall&rsquo;s tiebreaking 1-yard run, set up by a fourth-quarter interception, and a 38-yard Bryce Underwood touchdown run did the damage &middot; hosts UTEP, Sat Sept 19'],
  ['Colorado',null,'2-0','Big 12 &middot; unranked &middot; blew past Weber State 52-21 behind a Julian Lewis school-record 366-yard, 4-touchdown half &middot; a road underdog at Northwestern despite the 2-0 start, Sat Sept 19']
 ];
-/* AP25: see RANK_SRC above for the sourcing caveat this week. W-L reflects games played
-   through Sunday Sept 13 (Week 2 complete for everyone in the table). Movement is versus
-   the actual released AP Top 25 from Sept 8. Oklahoma (drafted, GoBuffs!) and Washington
-   both drop out of the poll entirely; Michigan (drafted, Push the Button) re-enters at 17;
-   Boise State enters at 25. */
+/* AP25: the real, official AP Top 25 released Sunday Sept 13, 2026 - confirmed on this Sept 15
+   refresh against four independent outlet reprints of the actual ballot (Yahoo, TheBigLead, ESPN,
+   NBC Sports all matched exactly), replacing the CBS Sports projection this dashboard previously
+   carried as an unconfirmed stand-in. W-L reflects games played through Sunday Sept 13. Movement
+   is versus the actual AP Top 25 from Sept 8 (reconstructed from the poll's own previous-rank data
+   and cross-checked against the magnitude of each team's rank change). Texas A&amp;M's record is
+   corrected to 2-0 here (see WARNINGS - the prior refresh's "3-0" was checked against a real
+   schedule and found wrong; Texas A&amp;M has played only 2 games). Oklahoma (drafted, GoBuffs!)
+   re-enters at No. 24 rather than dropping out of the poll as the CBS projection had it; Michigan
+   (drafted, Push the Button) re-enters at No. 19, not 17. Boise State, which the CBS projection
+   had entering at 25, is not actually in the real poll. */
 var AP25=[
  [1,'Texas','SEC','2-0','+3'],[2,'Georgia','SEC','2-0','0'],[3,'Notre Dame','Ind','2-0','0'],
- [4,'Indiana','Big Ten','2-0','+1'],[5,'Miami','ACC','2-0','+2'],[6,'LSU','SEC','2-0','+2'],
- [7,'Ohio State','Big Ten','1-1','-6'],[8,'Ole Miss','SEC','2-0','+1'],[9,'Texas A&amp;M','SEC','3-0','+1'],
- [10,'Alabama','SEC','2-0','+2'],[11,'USC','Big Ten','3-0','+3'],[12,'Texas Tech','Big 12','2-0','+1'],
- [13,'BYU','Big 12','2-0','+2'],[14,'Penn State','Big Ten','2-0','+2'],[15,'SMU','ACC','2-0','+2'],
- [16,'Tennessee','SEC','2-0','+2'],[17,'Michigan','Big Ten','2-0','NEW'],[18,'Utah','Big 12','2-0','+2'],
- [19,'Missouri','SEC','2-0','+4'],[20,'Iowa','Big Ten','2-0','+1'],[21,'Oregon','Big Ten','1-1','-15'],
- [22,'Houston','Big 12','2-0','0'],[23,'Louisville','ACC','1-1','+1'],[24,'Virginia','ACC','2-0','+1'],
- [25,'Boise State','Mountain West','1-1','NEW']
+ [4,'Indiana','Big Ten','2-0','+1'],[5,'Miami','ACC','2-0','+2'],[6,'Ohio State','Big Ten','1-1','-5'],
+ [7,'LSU','SEC','2-0','+1'],[8,'Ole Miss','SEC','2-0','+1'],[9,'Texas A&amp;M','SEC','2-0','+1'],
+ [10,'Alabama','SEC','2-0','+2'],[11,'BYU','Big 12','2-0','+4'],[12,'USC','Big Ten','3-0','+2'],
+ [13,'Texas Tech','Big 12','2-0','0'],[14,'Penn State','Big Ten','2-0','+2'],[15,'Tennessee','SEC','2-0','+3'],
+ [16,'SMU','ACC','2-0','+1'],[17,'Utah','Big 12','2-0','+3'],[18,'Iowa','Big Ten','2-0','+3'],
+ [19,'Michigan','Big Ten','2-0','NEW'],[20,'Missouri','SEC','2-0','+3'],[21,'Oregon','Big Ten','1-1','-15'],
+ [22,'Houston','Big 12','2-0','0'],[23,'Louisville','ACC','1-1','+1'],[24,'Oklahoma','SEC','1-1','-13'],
+ [25,'Virginia','ACC','2-0','0']
 ];
 /* 12-team CFP projection: ESPN's post-Week 2 projection (published Sept 13, 2026), replacing
    the frozen preseason CBS projection now that real results (Texas over Ohio State, Michigan
@@ -159,14 +165,14 @@ var CFP={
  ],
  note:'Post-Week 2 projection (ESPN, published Sept 13, 2026) built on current results and projected conference-championship outcomes, not a snapshot of any real committee vote &mdash; a media exercise, not a ranking. Seeds 1-4 earn first-round byes; seeds 5-12 play the opening round on campus, higher seed hosting. Refreshes with the real CFP Committee bracket once rankings begin in November.'
 };
-/* Heisman: odds after Week 2 (Sports Betting Dime / covers.com / BetMGM, Sept 12-13 2026).
-   Jeremiah Smith and Darian Mensah now share the top spot; Arch Manning surged on the
-   strength of the Ohio State comeback win rather than a huge individual stat line. */
+/* Heisman: FanDuel odds as of Sept 13, 2026 (verified via direct fetch of the sportsbook's own
+   posted table). Darian Mensah has now pulled clear of the Week-2 tie with Jeremiah Smith to
+   become the outright favorite; Smith and Arch Manning follow. */
 var HEIS=[
- [1,'Jeremiah Smith','Ohio State','WR','+600 &mdash; the best individual night of Week 2&rsquo;s biggest game, even in a loss'],
- [1,'Darian Mensah','Miami','QB','+600 &mdash; 856 total yards of offense across Miami&rsquo;s first two games, including 3 TD passes in a 77-7 rout of Florida A&amp;M'],
- [3,'Arch Manning','Texas','QB','+1000 &mdash; an ordinary stat line (196 yds, 1 TD) but the best résumé win of any candidate, leading three straight 12-plus-play scoring drives to beat Ohio State'],
- [4,'CJ Carr','Notre Dame','QB','+1200 &mdash; 253 yards and 4 TD in the first half alone of a 52-0 rout of Rice'],
+ [1,'Darian Mensah','Miami','QB','+550 &mdash; the new outright favorite, pulling ahead of a share of the top spot on 856 total yards of offense across Miami&rsquo;s first two games'],
+ [2,'Jeremiah Smith','Ohio State','WR','+700 &mdash; the best individual night of Week 2&rsquo;s biggest game, even in a loss'],
+ [3,'Arch Manning','Texas','QB','+850 &mdash; an ordinary stat line (196 yds, 1 TD) but the best résumé win of any candidate, leading three straight 12-plus-play scoring drives to beat Ohio State'],
+ [4,'CJ Carr','Notre Dame','QB','+1000 &mdash; 253 yards and 4 TD in the first half alone of a 52-0 rout of Rice'],
  [5,'Malachi Toney','Miami','WR','+1200 &mdash; part of Miami&rsquo;s explosive two-QB attack through two blowout wins']
 ];
 /* Key Injuries Watch: [team, player, position, status ('out'|'doubt'|'watch'), note] across ALL 21
@@ -174,8 +180,8 @@ var HEIS=[
    items from the prior refresh (Notre Dame's Quincy Porter, Georgia's Kyron Jones) were dropped
    rather than carried forward unverified. */
 var INJURIES=[
- ['Alabama','AK Dear','RB','out','Lower-body injury from fall camp; has already missed Alabama&rsquo;s first two games with no firm return timeline yet'],
- ['Georgia','Dante Dowdell','RB','doubt','Remains away from team activities after an ATV accident; no return timeline given'],
+ ['Alabama','AK Dear','RB','out','Ankle tightrope procedure in fall camp (6-8 week recovery); still out for Sept 19 vs Florida State, with the coaching staff tracking a possible return around the Sept 26 South Carolina game'],
+ ['Georgia','Dante Dowdell','RB','out','Remains away from team activities after an offseason ATV accident; no return timeline given'],
  ['Georgia','Amaris Williams','DL/LB','watch','Auburn transfer&rsquo;s camp knee injury remains a concern for his availability this season'],
  ['Florida','Kelvin Jimenez','RB','out','Contact injury from fall camp; now considered out for the remainder of the season'],
  ['Florida','Dallas Groce','WR','out','Back injury, no return timeline given'],
@@ -187,18 +193,18 @@ var INJURIES=[
    through Sunday Sept 13. Order unchanged (preseason projected order). */
 var CONF={
  'Big 12':[['Texas Tech','0-0','2-0'],['BYU','0-0','2-0'],['Houston','0-0','2-0'],['Utah','0-0','2-0'],['Oklahoma State','0-0','1-1'],['Arizona State','0-0','1-1']],
- 'SEC':[['Georgia','0-0','2-0'],['Texas A&amp;M','0-0','3-0'],['Oklahoma','0-0','1-1'],['Ole Miss','0-0','2-0'],['Alabama','0-0','2-0'],['LSU','0-0','2-0']],
+ 'SEC':[['Georgia','0-0','2-0'],['Texas A&amp;M','0-0','2-0'],['Oklahoma','0-0','1-1'],['Ole Miss','0-0','2-0'],['Alabama','0-0','2-0'],['LSU','0-0','2-0']],
  'Big Ten':[['Ohio State','0-0','1-1'],['Oregon','0-0','1-1'],['Indiana','0-0','2-0'],['USC','0-0','3-0'],['Michigan','0-0','2-0'],['Penn State','0-0','2-0']],
  'ACC':[['Miami','0-0','2-0'],['SMU','0-0','2-0'],['Clemson','0-0','1-1'],['Louisville','0-0','1-1'],['Florida State','0-0','1-1'],['Georgia Tech','0-0','0-2']]
 };
 var STORIES=[
- ['Texas erases a 20-point deficit to stun No. 1 Ohio State','var(--red)','Texas',['Trailing 23-3 entering the fourth quarter, Arch Manning led three straight scoring drives of 12-plus plays, the last ending on a 1-yard Hollywood Smothers run with 25 seconds left for a 24-23 win','It is the largest fourth-quarter comeback win over an AP No. 1 team in at least 15 years, per ESPN Research','Texas (NotGamblingNCAA) and Ohio State (Fck Cancer!) both remain in the pool&rsquo;s marquee tier &mdash; Texas jumps to No. 1, Ohio State falls to No. 7']],
- ['Michigan backs up its miracle with a real signature win','var(--cyan)','Michigan',['Jordan Marshall&rsquo;s tiebreaking 1-yard run, set up by a fourth-quarter interception, and a 38-yard Bryce Underwood touchdown run beat No. 11 Oklahoma 17-10','Michigan (Push the Button) re-enters the rankings at No. 17 after being unranked entirely a week ago despite its 1-0 start','Underwood: 87 rush yards and a score, 111 pass yards with no turnovers &mdash; a cleaner day after the Week 1 escape act']],
+ ['Texas erases a 20-point deficit to stun No. 1 Ohio State','var(--red)','Texas',['Trailing 23-3 entering the fourth quarter, Arch Manning led three straight scoring drives of 12-plus plays, the last ending on a 1-yard Hollywood Smothers run with 25 seconds left for a 24-23 win','It is the largest fourth-quarter comeback win over an AP No. 1 team in at least 15 years, per ESPN Research','Texas (NotGamblingNCAA) and Ohio State (Fck Cancer!) both remain in the pool&rsquo;s marquee tier &mdash; Texas jumps to No. 1, Ohio State falls to No. 6']],
+ ['Michigan backs up its miracle with a real signature win','var(--cyan)','Michigan',['Jordan Marshall&rsquo;s tiebreaking 1-yard run, set up by a fourth-quarter interception, and a 38-yard Bryce Underwood touchdown run beat No. 11 Oklahoma 17-10','Michigan (Push the Button) re-enters the rankings at No. 19 after being unranked entirely a week ago despite its 1-0 start','Underwood: 87 rush yards and a score, 111 pass yards with no turnovers &mdash; a cleaner day after the Week 1 escape act']],
  ['Oklahoma State pulls off the year&rsquo;s biggest outright upset','var(--gold)','Oregon',['Oklahoma State, an 11-1 underdog, beat No. 6 Oregon 39-31 outright, snapping a 21-game skid against FBS opponents','Drew Mestemaker threw for 317 yards and 2 TD and ran for 109 more and a score; Oklahoma State outgained Oregon 554-281','Oregon (Block) falls from No. 6 to No. 21 in the new poll after entering as 23.5-point favorites']],
  ['Iowa State pushes Iowa to the final play in a hard-fought CyHawk battle','var(--gold)','Iowa State',['Iowa needed a 42-yard Caden Buhr field goal with 15 seconds left to escape Kinnick Stadium 16-13','QB Jaylen Raynor threw a touchdown pass and had the Cyclones in front for a stretch of the second quarter against an established program','Jimmy Rogers: &ldquo;I&rsquo;m proud of the locker room as far as how we played, but we still lost&hellip; we have ten games left.&rdquo; Iowa State hosts Bowling Green next, Sept 19']],
  ['The ranked favorites mostly rolled: Georgia, Alabama, Miami, Notre Dame and more','var(--green)','Georgia',['Georgia 70, Western Kentucky 20 &mdash; Gunner Stockton tied a school record with 5 TD passes, and the Bulldogs led 49-0 at one point','Notre Dame 52, Rice 0; Miami 77, Florida A&amp;M 7 (a school-record 856 total yards); Alabama 45, Kentucky 17','Full recap cards for the fixed five plus Texas/Ohio State and Georgia are on the Recaps tab']],
  ['Week 3 headliner: the Magnolia Bowl renews as a Pool Matchup','var(--purple)','Ole Miss',['LSU (plevas82) travels to Ole Miss (GoBuffs!) on Sept 19 for the Magnolia Bowl, with Lane Kiffin returning to Oxford for the first time as LSU&rsquo;s head coach','The line has moved from Ole Miss -1.5 at open to LSU -2.5, with a 58.5 total &mdash; both teams are 2-0','New No. 1 Texas also plays this week, hosting UTSA, a much lower-stakes assignment after Saturday&rsquo;s comeback']],
- ['Heisman board reshuffles again after a chaotic Week 2','var(--cyan)','Miami',['Jeremiah Smith (Ohio State) and Darian Mensah (Miami) now share the top spot at +600 apiece','Arch Manning climbed to No. 3 on the strength of his Ohio State comeback rather than a huge individual stat line','CJ Carr (Notre Dame) and Miami&rsquo;s Malachi Toney round out the top 5']]
+ ['Darian Mensah pulls away as the Heisman&rsquo;s outright favorite','var(--cyan)','Miami',['Mensah (Miami) has moved off a share of the top spot to become the clear favorite at +550, with Jeremiah Smith (Ohio State) next at +700','Arch Manning sits at No. 3 (+850) on the strength of his Ohio State comeback rather than a huge individual stat line','CJ Carr (Notre Dame) and Miami&rsquo;s Malachi Toney round out the top 5']]
 ];
 /* RECAPS: full cards for the fixed five (all played Sept 12) plus this week's two highest-value
    other drafted teams' games - the Texas/Ohio State classic and Georgia's blowout of Western
@@ -223,7 +229,7 @@ var RECAPS=[
   star:['Josh Hoover','Indiana QB','Four touchdown passes in barely a half of work, needing just one series after another before Indiana&rsquo;s coaches shortened the fourth quarter.']},
  {team:'Michigan',tracked:true,a:'Oklahoma',b:'Michigan',sa:'10',sb:'17',
   meta:'Week 2 | Michigan Stadium, Ann Arbor | Sat Sept 12 | Noon ET, FOX',
-  summary:['Michigan backed up last week&rsquo;s miracle finish with a real signature win, beating No. 11 Oklahoma 17-10 at The Big House.','Jordan Marshall&rsquo;s tiebreaking 1-yard touchdown run, set up by a fourth-quarter interception, put Michigan ahead for good; Bryce Underwood added a 38-yard touchdown run of his own.','Underwood threw for 111 yards without a turnover and ran for 87 more; Oklahoma outgained Michigan 289-263 but couldn&rsquo;t finish a final drive after John Mateer was sacked with time expiring. Michigan re-enters the rankings at No. 17 and hosts UTEP on Sept 19.'],
+  summary:['Michigan backed up last week&rsquo;s miracle finish with a real signature win, beating No. 11 Oklahoma 17-10 at The Big House.','Jordan Marshall&rsquo;s tiebreaking 1-yard touchdown run, set up by a fourth-quarter interception, put Michigan ahead for good; Bryce Underwood added a 38-yard touchdown run of his own.','Underwood threw for 111 yards without a turnover and ran for 87 more; Oklahoma outgained Michigan 289-263 but couldn&rsquo;t finish a final drive after John Mateer was sacked with time expiring. Michigan re-enters the rankings at No. 19 and hosts UTEP on Sept 19.'],
   perfA:[['John Mateer','QB','Nearly rallied Oklahoma on the final drive before a sack ended it']],
   perfB:[['Bryce Underwood','QB','87 rush yds, 1 rush TD, 111 pass yds, 0 turnovers'],['Jordan Marshall','RB','Go-ahead 1-yd TD run'],['JJ Buchanan','WR','2 rec, 48 yds']],
   star:['Bryce Underwood','Michigan QB','87 rushing yards and a touchdown plus 111 clean passing yards, delivering the signature, non-miraculous win Michigan needed after last week&rsquo;s last-play escape.']},
@@ -234,7 +240,7 @@ var RECAPS=[
   star:['Julian Lewis','Colorado QB','A career-high 366 passing yards and four touchdowns, including a CU-record 212 yards in the first quarter alone, before the redshirt freshman watched the fourth quarter from the sideline.']},
  {team:'Texas',tracked:true,a:'Ohio State',b:'Texas',sa:'23',sb:'24',
   meta:'Week 2 | DKR-Texas Memorial Stadium, Austin | Sat Sept 12 | 7:30pm ET',
-  summary:['No. 1 Ohio State led 23-3 entering the fourth quarter, but No. 4 Texas answered with three straight scoring drives of 12-plus plays, the last ending on a 1-yard Hollywood Smothers run with 25 seconds left, to win 24-23.','Arch Manning finished 23-of-37 for 196 yards, 1 TD and 1 INT, converting two separate 4th-down throws &mdash; to Emaree Winston and Emmett Mosley &mdash; to keep the comeback drives alive.','It is the largest fourth-quarter comeback win over an AP No. 1 team in at least 15 years. Texas jumps to No. 1 in the new poll; Ohio State falls to No. 7 and regroups against Kent State on Sept 19.'],
+  summary:['No. 1 Ohio State led 23-3 entering the fourth quarter, but No. 4 Texas answered with three straight scoring drives of 12-plus plays, the last ending on a 1-yard Hollywood Smothers run with 25 seconds left, to win 24-23.','Arch Manning finished 23-of-37 for 196 yards, 1 TD and 1 INT, converting two separate 4th-down throws &mdash; to Emaree Winston and Emmett Mosley &mdash; to keep the comeback drives alive.','It is the largest fourth-quarter comeback win over an AP No. 1 team in at least 15 years. Texas jumps to No. 1 in the new poll; Ohio State falls to No. 6 and regroups against Kent State on Sept 19.'],
   perfB:[['Arch Manning','QB','23/37, 196 pass yds, 1 TD, 1 INT &mdash; 2 fourth-down conversions in the comeback'],['Hollywood Smothers','RB','Game-winning 1-yd TD run']],
   star:['Arch Manning','Texas QB','An ordinary stat line by the numbers, but the biggest drive of the season &mdash; three straight scoring drives of 12-plus plays in the fourth quarter, capped by two clutch fourth-down conversions, to erase a 20-point deficit.']},
  {team:'Georgia',tracked:true,a:'Western Kentucky',b:'Georgia',sa:'20',sb:'70',
@@ -256,12 +262,12 @@ var PREVIEWS=[
   meta:'Week 3 | Jack Trice Stadium | Sat Sept 19 | 11:00am CT, ESPNU',
   spread:['Iowa State -24.5 (FanDuel)','O/U 51.5','A get-well spot at home after a competitive CyHawk loss'],
   storyline:'Iowa State looks to bounce back at home after a hard-fought 16-13 CyHawk Trophy loss to Iowa, one decided by a fourth-quarter field goal rather than a blowout. Jaylen Raynor and the offense showed real signs of life in Jimmy Rogers&rsquo; first true road test; a home game against Group of 5 Bowling Green is a good opportunity to keep building.',
-  injuries:[['Iowa State &mdash; WR Evan Boyd (lower-body) left the Iowa game and is doubtful; a few defensive starters were banged up but are expected to play','doubt'],['Bowling Green &mdash; none reported','ok']],
+  injuries:[['Iowa State &mdash; WR Jayden Bailey (undisclosed) is out with no return timeline; WR Evan Boyd (lower-body) left the Iowa game and is doubtful; a few defensive starters were banged up but are expected to play','out'],['Bowling Green &mdash; none reported','ok']],
   keys:['Getting early separation against a Group of 5 opponent after a physical rivalry game','Health for WR Evan Boyd and a couple of banged-up defensive starters','Building on Raynor&rsquo;s touchdown pass and the offense&rsquo;s fast start from the CyHawk game'],
   pred:['Iowa State comfortably','A bounce-back spot after a competitive rivalry loss &mdash; Raynor and the offense should have plenty of room to work against a Group of 5 defense.']},
  {team:'Penn State',tracked:true,a:'Buffalo',b:'Penn State',tag:'THON Game &middot; State College',
   meta:'Week 3 | Beaver Stadium | Sat Sept 19 | Noon ET',
-  spread:['Penn State -29.5 (FanDuel)','O/U not yet posted','Another lopsided number for Matt Campbell&rsquo;s 2-0 Nittany Lions'],
+  spread:['Penn State -40.5 (Covers)','O/U 48.5','A total now posted and an even wider number for Matt Campbell&rsquo;s 2-0 Nittany Lions'],
   storyline:'Penn State (No. 14, 2-0) hosts Buffalo in the annual THON Game after grinding past a stubborn Temple team 27-9 at a neutral-site trip to Philadelphia. Rocco Becht overcame a slow start there (268 yds, 3 TD after an 0-for-4 opening) and the staff will look for a cleaner performance out of the gate this time.',
   injuries:[['Buffalo &mdash; none reported','ok'],['Penn State &mdash; no notable injuries flagged','ok']],
   keys:['A cleaner start than the Temple trip','Expanding the offense&rsquo;s complexity before Big Ten play','Keeping starters healthy in a lopsided expected game'],
@@ -276,7 +282,7 @@ var PREVIEWS=[
  {team:'Michigan',tracked:true,a:'UTEP',b:'Michigan',tag:'Season home stand &middot; Ann Arbor',
   meta:'Week 3 | Michigan Stadium | Sat Sept 19 | 3:30pm ET',
   spread:['Michigan -35.5 (FanDuel)','O/U 48.5','A get-right spot after two dramatic wins'],
-  storyline:'Michigan (No. 17, 2-0) gets a chance to breathe after two straight nail-biters, hosting UTEP after last week&rsquo;s signature win over Oklahoma. Bryce Underwood was clean and efficient in that game (111 pass yds, 87 rush yds, no turnovers) and a lopsided matchup is a good spot to keep that going without the late-game drama.',
+  storyline:'Michigan (No. 19, 2-0) gets a chance to breathe after two straight nail-biters, hosting UTEP after last week&rsquo;s signature win over Oklahoma. Bryce Underwood was clean and efficient in that game (111 pass yds, 87 rush yds, no turnovers) and a lopsided matchup is a good spot to keep that going without the late-game drama.',
   injuries:[['UTEP &mdash; none reported','ok'],['Michigan &mdash; no notable injuries flagged','ok']],
   keys:['A clean, drama-free start for once','Expanding the passing game against lighter competition','Staying sharp heading into tougher Big Ten tests'],
   pred:['Michigan comfortably','After two straight escapes, a laugher would be a welcome change of pace.']},
@@ -308,30 +314,32 @@ var PREVIEWS=[
    via their full cards, so none of those five need a separate line here. Everything below is a
    completed Week 2 result plus the Week 3 (Sept 18-19) look-ahead. */
 var OTHER=[
- ['Arizona State','Texas A&amp;M','FINAL (Sept 12, Week 2)','Texas A&amp;M 48, Arizona State 20','Texas A&amp;M (Fck Cancer!, No. 9) improved to 3-0 behind 3 Marcel Reed TD passes and a defense that scored twice. Next: hosts Kentucky, Sat Sept 19 (Texas A&amp;M -14.5, O/U 48.5).','Texas A&amp;M'],
- ['Texas Tech','Oregon State','FINAL (Sept 12, Week 2)','Texas Tech 35, Oregon State 24','Texas Tech (NotGamblingNCAA, No. 12) got a go-ahead 4th-quarter TD pass from Will Hammond to Coy Eakin. Next: hosts Houston in the Big 12 opener, Fri Sept 18 (Texas Tech -14, O/U 51.5).','Texas Tech'],
- ['Tennessee','Georgia Tech','FINAL (Sept 12, Week 2)','Tennessee 45, Georgia Tech 24','Tennessee (NotGamblingNCAA, No. 16) got 147 rush yds/2 TD from DeSean Bishop and a pick-six from Dejuan Lane. Next: hosts Kennesaw State, Sat Sept 19 (a big favorite, line still settling).','Tennessee'],
+ ['Arizona State','Texas A&amp;M','FINAL (Sept 12, Week 2)','Texas A&amp;M 48, Arizona State 20','Texas A&amp;M (Fck Cancer!, No. 9) moved to 2-0 behind 3 Marcel Reed TD passes and a defense that scored twice (corrected from a previously listed 3-0 &mdash; a schedule check found Texas A&amp;M has played only 2 games). Next: hosts Kentucky, Sat Sept 19 (Texas A&amp;M -14.5, O/U 48.5).','Texas A&amp;M'],
+ ['Texas Tech','Oregon State','FINAL (Sept 12, Week 2)','Texas Tech 35, Oregon State 24','Texas Tech (NotGamblingNCAA, No. 13) got a go-ahead 4th-quarter TD pass from Will Hammond to Coy Eakin. Next: hosts Houston in the Big 12 opener, Fri Sept 18 (Texas Tech -14, O/U 51.5).','Texas Tech'],
+ ['Tennessee','Georgia Tech','FINAL (Sept 12, Week 2)','Tennessee 45, Georgia Tech 24','Tennessee (NotGamblingNCAA, No. 15) got 147 rush yds/2 TD from DeSean Bishop and a pick-six from Dejuan Lane. Next: hosts Kennesaw State, Sat Sept 19 (a big favorite, line still settling).','Tennessee'],
  ['Florida A&amp;M','Miami','FINAL (Sept 10, Week 2)','Miami 77, Florida A&amp;M 7','Miami (Push the Button, No. 5) set a school record for total yards; Darian Mensah and Luke Nickel combined for 6 TD passes. Next: at Wake Forest, Fri Sept 18 (Miami -20.5, O/U 53.5).','Miami'],
- ['Louisiana','USC','FINAL (Sept 12, Week 2)','USC 49, Louisiana 30','USC (Push the Button, No. 11) improved to 3-0 in a high-scoring win at the Coliseum. Next: at Rutgers, Sat Sept 19 (USC -25.5, O/U 55.5).','USC'],
- ['UC Davis','SMU','FINAL (Sept 12, Week 2)','SMU 56, UC Davis 10','SMU (plevas82, No. 15) got 337 pass yds/5 TD from Kevin Jennings in only a half of work. Next: at Louisville, Sat Sept 19 (a near pick&rsquo;em, O/U 59.5).','SMU'],
+ ['Louisiana','USC','FINAL (Sept 12, Week 2)','USC 49, Louisiana 30','USC (Push the Button, No. 12) improved to 3-0 in a high-scoring win at the Coliseum. Next: at Rutgers, Sat Sept 19 (USC -25.5, O/U 55.5).','USC'],
+ ['UC Davis','SMU','FINAL (Sept 12, Week 2)','SMU 56, UC Davis 10','SMU (plevas82, No. 16) got 337 pass yds/5 TD from Kevin Jennings in only a half of work. Next: at Louisville, Sat Sept 19 (Louisville -2.5, O/U 59.5).','SMU'],
  ['Rice','Notre Dame','FINAL (Sept 12, Week 2)','Notre Dame 52, Rice 0','Notre Dame (Cignatty, No. 3) scored 14 seconds in on a fumble return and led 42-0 at half; CJ Carr had 4 first-half TD passes. Next: hosts Michigan State (Megaphone Trophy), Sat Sept 19 (Notre Dame -29.5, O/U 52.5).','Notre Dame'],
  ['Campbell','Florida','FINAL (Sept 12, Week 2)','Florida 52, Campbell 3','Florida (Cignatty) got three first-half TDs from Vernell Brown III, two on punt returns. Next: at Auburn in the SEC opener, Sat Sept 19 (Florida -2.5, O/U 51.5) &mdash; both teams are 2-0.','Florida'],
- ['Oklahoma State','Oregon','FINAL (Sept 12, Week 2)','Oklahoma State 39, Oregon 31','Oregon (Block, No. 21) was upset outright as an 11-1 underdog, falling from No. 6; Dante Moore threw for 191 yds/2 TD. Next: hosts Portland State, Sat Sept 19 (Oregon a heavy favorite, line still settling).','Oregon'],
+ ['Oklahoma State','Oregon','FINAL (Sept 12, Week 2)','Oklahoma State 39, Oregon 31','Oregon (Block, No. 21) was upset outright as an 11-1 underdog, falling from No. 6; Dante Moore threw for 191 yds/2 TD. Next: hosts Portland State, Sat Sept 19 (Oregon -58.5, O/U 66.5).','Oregon'],
  ['Alabama','Kentucky','FINAL (Sept 12, Week 2)','Alabama 45, Kentucky 17','Alabama (Block, No. 10) trailed at halftime before pulling away; RB AK Dear remains out. Next: hosts Florida State, closing their home-and-home, Sat Sept 19 (Alabama -18.5, O/U 50.5).','Alabama'],
- ['Richmond','NC State','FINAL (Sept 11, Week 2)','NC State 73, Richmond 0','NC State (Block) set school records for yards and rushing TDs in a storm-delayed rout, its first win after a Week 0 loss to Virginia. Next: at Vanderbilt, Sat Sept 19 (Vanderbilt a slight favorite, line still settling).','NC State']
+ ['Richmond','NC State','FINAL (Sept 11, Week 2)','NC State 73, Richmond 0','NC State (Block) set school records for yards and rushing TDs in a storm-delayed rout, its first win after a Week 0 loss to Virginia. Next: at Vanderbilt, Sat Sept 19 (Vanderbilt -3.5, O/U 50.5).','NC State']
 ];
 /* DRAFT POOL: the pool has exactly one winner &mdash; whichever drafter&rsquo;s team wins the CFP National
    Championship. No tiebreaker, no second place; if no drafted team wins the title, the pool has no winner
    that season. Total Wins below is a leaderboard only and does not decide the pool.
    All 21 of 21 picks confirmed. Rosters and drafter labels are frozen; only the trailing win counts move.
    Win totals below reflect games played through Sunday Sept 13 - Week 2 is now fully complete for
-   every drafted team. Push the Button still leads; four drafters are tied for second at 6.*/
+   every drafted team. CORRECTION (this Sept 15 refresh): Fck Cancer!'s Texas A&amp;M win count is
+   fixed from 3 to 2 (a schedule check found Texas A&amp;M has played only 2 games, not 3), which moves
+   Fck Cancer! from 6 down to 5 total wins, tying GoBuffs!. */
 var DRAFT={
  metric:'Combined regular-season wins &mdash; leaderboard only. The pool has one winner: whichever drafter&rsquo;s team wins the CFP National Championship. No tiebreaker, no second place; if no drafted team wins it, the pool has no winner.',
- status:'Draft complete &mdash; all 21 of 21 picks in. Week 2 is now fully complete. Push the Button leads at 7 wins (Miami 2, USC 3, Michigan 2). Fck Cancer!, NotGamblingNCAA, plevas82 and Cignatty are tied at 6 apiece. GoBuffs! sits at 5 after Oklahoma&rsquo;s Week 2 loss to Michigan. Block trails at 4 after Oregon&rsquo;s upset loss to Oklahoma State.',
+ status:'Draft complete &mdash; all 21 of 21 picks in. Week 2 is now fully complete. Push the Button leads at 7 wins (Miami 2, USC 3, Michigan 2). NotGamblingNCAA, plevas82 and Cignatty are tied at 6 apiece. GoBuffs! and Fck Cancer! are tied at 5 (Fck Cancer!&rsquo;s total corrected this refresh after Texas A&amp;M&rsquo;s win count was fixed from 3 to 2). Block trails at 4 after Oregon&rsquo;s upset loss to Oklahoma State.',
  drafters:[
   ['GoBuffs!',[['Colorado',''],['Ole Miss',''],['Oklahoma','']],5],
-  ['Fck Cancer!',[['Ohio State',''],['Penn State',''],['Texas A&amp;M','']],6],
+  ['Fck Cancer!',[['Ohio State',''],['Penn State',''],['Texas A&amp;M','']],5],
   ['NotGamblingNCAA',[['Texas',''],['Texas Tech',''],['Tennessee','']],6],
   ['Push the Button',[['Miami',''],['USC',''],['Michigan','']],7],
   ['plevas82',[['Georgia',''],['LSU',''],['SMU','']],6],
@@ -352,7 +360,7 @@ var NEWS={
   ['AP Top 25','https://apnews.com/hub/ap-top-25-college-football-poll','The weekly AP poll'],
   ['The Athletic - CFB','https://www.nytimes.com/athletic/college-football/','Analysis and features']
  ],
- outlook:'Week 2 is now fully complete &mdash; Texas, Michigan and Oklahoma State delivered the three biggest results of the season so far. Push the Button leads the Draft Pool leaderboard at 7 wins, with four drafters tied at 6. <b>Next up: the Magnolia Bowl (LSU at Ole Miss) is this week&rsquo;s Pool Matchup, Sat Sept 19.</b>'
+ outlook:'The real AP Top 25 is now loaded (Texas No. 1, Oklahoma back in at No. 24, Michigan at No. 19), replacing last refresh&rsquo;s CBS projection. Push the Button leads the Draft Pool leaderboard at 7 wins; NotGamblingNCAA, plevas82 and Cignatty are tied at 6. <b>Next up: the Magnolia Bowl (LSU at Ole Miss) is this week&rsquo;s Pool Matchup, Sat Sept 19.</b>'
 };
 /*DATA_END*/
 /*DATA_END*/
@@ -375,7 +383,7 @@ function rankingPanel(){
    '<span style="flex:1;min-width:0;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+r[1]+' <span style="font-size:9px;color:var(--mut);font-weight:500">'+r[2]+'</span></span>'+
    '<span style="font-size:10px;color:var(--mut);width:34px;text-align:right">'+r[3]+'</span><span style="width:34px;text-align:right">'+mv(r[4])+'</span></div>';}).join('');}
  var half=Math.ceil(AP25.length/2);
- return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--cyan)">Top 25 <span style="font-size:10px;color:var(--mut);font-weight:600">projected</span></div>'+
+ return '<div class="panel" style="padding:13px 15px"><div class="ptitle" style="color:var(--cyan)">Top 25</div>'+
   '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:4px"><div>'+rowsFor(AP25.slice(0,half))+'</div><div>'+rowsFor(AP25.slice(half))+'</div></div>'+
   '<div style="font-size:9px;color:var(--mut);margin-top:9px;line-height:1.5">'+RANK_SRC+'</div></div>';
 }
