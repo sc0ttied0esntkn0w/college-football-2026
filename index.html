@@ -111,9 +111,9 @@ function mv(m){ // ranking movement: '+2' up (green), '-1' down (red), '0' none,
  var up=n>0;return '<span style="font-size:9px;font-weight:800;color:'+(up?'var(--green)':'var(--red)')+'">'+(up?'▲':'▼')+Math.abs(n)+'</span>';}
 
 /*DATA_START*/
-var BUILT='2026-09-27T11:31:00-05:00';
+var BUILT='2026-10-02T15:15:00-05:00';
 var WEEKLABEL='Week 4 complete &mdash; Florida 52, Ole Miss 28; LSU 35, Texas A&amp;M 6; Oregon 41, USC 27; Georgia 41, Oklahoma 13; Texas 20, Tennessee 17 &middot; Week 5: Texas Tech at Colorado (Pool Matchup), games run Oct 2-3';
-var RANK_SRC='The real, official AP Top 25 for Week 4 (released Sunday Sept 20, 2026). The Week 5 poll had not been released when this refresh was built on Sunday morning Sept 27, so this is still the pre-Week 4 order and records &mdash; it does not yet reflect Saturday&rsquo;s results (Florida over No. 4 Ole Miss, Wisconsin over No. 13 Penn State, Iowa over No. 18 Michigan, Oregon over No. 12 USC). Movement column is versus the Sept 13 AP Top 25. Source of truth switches to the CFP Committee rankings from early November.';
+var RANK_SRC='The real, official AP Top 25 for Week 5 (released Sunday Sept 27, 2026), from ESPN&rsquo;s rankings feed and confirmed against CBS and NCAA.com reporting of the same ballot. Florida jumps 13 spots to No. 8 after routing Ole Miss, which falls to No. 9; Miami climbs to No. 4 and Ohio State to No. 5; Oregon moves up five to No. 15 while USC drops six to No. 18. Penn State, Michigan, Texas A&amp;M and Louisville all fall out; Oklahoma State, Boise State, UCLA and Kentucky enter. Movement column is versus the Sept 20 AP Top 25. Source of truth switches to the CFP Committee rankings from early November.';
 /* Stat strip: tile 0 is the current week's kickoff (date/label, same cyan slot as
    the old "Week 0 final" tile); tiles 1-3 are LIVE COUNTS filled in after DATA_END
    (drafted teams ranked / this week's pool matchups / drafted teams in the CFP field). */
@@ -122,27 +122,26 @@ var STAT=[
 ];
 /* Summary spotlight panel: Iowa State (shared anchor) plus Indiana, Michigan, Colorado.
    Deliberately NOT Penn State. [team, rank-or-null, 'W-L', blurb]. Ranks are from the
-   Sept 20 AP poll (the Week 5 poll was not out at build time). */
+   Sept 27 AP poll (Week 5). */
 var YOURTEAMS=[
  ['Iowa State',null,'2-2','Big 12 &middot; unranked &middot; lost the Big 12 opener 31-17 at home to No. 15 Utah, which led 24-3 at halftime &middot; Wayshawn Parker ran for 174 yards and scored 3 TD, and Jaylen Raynor threw 2 interceptions &middot; hosts West Virginia, Sat Oct 3'],
- ['Indiana',5,'4-0','Big Ten &middot; No. 5 &middot; held off Northwestern 29-23 on Friday night &middot; Lee Beebe Jr. ran for 203 yards after Turbo Richard left in the first half with a reported high ankle sprain &middot; winning streak is 20 games, longest in FBS &middot; at Rutgers, Sat Oct 3'],
- ['Michigan',18,'3-1','Big Ten &middot; No. 18 &middot; outgained No. 17 Iowa 429-285 and lost 20-19 on a touchdown pass on the final play &middot; Bryce Underwood threw 2 TD passes to JJ Buchanan &middot; at Minnesota, Sat Oct 3'],
- ['Colorado',null,'2-2','Big 12 &middot; unranked &middot; lost 23-13 at Baylor &middot; Deion Sanders benched Julian Lewis for Isaac Wilson at halftime and says the staff will reassess the position &middot; hosts No. 11 Texas Tech in a Pool Matchup, Sat Oct 3']
+ ['Indiana',6,'4-0','Big Ten &middot; No. 6 &middot; held off Northwestern 29-23 on Friday night &middot; Lee Beebe Jr. ran for 203 yards after Turbo Richard left in the first half with an ankle injury; Richard is listed probable for Rutgers &middot; winning streak is 20 games, longest in FBS &middot; at Rutgers, Sat Oct 3'],
+ ['Michigan',null,'3-1','Big Ten &middot; unranked, out of the AP poll after the loss &middot; outgained No. 17 Iowa 429-285 and lost 20-19 on a touchdown pass on the final play &middot; Bryce Underwood threw 2 TD passes to JJ Buchanan &middot; at Minnesota, Sat Oct 3'],
+ ['Colorado',null,'2-2','Big 12 &middot; unranked &middot; lost 23-13 at Baylor &middot; Deion Sanders benched Julian Lewis for Isaac Wilson at halftime, and ESPN and On3 sources say Wilson will start, though Sanders has not announced it &middot; hosts No. 12 Texas Tech in a Pool Matchup, Sat Oct 3']
 ];
-/* AP25: the real, official AP Top 25 for Week 4, released Sunday Sept 20, 2026 (ESPN rankings feed,
-   cross-checked against CBS/Yahoo reporting of the same ballot). CARRIED UNCHANGED on the
-   Sept 27 refresh: the ESPN rankings feed still showed this poll as current at 11:08am CT
-   Sunday, before the Week 5 poll was released. Records are as of Sept 20. */
+/* AP25: the real, official AP Top 25 for Week 5, released Sunday Sept 27, 2026 (ESPN rankings feed,
+   last updated 4:32pm CT Sunday; cross-checked against CBS/NCAA.com/ESPN reporting of the same ballot).
+   Records are as of Sept 27. Movement is versus the Sept 20 poll; 'NEW' = unranked last week. */
 var AP25=[
- [1,'Texas','SEC','3-0','0'],[2,'Georgia','SEC','3-0','0'],[3,'Notre Dame','Ind','3-0','0'],
- [4,'Ole Miss','SEC','3-0','+4'],[5,'Indiana','Big Ten','3-0','-1'],[6,'Miami','ACC','3-0','-1'],
- [7,'Ohio State','Big Ten','2-1','-1'],[8,'Alabama','SEC','3-0','+2'],[9,'BYU','Big 12','3-0','+2'],
- [10,'LSU','SEC','2-1','-3'],[11,'Texas Tech','Big 12','3-0','+2'],[12,'USC','Big Ten','4-0','0'],
- [13,'Penn State','Big Ten','3-0','+1'],[14,'Tennessee','SEC','3-0','+1'],[15,'Utah','Big 12','3-0','+2'],
- [16,'Louisville','ACC','2-1','+7'],[17,'Iowa','Big Ten','3-0','+1'],[18,'Michigan','Big Ten','3-0','+1'],
- [19,'Missouri','SEC','3-0','+1'],[20,'Oregon','Big Ten','2-1','+1'],[21,'Florida','SEC','3-0','NEW'],
- [22,'SMU','ACC','2-1','-6'],[23,'Texas A&amp;M','SEC','2-1','-14'],[24,'Mississippi State','SEC','3-0','NEW'],
- [25,'Houston','Big 12','2-1','-3']
+ [1,'Texas','SEC','4-0','0'],[2,'Georgia','SEC','4-0','0'],[3,'Notre Dame','Ind','4-0','0'],
+ [4,'Miami','ACC','4-0','+2'],[5,'Ohio State','Big Ten','3-1','+2'],[6,'Indiana','Big Ten','4-0','-1'],
+ [7,'Alabama','SEC','4-0','+1'],[8,'Florida','SEC','4-0','+13'],[9,'Ole Miss','SEC','3-1','-5'],
+ [10,'BYU','Big 12','3-0','-1'],[11,'LSU','SEC','3-1','-1'],[12,'Texas Tech','Big 12','4-0','-1'],
+ [13,'Utah','Big 12','4-0','+2'],[14,'Iowa','Big Ten','4-0','+3'],[15,'Oregon','Big Ten','3-1','+5'],
+ [16,'Mississippi State','SEC','4-0','+8'],[17,'Tennessee','SEC','3-1','-3'],[18,'USC','Big Ten','4-1','-6'],
+ [19,'Oklahoma State','Big 12','3-1','NEW'],[20,'Houston','Big 12','3-1','+5'],[21,'SMU','ACC','3-1','+1'],
+ [22,'Boise State','MW','3-1','NEW'],[23,'UCLA','Big Ten','4-0','NEW'],[24,'Kentucky','SEC','3-1','NEW'],
+ [25,'Missouri','SEC','3-1','-6']
 ];
 /* 12-team CFP projection: Heather Dinich's ESPN post-Week 4 projection (published 11:14pm ET
    Saturday Sept 26, 2026), replacing the post-Week 3 version. Florida enters the field at No. 8 after
@@ -158,46 +157,57 @@ var CFP={
  ],
  note:'Post-Week 4 projection (Heather Dinich, ESPN, published late Saturday Sept 26, 2026) &mdash; what the selection committee might do if rankings came out today, not a real committee vote. Seeds 1-4 earn first-round byes; seeds 5-12 play the opening round on campus Dec 18-19, higher seed hosting. Oregon is 12th in Dinich&rsquo;s projected ranking but is squeezed out of the bracket by Boise State&rsquo;s automatic bid. Ten of the 12 projected teams are drafted. Refreshes with the real CFP Committee bracket once rankings begin in November.'
 };
-/* Heisman: BetMGM odds as reported by SportsBettingDime on Sunday Sept 27, 2026 (after Week 4),
-   cross-checked against ESPN's DraftKings-based betting column (Smith +240, Mensah +340).
-   Mississippi State's Kamario Taylor (+600, 3rd overall) is not a drafted team, so he is not listed. */
+/* Heisman: BetMGM, per VegasInsider's BetMGM odds story of Thursday Oct 1 (Smith +275, Mensah +400,
+   Chambliss, Carr and Baugh tied at +1200), which agrees with Yahoo Sports' BetMGM story of Sept 30.
+   Mississippi State's Kamario Taylor (+700, 3rd overall) is not a drafted team, so he is not listed. */
 var HEIS=[
- [1,'Jeremiah Smith','Ohio State','WR','+250 &mdash; the new favorite, in from +975 on Wednesday: 12 catches for 217 yards and 4 TD against Illinois, tying Ohio State&rsquo;s single-game record for touchdown catches'],
- [2,'Darian Mensah','Miami','QB','+450 &mdash; out from +325 despite another near-perfect night: 23-of-27 for 338 yards and 3 TD, plus a rushing score, against Central Michigan'],
- [3,'Jadan Baugh','Florida','RB','+1000 &mdash; new to the board: 142 yards and 3 TD on 29 carries in the 52-28 rout of No. 4 Ole Miss'],
- [4,'Trinidad Chambliss','Ole Miss','QB','+1100 &mdash; out from +325 after the loss in Gainesville, though he threw for 298 yards and ran for 2 TD'],
- [5,'CJ Carr','Notre Dame','QB','+1200 &mdash; 14-of-22 for 237 yards and 3 TD, plus a rushing score, in a 49-10 win at Purdue']
+ [1,'Jeremiah Smith','Ohio State','WR','+275 &mdash; the new favorite, in from +1000 before Week 4: 12 catches for 217 yards and 4 TD against Illinois, tying Ohio State&rsquo;s single-game record for touchdown catches'],
+ [2,'Darian Mensah','Miami','QB','+400 &mdash; out from +325 despite another near-perfect night: 23-of-27 for 338 yards and 3 TD, plus a rushing score, against Central Michigan'],
+ [3,'CJ Carr','Notre Dame','QB','+1200 (tied) &mdash; 14-of-22 for 237 yards and 3 TD, plus a rushing score, in a 49-10 win at Purdue'],
+ [4,'Jadan Baugh','Florida','RB','+1200 (tied) &mdash; new to the board: 142 yards and 3 TD on 29 carries in the 52-28 rout of No. 4 Ole Miss'],
+ [5,'Trinidad Chambliss','Ole Miss','QB','+1200 (tied) &mdash; out from +325 after the loss in Gainesville, though he threw for 298 yards and ran for 2 TD']
 ];
 /* Key Injuries Watch: [team, player, position, status ('out'|'doubt'|'watch'), note] across ALL 21
-   drafted teams. Sunday Sept 27 rebuild: postgame coach comments and named-outlet reporting from
-   Friday/Saturday games, plus season-ending and long-term injuries carried forward. Entries that
-   still rest only on the Sept 20 national report say so. Formal Big Ten/SEC availability
-   reports for Week 5 start midweek, after this refresh. */
+   drafted teams. Friday Oct 2 update: the Tuesday list, overwritten wherever this week's conference
+   availability reports (Big Ten, SEC, Big 12 and ACC, Wednesday/Thursday editions) say something newer.
+   Nonconference games (LSU-McNeese, Notre Dame, SMU) have no conference report. Entries that still rest
+   only on the Sept 20 national report say so. */
 var INJURIES=[
- ['Oregon','Dante Moore','QB','watch','Taken to a hospital by ambulance after a late hit at USC; Dan Lanning said he &ldquo;is moving,&rdquo; and reports say he has a concussion. Oregon has a bye before UCLA on Oct 10'],
+ ['Oregon','Dante Moore','QB','watch','Concussion from the late hit at USC; Oregon said MRI and CT scans were clean, and Dan Lanning said Monday he is &ldquo;doing much better&rdquo; but will not be rushed back. Oregon has a bye before UCLA on Oct 10'],
  ['Oregon','Jeremiah McClellan','WR','out','Broken foot suffered in warmups before Portland State; out indefinitely'],
- ['Indiana','Turbo Richard','RB','doubt','Left the Northwestern game in the first half; 247Sports reports a high ankle sprain, and ESPN sources say there is optimism he could return as soon as Rutgers'],
+ ['Indiana','Turbo Richard','RB','watch','Listed probable on the Big Ten availability report for Rutgers after the ankle injury at Northwestern; the next back up, Sean Cuono, is questionable'],
+ ['Indiana','Daniel Ndukwe','EDGE','out','A surprise addition to Wednesday&rsquo;s report, listed out for Rutgers'],
  ['Indiana','Khobie Martin','RB','out','Backup running back still out with an arm injury'],
- ['LSU','Sam Leavitt','QB','watch','Said he pulled a hamstring in the second quarter against Texas A&amp;M, played through it, and will be &ldquo;just fine&rdquo;'],
- ['LSU','Whit Weeks','LB','watch','Left for the locker room in a walking boot after an apparent ankle injury against Texas A&amp;M'],
+ ['Penn State','Max Granville','EDGE','out','Out for the season with an undisclosed injury'],
+ ['Penn State','Koby Howard','WR','out','Out for Northwestern with an undisclosed injury; expected back this season'],
+ ['Penn State','Daryus Dixson','CB','watch','Top cornerback still questionable on Thursday&rsquo;s report; Matt Campbell said he was &ldquo;really, really sore&rdquo; early in the week but on the practice field Wednesday'],
+ ['Michigan','Andrew Marsh','WR','watch','Starting receiver questionable on the Wednesday and Thursday reports for Minnesota'],
+ ['Michigan','Andrew Sprague','OT','watch','Starting right tackle questionable after missing two games; Kyle Whittingham said the team is &ldquo;closer to clarity than we were&rdquo;'],
+ ['Michigan','John Henry Daley','EDGE','watch','Foot injury on the final play against Iowa; questionable, as is fellow starting edge Dom Nichols'],
+ ['Michigan','Andrew Babalola','OT','out','Out for Minnesota; Whittingham said he will start practicing again next week. OL Blake Frazier, hurt against Iowa, is probable'],
+ ['Ohio State','Phillip Daniels','OL','watch','Starting offensive lineman questionable for Iowa on Wednesday&rsquo;s report, along with CB Jay Timmons. DE Zion Grady is off the report and could return'],
+ ['Alabama','Jayvin James','OT','watch','Starting right tackle questionable for Mississippi State with a lower-body injury; Kalen DeBoer said he had been on the practice field &ldquo;a little bit&rdquo;'],
+ ['Alabama','Cayden Jones','LB','out','Out for the season, Kalen DeBoer said. Edge rushers Justin Hill and Desmond Umeozulu are also out'],
+ ['Florida','Vernell Brown III','WR','watch','Questionable for Missouri with what Jon Sumrall called &ldquo;the lowest-grade strain you could get&rdquo; in his knee; WR Bailey Stockton (sore back) is also questionable'],
+ ['Georgia','Nate Frazier','RB','watch','Questionable on both the Wednesday and Thursday SEC reports for Vanderbilt; missed the Oklahoma game with injured ribs'],
+ ['LSU','Sam Leavitt','QB','watch','Hamstring pulled against Texas A&amp;M; Lane Kiffin says LSU will be &ldquo;extremely&rdquo; careful and had not named a starter for McNeese. A nonconference game, so there is no SEC availability report'],
+ ['LSU','Whit Weeks','LB','out','Broken fibula against Texas A&amp;M; had surgery Monday, and Kiffin gave no timeline for the rest of the season'],
  ['LSU','Dashawn Spears','DB','out','Torn ACL against Ole Miss; out for the season'],
  ['LSU','Trey&rsquo;Dez Green','TE','out','Knee sprain; missed Texas A&amp;M and was expected to miss possibly a game or two after'],
- ['Georgia','Nate Frazier','RB','watch','Held out against Oklahoma with injured ribs; Chauncey Bowens started in his place'],
  ['Ole Miss','Kewan Lacy','RB','watch','Ruled out at Florida with the left shoulder injury from the LSU game; Ole Miss now has a bye'],
- ['Miami','Mark Fletcher Jr.','RB','watch','Held out against Central Michigan with an upper-body injury; Mario Cristobal indicated he should be available at Clemson'],
+ ['Miami','Xavier Lucas','CB','watch','Starting cornerback, out since the opener, is questionable for Clemson; RB Mark Fletcher Jr. is not on the ACC report and should play'],
  ['Miami','Charmar Brown','RB','out','Out for the season'],
  ['Miami','Josh Moore','WR','out','Out for the season'],
  ['Texas A&amp;M','Terry Bussey','WR','out','Out for the season &mdash; hurt on the opening kickoff against Kentucky'],
  ['Oklahoma','David Stone','DT','watch','Knee injury in practice; was listed questionable for Georgia. Oklahoma has a bye before Texas'],
  ['Oklahoma','Michael Fasusi','OT','out','Starting left tackle was set to miss his third straight game at Georgia'],
  ['USC','T. Mosley','WR','out','Knee; listed doubtful for Oregon after an extended absence'],
- ['Alabama','Cayden Jones','LB','out','Out for the season, Kalen DeBoer said'],
- ['Michigan','Andrew Babalola','OT','out','Suffered a setback and is sidelined indefinitely'],
- ['Colorado','Danny Scudero','WR','out','Deion Sanders ruled him out for Baylor; no update since'],
- ['Colorado','Demetrius Hunter','C','out','Also ruled out for Baylor by Sanders; no update since'],
+ ['Colorado','Lamont Lester Jr.','DL','doubt','The Buffs&rsquo; best pass rusher is doubtful for Texas Tech; top tight ends Zach Atkins and Charlie Williams are doubtful too'],
+ ['Colorado','Danny Scudero','WR','out','Out for Texas Tech on the Big 12 availability report, along with C Demetrius Hunter and CB Preston Ashley'],
+ ['Texas Tech','Terrance Carter Jr.','TE','watch','Starting tight end questionable at Colorado, along with both left-side starters on the line, OT Howard Sampson and OG Cash Cleveland. CB Ashton Hampton and LB Adam Hill are out'],
  ['Texas','N. Townsend','TE','out','Knee injury suffered against Ohio State (Sept 20 report); no update since'],
  ['Tennessee','J. Harmon','LB','out','Knee injury (Sept 20 report); no update since'],
- ['Iowa State','Jaheim Singletary','CB','watch','Hospitalized after a collision against Bowling Green and released the same weekend; no public update since']
+ ['Iowa State','Jaheim Singletary','CB','watch','Questionable (26-74% chance to play) for West Virginia on the Big 12 report after the concussion. WR Carter Pabst, OL Caden Maas, DE Caden Crawford and DT Ka&rsquo;Mori Moore are out'],
 ];
 /* Conference standings [team, confRecord, overall] &mdash; conference and overall records both
    taken from ESPN's conference standings feed on Sunday Sept 27, after all Week 4 games.
@@ -209,9 +219,11 @@ var CONF={
  'ACC':[['Miami','2-0','4-0'],['SMU','1-1','3-1'],['Clemson','2-0','3-1'],['Louisville','1-1','2-2'],['Florida State','0-1','2-2'],['Georgia Tech','0-1','1-3']]
 };
 var STORIES=[
+ ['AP Week 5 poll: Florida to No. 8; Penn State, Michigan and Texas A&amp;M drop out','var(--cyan)','Florida',['Florida (Cignatty) jumps 13 spots to No. 8 after routing Ole Miss (GoBuffs!), which falls five to No. 9; Miami (Push the Button) climbs to No. 4 and Ohio State (Fck Cancer!) to No. 5','Penn State (Fck Cancer!), Michigan (Push the Button) and Texas A&amp;M (Fck Cancer!) all fall out of the poll; USC drops six to No. 18 and Oregon rises five to No. 15','Cignatty now has three top-eight teams: Notre Dame No. 3, Indiana No. 6 and Florida No. 8']],
+ ['Isaac Wilson expected to start for Colorado against Texas Tech','var(--orange)','Colorado',['ESPN and On3 sources say the Utah transfer will replace Julian Lewis for Saturday&rsquo;s Pool Matchup with No. 12 Texas Tech; On3 says he has taken all the first-team reps','Wilson led the tying drive after taking over at halftime at Baylor, where Colorado came back from 10 down to tie it before losing','Deion Sanders declined to name a starter on Tuesday; Colorado lists six players doubtful, including top pass rusher Lamont Lester Jr.']],
  ['Dante Moore hurt on a late hit as Oregon wins the Pool Matchup at USC','var(--red)','Oregon',['Oregon (Block) QB Dante Moore was taken off on a stretcher and to a hospital in the second quarter after USC LB Desman Stephens hit him late on a slide; Stephens was ejected for targeting','Nebraska transfer Dylan Raiola threw for 289 yards and 2 TD in relief, including the go-ahead 29-yarder to Dakorien Moore with 8:35 left, and Oregon beat USC (Push the Button) 41-27','Dan Lanning called the hit &ldquo;a disgusting play&rdquo; and said Moore &ldquo;is moving&rdquo;; reports say he has a concussion. Oregon has a bye next']],
- ['Florida runs over No. 4 Ole Miss, 52-28','var(--green)','Florida',['Florida (Cignatty) ran 53 times for 302 yards and six touchdowns and led GoBuffs!&rsquo; Ole Miss from start to finish','Jadan Baugh had 142 yards and 3 TD on 29 carries; Duke Clark added 126 yards on 12, including a 45-yard score','Florida is 4-0 for the first time since 2019 and enters ESPN&rsquo;s projected playoff field as the 8 seed; Chambliss drifted from +325 to +1100 in the Heisman odds']],
- ['Jeremiah Smith takes over the Heisman race','var(--cyan)','Ohio State',['12 catches, 217 yards and 4 TD against Illinois tied Ohio State&rsquo;s single-game record for touchdown catches; the catches and yards were both career highs','BetMGM moved him from +975 on Wednesday to +250, ahead of Miami&rsquo;s Darian Mensah (+450)','Ohio State (Fck Cancer!) goes to unbeaten Iowa next as a 14-point favorite']],
+ ['Florida runs over No. 4 Ole Miss, 52-28','var(--green)','Florida',['Florida (Cignatty) ran 53 times for 302 yards and six touchdowns and led GoBuffs!&rsquo; Ole Miss from start to finish','Jadan Baugh had 142 yards and 3 TD on 29 carries; Duke Clark added 126 yards on 12, including a 45-yard score','Florida is 4-0 for the first time since 2019 and enters ESPN&rsquo;s projected playoff field as the 8 seed; Chambliss drifted from +325 to +1200 in the Heisman odds']],
+ ['Jeremiah Smith takes over the Heisman race','var(--cyan)','Ohio State',['12 catches, 217 yards and 4 TD against Illinois tied Ohio State&rsquo;s single-game record for touchdown catches; the catches and yards were both career highs','BetMGM moved him from +1000 to +250 after the game; he is now +275, ahead of Miami&rsquo;s Darian Mensah (+400)','Ohio State (Fck Cancer!) goes to unbeaten Iowa next as a 14-point favorite']],
  ['plevas82 sweeps both of his Pool Matchups','var(--purple)','LSU',['LSU 35, Texas A&amp;M 6: Sam Leavitt threw for 312 yards while playing through a hamstring pull, and a Lane Kiffin fourth-down call produced a 57-yard touchdown to Jackson Harris','Georgia 41, Oklahoma 13: Chris Cole returned a fumble 85 yards for a touchdown and Oklahoma turned it over four times','plevas82 went 3-0 for the week; Fck Cancer!&rsquo;s Texas A&amp;M is 0-2 in the SEC, and GoBuffs! went 0-3']],
  ['Wisconsin stuns Penn State; Iowa beats Michigan on the last play','var(--red)','Penn State',['Penn State (Fck Cancer!) led 20-10 in the fourth quarter and lost 24-20 at home; Wisconsin&rsquo;s winner was a 72-yard pass with 1:13 left','Michigan (Push the Button) outgained Iowa 429-285 but lost 20-19 on a 16-yard Hank Brown touchdown pass as time ran out','Both fixed-coverage Big Ten teams are now 0-1 in conference play']],
  ['Texas holds on in Knoxville','var(--gold)','Texas',['Texas 20, Tennessee 17: Colin Simmons tied the Texas record with 5 sacks, and the Longhorns had 10 as a team','Tennessee scored with 1:22 left and recovered an onside kick before a Hail Mary was knocked down on the final play','NotGamblingNCAA owns both teams, so the result was a guaranteed split; Arch Manning (14-of-19, 201 yards, 1 INT) said &ldquo;I didn&rsquo;t play very well&rdquo;']],
@@ -222,7 +234,7 @@ var STORIES=[
    Penn State, Indiana, Michigan, Colorado) plus all five drafted-vs-drafted games (four Pool
    Matchups and Texas/Tennessee). Every score, stat line and team-stat row below comes from the
    game's ESPN box score; narrative details come from the AP game stories. Where the two
-   disagreed, a third source was checked (see the REFRESH-STATUS banner). */
+   disagreed, a third source was checked (see the review status banner). */
 var RECAPS_INTRO='Ten full cards, matching last week&rsquo;s ten previews: the fixed five (Iowa State, Penn State, Indiana, Michigan, Colorado) plus all five drafted-vs-drafted games &mdash; the four Pool Matchups and Texas at Tennessee. Everything else is a compact line on the Drafters tab.';
 var RECAPS=[
  {team:'Iowa State',tracked:true,a:'Utah',b:'Iowa State',sa:'31',sb:'17',
@@ -299,67 +311,67 @@ var RECAPS=[
 var RECAPS_MINI=[];
 /* PREVIEWS: the five always-covered teams plus three games of the week. Colorado's card doubles as
    Week 5's only cross-drafter Pool Matchup (Texas Tech at Colorado). Walking down the ranking of
-   other drafted teams hits Texas (bye), Georgia (Vanderbilt, -24.5) and Notre Dame (North
-   Carolina, -21.5); the three picked instead are the only drafted teams playing ranked opponents
+   other drafted teams hits Texas (bye), Georgia (Vanderbilt, -25.5) and Notre Dame (North
+   Carolina, -21); the three picked instead are the only drafted teams playing ranked opponents
    - Ohio State at Iowa, Alabama at Mississippi State, Florida at Missouri - a deliberate choice,
-   flagged in the REFRESH-STATUS banner. Eight cards total. Byes: Texas, Ole Miss, Oregon, Oklahoma.
-   Lines are DraftKings via ESPN's scoreboard feed on Sunday Sept 27; three games had none yet. */
-var PREVIEWS_INTRO='Eight full cards: the five always-covered teams (Iowa State, Penn State, Indiana, Michigan, Colorado &mdash; Colorado&rsquo;s card is also Week 5&rsquo;s only Pool Matchup, against Texas Tech) plus the three drafted teams playing ranked opponents: Ohio State at Iowa, Alabama at Mississippi State and Florida at Missouri. Texas, Ole Miss, Oregon and Oklahoma have byes. Games run Oct 2-3. Lines are DraftKings as of Sunday Sept 27.';
+   flagged in the review status banner. Eight cards total. Byes: Texas, Ole Miss, Oregon, Oklahoma.
+   Lines are DraftKings via ESPN's scoreboard feed, re-pulled Friday Oct 2. */
+var PREVIEWS_INTRO='Eight full cards: the five always-covered teams (Iowa State, Penn State, Indiana, Michigan, Colorado &mdash; Colorado&rsquo;s card is also Week 5&rsquo;s only Pool Matchup, against Texas Tech) plus the three drafted teams playing ranked opponents: Ohio State at Iowa, Alabama at Mississippi State and Florida at Missouri. Texas, Ole Miss, Oregon and Oklahoma have byes. Games run Oct 2-3. Lines are DraftKings as of Friday Oct 2.';
 var PREVIEWS=[
  {team:'Iowa State',tracked:true,a:'West Virginia',b:'Iowa State',tag:'Big 12 &middot; Ames',
   meta:'Week 5 | Jack Trice Stadium | Sat Oct 3 | 11:00am CT, TNT',
-  spread:['No line yet','&mdash;','DraftKings had not posted a number for this game as of Sunday morning'],
+  spread:['Iowa State -3 (DraftKings)','O/U 53.5','Down from -3.5 on Tuesday; a small home favorite in a game between two 0-1 Big 12 teams'],
   storyline:'Iowa State has lost two of its last three and needs this one to avoid an 0-2 Big 12 start. West Virginia is 3-1 but coming off a 41-24 home loss to Oklahoma State. Utah exposed the Cyclones&rsquo; tackling &mdash; 205 rushing yards allowed &mdash; and Jaylen Raynor has now thrown an interception in three straight games.',
-  injuries:[['West Virginia &mdash; nothing notable found in Sunday reporting','ok'],['Iowa State &mdash; no public update on CB Jaheim Singletary since his Bowling Green hospitalization','doubt']],
-  keys:['Tackling: Jimmy Rogers said missed tackles led to Utah&rsquo;s 205 rushing yards','Getting Aiden Flora going again after 54 yards on 13 carries against Utah','Raynor&rsquo;s turnovers &mdash; two more interceptions on Saturday'],
-  pred:['Iowa State in a close one','A home game against a team that just gave up 41 at home is Iowa State&rsquo;s best chance to get back to .500 in the league &mdash; no line yet to check that against.']},
+  injuries:[['West Virginia &mdash; out: S Emory Snyder, WR Armoni Weaver-Bomar, RB Andre Devine, DL Darius Wiley','out'],['Iowa State &mdash; CB Jaheim Singletary questionable (concussion); out: WR Carter Pabst, OL Caden Maas, DE Caden Crawford, DT Ka&rsquo;Mori Moore','doubt']],
+  keys:['Tackling: Jimmy Rogers counted 29 missed tackles against Utah, &ldquo;which is really high&rdquo;','Getting Aiden Flora going again after 54 yards on 13 carries against Utah','Raynor&rsquo;s turnovers &mdash; two more interceptions on Saturday'],
+  pred:['Iowa State by a field goal','A home game against a team that just gave up 41 at home is Iowa State&rsquo;s best chance to get back to .500 in the league, and the 3-point line agrees it is close.']},
  {team:'Penn State',tracked:true,a:'Penn State',b:'Northwestern',tag:'Friday night &middot; Evanston',
   meta:'Week 5 | Ryan Field | Fri Oct 2 | 7:00pm CT, FOX',
-  spread:['Penn State -4.5 (DraftKings)','O/U 48.5','Penn State closed around a 10-point home favorite against Wisconsin; this is under a touchdown on the road'],
+  spread:['Penn State -2.5 (DraftKings)','O/U 45.5','Down from -4.5 on Sunday; Penn State closed around a 10-point home favorite against Wisconsin'],
   storyline:'Penn State blew a 20-10 fourth-quarter lead at home against Wisconsin and now gets a short week and a Friday-night road trip to a Northwestern team that beat Colorado 41-7 and took Indiana to the final minute. Rocco Becht completed 12 of 29 passes last week, and Penn State went without a first down on four of its last five possessions. Aidan Chiles has thrown for 534 yards and 5 TD in his last two games.',
-  injuries:[['Penn State &mdash; nothing new found in Sunday reporting; check Thursday&rsquo;s Big Ten availability report','ok'],['Northwestern &mdash; nothing notable found in Sunday reporting','ok']],
-  keys:['Whether Penn State&rsquo;s passing game can move the ball after 12-of-29 against Wisconsin','Aidan Chiles: 534 passing yards and 5 TD passes against Colorado and Indiana','A Friday road game six days after a gutting loss'],
-  pred:['Penn State by a field goal','The market has taken most of the air out of this line, and Northwestern has played well two weeks running.']},
+  injuries:[['Penn State &mdash; WR Koby Howard, EDGE Max Granville (season), LB Cam Smith and CB Christian Askew out; top CB Daryus Dixson questionable','doubt'],['Northwestern &mdash; TE Luke Dehnicke (140 yards against Indiana) and DBs Braden Turner and Damon Walters doubtful; CB Josh Fussell out','out']],
+  keys:['Whether Penn State&rsquo;s passing game can move the ball after 12-of-29 against Wisconsin','Aidan Chiles: 534 passing yards and 5 TD passes against Colorado and Indiana, but likely without top target Luke Dehnicke','A Friday road game six days after a gutting loss'],
+  pred:['Penn State by a field goal','The line has dropped two points since Sunday to -2.5, and Northwestern has played well two weeks running.']},
  {team:'Indiana',tracked:true,a:'Indiana',b:'Rutgers',tag:'Saturday night &middot; Piscataway',
   meta:'Week 5 | SHI Stadium | Sat Oct 3 | 7:00pm CT, BTN',
-  spread:['Indiana -23.5 (DraftKings)','O/U 54.5','Indiana did not cover about 20 points against Northwestern'],
-  storyline:'Indiana is 4-0 and owns the longest winning streak in FBS at 20 games, but Friday exposed a problem: Northwestern outscored the Hoosiers 23-17 after halftime. RB Turbo Richard left that game with what 247Sports reports as a high ankle sprain; ESPN sources say there is optimism he could be back for this one. If not, Lee Beebe Jr. just ran for 203 yards. Rutgers beat Howard 58-7 last week.',
-  injuries:[['Indiana &mdash; RB Turbo Richard (reported high ankle sprain) is uncertain; backup RB Khobie Martin remains out with an arm injury','doubt'],['Rutgers &mdash; nothing notable found in Sunday reporting','ok']],
+  spread:['Indiana -24.5 (DraftKings)','O/U 56.5','Indiana did not cover about 20 points against Northwestern'],
+  storyline:'Indiana is 4-0 and owns the longest winning streak in FBS at 20 games, but Friday exposed a problem: Northwestern outscored the Hoosiers 23-17 after halftime. RB Turbo Richard left that game with an ankle injury, but Curt Cignetti said Monday the diagnosis was &ldquo;really good news,&rdquo; and Richard is listed probable. If he is limited, Lee Beebe Jr. just ran for 203 yards. Rutgers beat Howard 58-7 last week.',
+  injuries:[['Indiana &mdash; RB Turbo Richard (ankle) probable; RB Sean Cuono and CB A.J. Harris questionable; EDGE Daniel Ndukwe and RB Khobie Martin out','doubt'],['Rutgers &mdash; nothing notable found in early-week reporting','ok']],
   keys:['Richard&rsquo;s ankle, and whether Beebe carries the load again','Second-half defense after allowing 23 points after halftime on Friday','Josh Hoover still has not thrown an interception this season'],
   pred:['Indiana by 20-plus','A Big Ten road game at night, but on paper this is a mismatch.']},
  {team:'Michigan',tracked:true,a:'Michigan',b:'Minnesota',tag:'Big Ten &middot; Minneapolis',
   meta:'Week 5 | Huntington Bank Stadium | Sat Oct 3 | 11:00am CT, FOX',
-  spread:['Michigan -6.5 (DraftKings)','O/U 44.5','Minnesota comes in off a 27-24 win at Washington'],
+  spread:['Michigan -6 (DraftKings)','O/U 43.5','Minnesota comes in off a 27-24 win at Washington'],
   storyline:'Michigan lost a game it controlled on the stat sheet &mdash; 429 yards to 285 &mdash; on the final play, and now goes on the road 0-1 in the Big Ten. Bryce Underwood threw for 276 yards and 2 TD to JJ Buchanan, but Michigan settled for two field goals, missed a two-point try and gave up a 99-yard kickoff return. Minnesota is 3-1 after winning at Washington.',
-  injuries:[['Michigan &mdash; OT Andrew Babalola remains out indefinitely; no new injuries reported from the Iowa game','out'],['Minnesota &mdash; nothing notable found in Sunday reporting','ok']],
+  injuries:[['Michigan &mdash; OT Andrew Babalola out; WR Andrew Marsh, RT Andrew Sprague and starting edges John Henry Daley and Dom Nichols questionable; OL Blake Frazier probable','doubt'],['Minnesota &mdash; nothing notable found in early-week reporting','ok']],
   keys:['Finishing drives: field goals and a failed two-point try cost Michigan against Iowa','Kick coverage after the 99-yard return','An 11:00am CT road kickoff a week after a last-play loss'],
   pred:['Michigan by 3-7','The better team on paper, but three of Michigan&rsquo;s four games have been decided by one score.']},
  {team:'Colorado',tracked:true,a:'Texas Tech',b:'Colorado',tag:'Pool Matchup &middot; Boulder',
   meta:'Week 5 | Folsom Field | Sat Oct 3 | 6:30pm CT, FOX',
-  spread:['Texas Tech -14.5 (DraftKings)','O/U 50.5','Colorado is a two-touchdown home underdog'],
-  storyline:'NotGamblingNCAA vs GoBuffs!, the only Pool Matchup of Week 5. Texas Tech is 4-0 and has won 11 straight at home, though Joey McGuire keeps complaining about first-half mistakes &mdash; Will Hammond threw three interceptions in the last 5&frac12; minutes of the first half against Sam Houston. Colorado is 2-2 after two straight losses and has no settled quarterback: Deion Sanders benched Julian Lewis for Isaac Wilson at halftime in Waco and says the staff will reassess.',
-  injuries:[['Texas Tech &mdash; nothing notable found in Sunday reporting','ok'],['Colorado &mdash; WR Danny Scudero and C Demetrius Hunter were ruled out for Baylor; no update for this game','out']],
-  keys:['Who starts at quarterback for Colorado &mdash; Lewis or Wilson','Texas Tech&rsquo;s turnovers: four giveaways against Sam Houston','A night game at altitude in Boulder'],
-  pred:['Texas Tech by 10-14','Tech is the better team, but a two-touchdown number on the road after a four-turnover game leaves room for a Colorado cover.']},
+  spread:['Texas Tech -13.5 (DraftKings)','O/U 50.5','Back out from -12.5 on Tuesday; opened the week at -14.5'],
+  storyline:'NotGamblingNCAA vs GoBuffs!, the only Pool Matchup of Week 5. Texas Tech is 4-0 and has won 11 straight at home, though Joey McGuire keeps complaining about first-half mistakes &mdash; Will Hammond threw three interceptions in the last 5&frac12; minutes of the first half against Sam Houston. Colorado is 2-2 after two straight losses. Deion Sanders benched Julian Lewis for Isaac Wilson at halftime in Waco. ESPN and On3 sources say Wilson will start and has taken all the first-team reps in practice; Sanders declined to name a starter on Tuesday.',
+  injuries:[['Texas Tech &mdash; CB Ashton Hampton and LB Adam Hill out; TE Terrance Carter Jr., OT Howard Sampson and OG Cash Cleveland questionable; LBs Austin Romaine and Adam Trick probable','doubt'],['Colorado &mdash; WR Danny Scudero, C Demetrius Hunter and CB Preston Ashley out; top pass rusher Lamont Lester Jr., both top TEs and three DBs doubtful','out']],
+  keys:['Isaac Wilson&rsquo;s first start, if the reports hold &mdash; he led the tying drive at Baylor','Texas Tech&rsquo;s turnovers: four giveaways against Sam Houston','A night game at altitude in Boulder'],
+  pred:['Texas Tech by 10-14','Tech is the better team and Colorado&rsquo;s injury report is long, but 13.5 points on the road after a four-turnover game leaves room for a Colorado cover.']},
  {team:'Ohio State',tracked:true,a:'Ohio State',b:'Iowa',tag:'Big Ten &middot; Iowa City',
   meta:'Week 5 | Kinnick Stadium | Sat Oct 3 | 2:30pm CT, CBS',
-  spread:['Ohio State -14 (DraftKings)','O/U 44.5','Iowa is 4-0 and a two-touchdown home underdog'],
-  storyline:'The biggest Week 5 game for the pool. Ohio State (Fck Cancer!) is coming off Jeremiah Smith&rsquo;s 12-catch, 217-yard, 4-touchdown day that made him the Heisman favorite. Iowa is 4-0 and just won at Michigan on a last-play touchdown. A 44.5 total says the market expects Iowa to keep the game short.',
-  injuries:[['Ohio State &mdash; nothing new found from the Illinois game','ok'],['Iowa &mdash; nothing notable found in Sunday reporting','ok']],
+  spread:['Ohio State -14 (DraftKings)','O/U 45.5','No. 14 Iowa is 4-0 and a two-touchdown home underdog'],
+  storyline:'The biggest Week 5 game for the pool. Ohio State (Fck Cancer!) is coming off Jeremiah Smith&rsquo;s 12-catch, 217-yard, 4-touchdown day that made him the Heisman favorite. Iowa is 4-0 and just won at Michigan on a last-play touchdown. A 45.5 total says the market expects Iowa to keep the game short.',
+  injuries:[['Ohio State &mdash; OL Phillip Daniels and CB Jay Timmons questionable; DE Zion Grady off the report and could return','doubt'],['Iowa &mdash; starting S Tyler Brown out','out']],
   keys:['Julian Sayin and Smith against a defense that gave up 276 passing yards to Michigan','Iowa&rsquo;s special teams: a 99-yard kickoff-return touchdown last week','Hank Brown in the two-minute drill &mdash; 91 yards for the winner in Ann Arbor'],
   pred:['Ohio State by 10-14','Ohio State should win; two touchdowns at Kinnick is a lot to lay.']},
  {team:'Alabama',tracked:true,a:'Alabama',b:'Mississippi State',tag:'SEC &middot; Starkville',
   meta:'Week 5 | Davis Wade Stadium | Sat Oct 3 | 11:00am CT, ABC',
-  spread:['Alabama -4.5 (DraftKings)','O/U 59.5','Both teams 4-0; Mississippi State just beat Missouri'],
-  storyline:'Block&rsquo;s Alabama goes on the road to face another unbeaten SEC team. Keelon Russell threw for 365 yards and 4 TD against South Carolina, and Alabama is 4-0. Mississippi State is also 4-0 after beating Missouri 31-24, and its QB Kamario Taylor is now third in BetMGM&rsquo;s Heisman odds at +600. Only 4.5 points separate two unbeaten SEC teams.',
-  injuries:[['Alabama &mdash; LB Cayden Jones is out for the season','out'],['Mississippi State &mdash; nothing notable found in Sunday reporting','ok']],
+  spread:['Alabama -5.5 (DraftKings)','O/U 60.5','Opened the week at -4.5; both teams 4-0'],
+  storyline:'Block&rsquo;s Alabama goes on the road to face another unbeaten SEC team. Keelon Russell threw for 365 yards and 4 TD against South Carolina, and Alabama is 4-0. No. 16 Mississippi State is also 4-0 after beating Missouri 31-24, and its QB Kamario Taylor is third in BetMGM&rsquo;s Heisman odds at +700. Only six points separate two unbeaten SEC teams.',
+  injuries:[['Alabama &mdash; RT Jayvin James questionable; edges Justin Hill and Desmond Umeozulu and LB Cayden Jones out','doubt'],['Mississippi State &mdash; WR Ayden Williams and DLs Trevion Williams and Diesel Moye out; LB Zakari Tillman questionable','out']],
   keys:['Russell: 685 passing yards and 7 TD passes over his last two games','Containing Kamario Taylor','An 11:00am CT kickoff in Starkville'],
   pred:['Alabama by a field goal','A genuine road test; Alabama&rsquo;s passing game is the edge.']},
  {team:'Florida',tracked:true,a:'Florida',b:'Missouri',tag:'SEC &middot; Columbia',
   meta:'Week 5 | Memorial Stadium | Sat Oct 3 | 2:30pm CT, ABC',
-  spread:['Florida -4.5 (DraftKings)','O/U 56.5','Missouri is coming off a 31-24 loss at Mississippi State'],
-  storyline:'Cignatty&rsquo;s Florida is 4-0 for the first time since 2019 and has scored 40-plus in all four games. Jon Sumrall&rsquo;s team ran for 302 yards against Ole Miss, and Jadan Baugh has entered the Heisman odds at +1000. Missouri lost at Mississippi State last week and is 3-1.',
-  injuries:[['Florida &mdash; WR Eric Singleton Jr. returned from his ankle injury against Ole Miss (1 catch, 38 yards)','ok'],['Missouri &mdash; nothing notable found in Sunday reporting','ok']],
+  spread:['Florida -5.5 (DraftKings)','O/U 57.5','No. 25 Missouri is coming off a 31-24 loss at Mississippi State'],
+  storyline:'Cignatty&rsquo;s Florida is 4-0 for the first time since 2019, up to No. 8 in the AP poll, and has scored 40-plus in all four games. Jon Sumrall&rsquo;s team ran for 302 yards against Ole Miss, and Jadan Baugh has entered the Heisman odds at +1000. Missouri lost at Mississippi State last week and is 3-1.',
+  injuries:[['Florida &mdash; WRs Vernell Brown III (knee strain) and Bailey Stockton (back) questionable','doubt'],['Missouri &mdash; RBs Ahmad Hardy and Malae Fonoti, S DaJon Blair, OL Josh Adkins and TE Gavin Hoffman out','out']],
   keys:['Florida&rsquo;s run game &mdash; 302 yards and 6 rushing TD last week &mdash; on the road','Aaron Philo has been efficient: 16-of-23 against Ole Miss','A road SEC game a week after the biggest win of Sumrall&rsquo;s tenure'],
   pred:['Florida by 3-7','Florida is playing like a top-10 team; a road trip right after a signature win is the risk.']}
 ];
@@ -368,10 +380,10 @@ var PREVIEWS=[
    this week - every other drafted team appears in a full card (Texas Tech via the Colorado
    preview). Each line carries the completed Week 4 result plus the Week 5 (Oct 2-3) look-ahead. */
 var OTHER=[
- ['Notre Dame','Purdue','FINAL (Sept 26, Week 4)','Notre Dame 49, Purdue 10','Notre Dame (Cignatty, No. 3) led 35-0 at halftime; CJ Carr was 14-of-22 for 237 yards and 3 TD, ran for another score, and threw his first interception of the season, and LB Drayk Bowen scored on a 15-yard fumble return. The Irish have won 14 straight. Next: at North Carolina, Sat Oct 3, 11:00am CT on ESPN (Notre Dame -21.5, O/U 49.5).','Notre Dame'],
- ['Central Michigan','Miami','FINAL (Sept 26, Week 4)','Miami 52, Central Michigan 3','Miami (Push the Button, No. 6) trailed 3-0, then led 35-3 at halftime; Darian Mensah was 23-of-27 for 338 yards and 3 TD and ran for a fourth, and Malachi Toney caught 6 for 120 and a score. RB Mark Fletcher Jr. sat out (upper body) but is expected back. Next: at Clemson, Sat Oct 3, 6:30pm CT on ABC (Miami -17.5, O/U 51.5).','Miami'],
- ['Missouri State','SMU','FINAL (Sept 26, Week 4)','SMU 34, Missouri State 24','SMU (plevas82, No. 22) fell behind 10-0 after two first-quarter turnovers, then Kevin Jennings went 33-of-39 for 464 yards and 3 TD, with a school-record 21 straight completions, to become SMU&rsquo;s career passing leader. Yamir Knight caught 11 for 164. Next: hosts Boston College, Sat Oct 3, 11:00am CT on The CW (SMU -21, O/U 56.5).','SMU'],
- ['App State','NC State','FINAL (Sept 26, Week 4)','NC State 41, App State 31','NC State (Block) blew a 28-7 lead and was tied 31-31 with 9:41 left before Duke Scott&rsquo;s 16-yard touchdown run with 5:08 to go; Scott ran for 148 yards and 2 TD, and CJ Bailey threw for 253 and 2 TD. NC State is 2-2. Next: hosts Louisville, Sat Oct 3, 2:30pm CT on ACC Network (Louisville -5.5, O/U 59.5).','NC State']
+ ['Notre Dame','Purdue','FINAL (Sept 26, Week 4)','Notre Dame 49, Purdue 10','Notre Dame (Cignatty, No. 3) led 35-0 at halftime; CJ Carr was 14-of-22 for 237 yards and 3 TD, ran for another score, and threw his first interception of the season, and LB Drayk Bowen scored on a 15-yard fumble return. The Irish have won 14 straight. Next: at North Carolina, Sat Oct 3, 11:00am CT on ESPN (Notre Dame -21, O/U 46.5).','Notre Dame'],
+ ['Central Michigan','Miami','FINAL (Sept 26, Week 4)','Miami 52, Central Michigan 3','Miami (Push the Button, now No. 4) trailed 3-0, then led 35-3 at halftime; Darian Mensah was 23-of-27 for 338 yards and 3 TD and ran for a fourth, and Malachi Toney caught 6 for 120 and a score. RB Mark Fletcher Jr. sat out (upper body) but is not on this week&rsquo;s ACC report. Next: at Clemson, Sat Oct 3, 6:30pm CT on ABC (Miami -15.5, O/U 47.5).','Miami'],
+ ['Missouri State','SMU','FINAL (Sept 26, Week 4)','SMU 34, Missouri State 24','SMU (plevas82, now No. 21) fell behind 10-0 after two first-quarter turnovers, then Kevin Jennings went 33-of-39 for 464 yards and 3 TD, with a school-record 21 straight completions, to become SMU&rsquo;s career passing leader. Yamir Knight caught 11 for 164. Next: hosts Boston College, Sat Oct 3, 11:00am CT on The CW (SMU -21.5, O/U 55.5).','SMU'],
+ ['App State','NC State','FINAL (Sept 26, Week 4)','NC State 41, App State 31','NC State (Block) blew a 28-7 lead and was tied 31-31 with 9:41 left before Duke Scott&rsquo;s 16-yard touchdown run with 5:08 to go; Scott ran for 148 yards and 2 TD, and CJ Bailey threw for 253 and 2 TD. NC State is 2-2. Next: hosts Louisville, Sat Oct 3, 2:30pm CT on ACC Network (Louisville -3.5, O/U 58.5).','NC State']
 ];
 /* DRAFT POOL: the pool has exactly one winner &mdash; whichever drafter&rsquo;s team wins the CFP National
    Championship. No tiebreaker, no second place; if no drafted team wins the title, the pool has no winner
@@ -395,11 +407,12 @@ var DRAFT={
 };
 var NEWS={
  stories:[
+  ['Florida climbs to No. 8 in the AP poll','Sunday&rsquo;s AP Top 25 moved Florida (Cignatty) from No. 21 to No. 8. Penn State, Michigan and Texas A&amp;M dropped out, so Fck Cancer! and Push the Button each lost a ranked team. Texas, Georgia and Notre Dame stay 1-2-3.'],
   ['Dante Moore taken to hospital as Oregon wins at USC','Oregon (Block) QB Dante Moore left the Coliseum in an ambulance after a late hit by USC LB Desman Stephens, who was ejected for targeting. Dylan Raiola threw for 289 yards and 2 TD in relief, and Oregon beat USC (Push the Button) 41-27. Dan Lanning said Moore &ldquo;is moving&rdquo;; reports say he has a concussion. Oregon has a bye.'],
   ['Florida routs Ole Miss; plevas82 sweeps two Pool Matchups','Florida (Cignatty) beat GoBuffs!&rsquo; Ole Miss 52-28 behind 302 rushing yards. LSU beat Texas A&amp;M 35-6 and Georgia beat Oklahoma 41-13, so plevas82 won both of his head-to-head games. GoBuffs! went 0-3 for the week.'],
-  ['Jeremiah Smith is the new Heisman favorite','Smith caught 12 passes for 217 yards and 4 TD against Illinois, tying Ohio State&rsquo;s single-game record for touchdown catches. BetMGM has him at +250, ahead of Darian Mensah (+450); Trinidad Chambliss fell to +1100 after the loss at Florida.'],
+  ['Jeremiah Smith is the new Heisman favorite','Smith caught 12 passes for 217 yards and 4 TD against Illinois, tying Ohio State&rsquo;s single-game record for touchdown catches. BetMGM has him at +275, ahead of Darian Mensah (+400); Trinidad Chambliss fell to +1200 after the loss at Florida.'],
   ['Penn State and Michigan both lose Big Ten openers','Penn State (Fck Cancer!) blew a 20-10 fourth-quarter lead and lost 24-20 to Wisconsin. Michigan (Push the Button) outgained Iowa by 144 yards and lost 20-19 on a last-play touchdown pass.'],
-  ['Week 5 has one Pool Matchup','Texas Tech (NotGamblingNCAA) at Colorado (GoBuffs!), Sat Oct 3, 6:30pm CT on FOX, Texas Tech -14.5. Texas, Ole Miss, Oregon and Oklahoma have byes. Eight full cards are on the Previews tab.']
+  ['Week 5 has one Pool Matchup','Texas Tech (NotGamblingNCAA) at Colorado (GoBuffs!), Sat Oct 3, 6:30pm CT on FOX, Texas Tech -13.5. Colorado is expected to start Isaac Wilson at quarterback. Texas, Ole Miss, Oregon and Oklahoma have byes. Eight full cards are on the Previews tab.']
  ],
  watch:[
   ['ESPN College Football','https://www.espn.com/college-football/','Scores, rankings, and recaps'],
@@ -407,7 +420,7 @@ var NEWS={
   ['AP Top 25','https://apnews.com/hub/ap-top-25-college-football-poll','The weekly AP poll'],
   ['The Athletic - CFB','https://www.nytimes.com/athletic/college-football/','Analysis and features']
  ],
- outlook:'Week 4 had five drafted-vs-drafted games, and three drafters went 3-0 (plevas82, Cignatty, Block) while GoBuffs! went 0-3. Cignatty now leads the leaderboard at 12 wins with three unbeaten teams. Penn State, Michigan, Ole Miss, USC, Tennessee, Texas A&amp;M, Oklahoma, Colorado and Iowa State all lost. ESPN&rsquo;s post-Week 4 projection has 10 drafted teams in the 12-team field, with Florida in and USC out. The Week 5 AP poll was not out when this was built. <b>Next up: Texas Tech at Colorado, the only Pool Matchup, Sat Oct 3 (Texas Tech -14.5); Penn State plays at Northwestern on Friday night (Penn State -4.5), and Ohio State visits unbeaten Iowa (Ohio State -14).</b>'
+ outlook:'Week 4 had five drafted-vs-drafted games, and three drafters went 3-0 (plevas82, Cignatty, Block) while GoBuffs! went 0-3. Cignatty now leads the leaderboard at 12 wins with three unbeaten teams. Penn State, Michigan, Ole Miss, USC, Tennessee, Texas A&amp;M, Oklahoma, Colorado and Iowa State all lost. ESPN&rsquo;s post-Week 4 projection has 10 drafted teams in the 12-team field, with Florida in and USC out, and Sunday&rsquo;s AP poll put Florida at No. 8. <b>Next up: Texas Tech at Colorado, the only Pool Matchup, Sat Oct 3 (Texas Tech -13.5); Penn State plays at Northwestern on Friday night (Penn State -2.5), and Ohio State visits unbeaten No. 14 Iowa (Ohio State -14).</b>'
 };
 /*DATA_END*/
 /* ===== RENDERERS ===== */
