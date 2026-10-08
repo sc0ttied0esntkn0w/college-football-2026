@@ -36,16 +36,16 @@
   main,footer{position:relative;z-index:0;isolation:isolate;}
   #drafterSwitcher{-webkit-transform:translateZ(0);transform:translateZ(0);}
   /* Phones: keep the pinned area small. syncStickyTop() slides the title/stamp off-screen so only the
-     tab bar stays pinned; tabs and drafter pills scroll sideways in one row instead of wrapping. */
+     tab bar stays pinned; the tabs scroll sideways in one row; drafter pills wrap, but smaller. */
   @media (max-width:640px){
     .tabnav{flex-wrap:nowrap !important;gap:20px !important;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
-    .tabnav::-webkit-scrollbar,#drafterSwitcher::-webkit-scrollbar{display:none;}
+    .tabnav::-webkit-scrollbar{display:none;}
     .tabbtn{flex:0 0 auto;white-space:nowrap;padding:11px 2px;}
     .tabbtn.active::after{bottom:0;}
     .tab-long{display:none;}
     #genStamp{text-align:left !important;width:100%;}
-    #drafterSwitcher{flex-wrap:nowrap !important;overflow-x:auto;scrollbar-width:none;padding:8px 0 10px !important;}
-    .drafterbtn{flex:0 0 auto;white-space:nowrap;padding:7px 13px;}
+    #drafterSwitcher{gap:6px !important;padding:8px 0 9px !important;}
+    .drafterbtn{white-space:nowrap;padding:6px 11px;font-size:12px;}
   }
 </style>
 </head>
