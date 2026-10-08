@@ -29,6 +29,12 @@
   .seclabel{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:#fff;padding:4px 9px;border-radius:5px;display:inline-block;margin:14px 0 8px;}
   .drafterbtn{padding:8px 15px;font-size:12.5px;font-weight:700;border-radius:20px;border:1px solid var(--border);background:var(--panel);color:var(--mut);cursor:pointer;transition:all .15s;}
   .drafterbtn.active{background:var(--cyan);color:#04121f;border-color:var(--cyan);}
+  /* Keep the sticky header painted above the page on iOS Safari: give it its own compositing layer and
+     a high z-index, and put all page content in one stacking context underneath it. Without this, the
+     position:relative bullet lists (Summary stories, preview keys) drew on top of the header. */
+  header.sticky{position:-webkit-sticky;position:sticky;z-index:50;background-color:#0b0f16;-webkit-transform:translateZ(0);transform:translateZ(0);}
+  main,footer{position:relative;z-index:0;isolation:isolate;}
+  #drafterSwitcher{-webkit-transform:translateZ(0);transform:translateZ(0);}
   /* Phones: keep the pinned area small. syncStickyTop() slides the title/stamp off-screen so only the
      tab bar stays pinned; tabs and drafter pills scroll sideways in one row instead of wrapping. */
   @media (max-width:640px){
