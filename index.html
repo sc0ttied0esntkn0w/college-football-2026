@@ -13,6 +13,10 @@
   *{-webkit-font-smoothing:antialiased;box-sizing:border-box;}
   body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);}
   .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;}
+  #brk .bslot{transition:opacity .2s;}
+  #brk.focus .bslot{opacity:.2;}
+  #brk.focus .bslot.on{opacity:1;}
+  .brkdr.active{border-color:var(--txt)!important;background:var(--panel)!important;}
   .label{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700;}
   .ptitle{font-size:13px;font-weight:800;letter-spacing:.02em;display:flex;align-items:center;gap:7px;}
   .tabbtn{position:relative;padding:13px 4px;font-weight:700;font-size:13.5px;color:var(--mut);transition:color .2s;cursor:pointer;background:none;border:none;}
@@ -129,10 +133,9 @@ function mv(m){ // ranking movement: '+2' up (green), '-1' down (red), '0' none,
  var up=n>0;return '<span style="font-size:9px;font-weight:800;color:'+(up?'var(--green)':'var(--red)')+'">'+(up?'▲':'▼')+Math.abs(n)+'</span>';}
 
 /*DATA_START*/
-/*DATA_START*/
-var BUILT='2026-11-01T18:30:00-06:00';
-var WEEKLABEL='Week 9 complete &mdash; Iowa State 51, Oklahoma State 49; USC 30, Ohio State 18; Georgia 27, Florida 8; Indiana 23, Minnesota 16; Miami 38, North Carolina 35 &middot; Week 10: five Pool Matchups, Sat Nov 7';
-var RANK_SRC='The AP Top 25 shown is the Week 10 poll (released Sunday Nov 1, 2026), with records through Saturday Oct 31. Movement is versus the Week 9 poll. Source of truth switches to the CFP Committee rankings when the first ones come out on Tuesday Nov 3.';
+var BUILT='2026-11-04T21:15:00-06:00';
+var WEEKLABEL='Week 9 complete &mdash; Iowa State 51, Oklahoma State 49; USC 30, Ohio State 18; Georgia 27, Florida 8; Indiana 23, Minnesota 16; Miami 38, North Carolina 35 &middot; CFP top 4: Miami, Georgia, Utah, Indiana &middot; Week 10: five Pool Matchups, Sat Nov 7';
+var RANK_SRC='The Top 25 shown is the first CFP Selection Committee ranking of 2026 (released Tuesday Nov 3), with records through Saturday Oct 31. The committee rankings are now the source of truth, replacing the AP poll. Movement starts with the next ranking, due Tuesday Nov 10.';
 /* Stat strip: tile 0 is the current week's kickoff (date/label, same cyan slot as
    the old "Week 0 final" tile); tiles 1-3 are LIVE COUNTS filled in after DATA_END
    (drafted teams ranked / this week's pool matchups / drafted teams in the CFP field). */
@@ -140,46 +143,49 @@ var STAT=[
  ['Nov 7','Week 10 kickoff','var(--cyan)']
 ];
 /* Summary spotlight panel: Iowa State (shared anchor) plus Indiana, Michigan, Colorado.
-   Deliberately NOT Penn State. [team, rank-or-null, 'W-L', blurb]. Ranks are the Week 10 AP poll (Nov 1). */
+   Deliberately NOT Penn State. [team, rank-or-null, 'W-L', blurb]. Ranks are the first CFP Committee ranking (Nov 3). */
 var YOURTEAMS=[
  ['Iowa State',null,'4-4','Big 12 &middot; unranked &middot; beat No. 24 Oklahoma State 51-49 on Kyle Konrardy&rsquo;s 34-yard field goal as time expired; Jaylen Raynor threw for 309 yards and 3 TD and Aiden Flora ran for 221 &middot; 2-3 in the Big 12 &middot; at Baylor, Sat Nov 7 (11:00am CT, TV TBA; Baylor -9.5)'],
- ['Indiana',6,'8-1','Big Ten &middot; No. 6 in the Week 10 poll (down from 4) &middot; beat Minnesota 23-16 in overtime, its second straight OT game; Paddy McAteer&rsquo;s 60-yard field goal at the horn forced OT, and Grant Wilson replaced the injured Josh Hoover &middot; bye, then hosts No. 18 USC on Nov 14'],
- ['Michigan',null,'5-3','Big Ten &middot; unranked &middot; won 28-21 at Rutgers; Tommy Carr was 22-of-27 for 266 yards and ran for 2 TD, including the go-ahead 9-yarder with 4:24 left &middot; 2-3 in the Big Ten &middot; hosts Michigan State, Sat Nov 7 (6:30pm CT, Peacock; Michigan -12.5)'],
- ['Colorado',null,'3-5','Big 12 &middot; unranked &middot; beat Kansas State 27-24 in overtime on Isaac Wilson&rsquo;s 11-yard TD pass to Charlie Williams, ending a five-game losing streak &middot; 1-4 in the Big 12 &middot; at Arizona State, Sat Nov 7 (6:30pm CT, ESPN2; Arizona State -3.5)']
+ ['Indiana',4,'8-1','Big Ten &middot; No. 4 in the first CFP ranking, the last bye seed (AP: No. 6) &middot; beat Minnesota 23-16 in overtime, its second straight OT game; Paddy McAteer&rsquo;s 60-yard field goal at the horn forced OT, and Grant Wilson replaced the injured Josh Hoover &middot; bye, then hosts No. 20 USC on Nov 14'],
+ ['Michigan',null,'5-3','Big Ten &middot; unranked &middot; won 28-21 at Rutgers; Tommy Carr was 22-of-27 for 266 yards and ran for 2 TD, including the go-ahead 9-yarder with 4:24 left &middot; 2-3 in the Big Ten &middot; hosts Michigan State, Sat Nov 7 (6:30pm CT, Peacock; Michigan -13.5)'],
+ ['Colorado',null,'3-5','Big 12 &middot; unranked &middot; beat Kansas State 27-24 in overtime on Isaac Wilson&rsquo;s 11-yard TD pass to Charlie Williams, ending a five-game losing streak &middot; 1-4 in the Big 12 &middot; at Arizona State, Sat Nov 7 (6:30pm CT, ESPN2; Arizona State -3)']
 ];
-/* AP25: the AP Top 25 for Week 10, released Sunday Nov 1, 2026 (ESPN rankings feed). Records are through Oct 31.
-   Movement is versus the Week 9 poll (Oct 25); 'NEW' = unranked in that poll. Dropped out: Northwestern, SMU,
-   Oklahoma State, Wisconsin. */
+/* AP25 (variable name kept for the renderers): from Nov 3 this holds the CFP Selection Committee Top 25,
+   per ESPN's rankings feed, cross-checked against NCAA.com's Nov 3 story. Records are through Oct 31.
+   Movement is '0' (no earlier committee ranking). Compared with the AP Week 10 poll, Alabama is 5 (AP 9),
+   Notre Dame 11 (AP 4), Ohio State 12 (AP 11), USC 20 (AP 18) and Oregon 23 (unranked in AP). */
 var AP25=[
- [1,'Miami','ACC','8-0','0'],[2,'Georgia','SEC','7-1','+1'],[3,'Utah','Big 12','8-0','+3'],
- [4,'Notre Dame','Ind','7-1','+1'],[5,'UCLA','Big Ten','8-0','+2'],[6,'Indiana','Big Ten','8-1','-2'],
- [7,'BYU','Big 12','7-1','+1'],[8,'Kentucky','SEC','7-1','+1'],[9,'Alabama','SEC','6-2','+1'],
- [10,'Texas','SEC','6-2','+1'],[11,'Ohio State','Big Ten','6-2','-9'],[12,'Ole Miss','SEC','6-2','0'],
- [13,'Texas Tech','Big 12','7-1','0'],[14,'Wake Forest','ACC','7-1','0'],[15,'LSU','SEC','6-2','0'],
- [16,'Tennessee','SEC','6-2','0'],[17,'Houston','Big 12','6-2','+1'],[18,'USC','Big Ten','7-2','NEW'],
- [19,'Missouri','SEC','6-2','+4'],[20,'Boise State','MW','7-1','0'],[21,'Iowa','Big Ten','6-2','NEW'],
- [22,'New Mexico','MW','7-1','NEW'],[23,'South Carolina','SEC','5-3','NEW'],[24,'Arizona','Big 12','6-2','-2'],
- [25,'Florida','SEC','5-3','-8']
+ [1,'Miami','ACC','8-0','0'],[2,'Georgia','SEC','7-1','0'],[3,'Utah','Big 12','8-0','0'],
+ [4,'Indiana','Big Ten','8-1','0'],[5,'Alabama','SEC','6-2','0'],[6,'Kentucky','SEC','7-1','0'],
+ [7,'Texas','SEC','6-2','0'],[8,'UCLA','Big Ten','8-0','0'],[9,'BYU','Big 12','7-1','0'],
+ [10,'Ole Miss','SEC','6-2','0'],[11,'Notre Dame','Ind','7-1','0'],[12,'Ohio State','Big Ten','6-2','0'],
+ [13,'Tennessee','SEC','6-2','0'],[14,'LSU','SEC','6-2','0'],[15,'Texas Tech','Big 12','7-1','0'],
+ [16,'Wake Forest','ACC','7-1','0'],[17,'Houston','Big 12','6-2','0'],[18,'Missouri','SEC','6-2','0'],
+ [19,'Iowa','Big Ten','6-2','0'],[20,'USC','Big Ten','7-2','0'],[21,'South Carolina','SEC','5-3','0'],
+ [22,'Arizona','Big 12','6-2','0'],[23,'Oregon','Big Ten','5-3','0'],[24,'Florida','SEC','5-3','0'],
+ [25,'Boise State','MW','7-1','0']
 ];
-/* 12-team CFP projection: Brad Crawford's CBS Sports bowl projections (published 7:39am ET Sunday Nov 1,
-   2026, after the Week 9 games). Byes: Miami, Georgia, Utah, UCLA (seeds 1-4 in that order). Still a media
-   projection, not the real CFP Committee bracket; the committee's first rankings come out Nov 3. */
+/* 12-team CFP field "if the season ended today," built from the committee's first ranking (Nov 3). 2026 rules
+   (NCAA.com): straight seeding, so the top 4 ranked teams get byes whether or not they win their conference;
+   automatic bids go to the ACC, Big 12, Big Ten and SEC champions plus the highest-ranked Group of 6 team.
+   Boise State (No. 25) is that team, so it takes the 12 seed and No. 12 Ohio State is the first team out.
+   Pairings are standard 5v12, 6v11, 7v10, 8v9; NCAA.com does not list them, so they are derived. */
 var CFP={
- byes:[['Miami','ACC'],['Georgia','SEC'],['Utah','Big 12'],['UCLA','Big Ten']],
+ byes:[['Miami','ACC &middot; CFP No. 1'],['Georgia','SEC &middot; CFP No. 2'],['Utah','Big 12 &middot; CFP No. 3'],['Indiana','Big Ten &middot; CFP No. 4']],
  first:[
-  [5,'Indiana','Big Ten',12,'Boise State','MW'],
+  [5,'Alabama','SEC',12,'Boise State','MW'],
   [6,'Kentucky','SEC',11,'Notre Dame','Ind'],
-  [7,'Ohio State','Big Ten',10,'Texas','SEC'],
-  [8,'BYU','Big 12',9,'LSU','SEC']
+  [7,'Texas','SEC',10,'Ole Miss','SEC'],
+  [8,'UCLA','Big Ten',9,'BYU','Big 12']
  ],
- note:'Post-Week 9 projection (Brad Crawford, CBS Sports, published Sunday morning Nov 1, 2026) &mdash; what the selection committee might do, not a real committee vote. Seeds 1-4 earn first-round byes; seeds 5-12 play the opening round on campus, higher seed hosting. Unbeaten UCLA takes Ohio State&rsquo;s bye as CBS&rsquo;s projected Big Ten champion; Ohio State drops to 7 after losing at USC and Indiana to 5. Notre Dame is still the last team in at 11. Seven of the 12 projected teams are drafted (Miami, Georgia, Indiana, Notre Dame, Ohio State, Texas, LSU). The real CFP Committee rankings start Tuesday Nov 3.'
+ note:'Built from the first CFP Selection Committee ranking (Tuesday Nov 3, 2026), as if the season ended today. The top 4 ranked teams get byes; seeds 5-12 play the first round on campus Dec 18-19, and the higher seed hosts. Automatic bids go to the four Power 4 champions and the highest-ranked Group of 6 team, which right now is No. 25 Boise State, so No. 12 Ohio State is the first team out. Seven drafted teams are in: Miami, Georgia, Indiana, Alabama, Texas, Ole Miss and Notre Dame.'
 };
 /* Heisman: BetMGM, per SportsBettingDime's post-Week 9 odds story (Sun Nov 1, 8:00am ET; odds as of early Nov 1).
    "Was" numbers are the Oct 25 BetMGM prices from the same story. Legree fell to +6000 and drops off the list. */
 var HEIS=[
  [1,'Darian Mensah','Miami','QB','+150 (was +300) &mdash; 22-of-29 for 274 yards and 3 TD in the 38-35 win at North Carolina; now the favorite, and Miami plays at Notre Dame next'],
  [2,'Jeremiah Smith','Ohio State','WR','+275 (was +110) &mdash; 10 catches for 83 yards at USC; his touchdown was his 40th, a Big Ten career record (AP), but Ohio State lost'],
- [3,'Malachi Toney','Miami','WR','+325 (was +350) &mdash; 7 catches for 75 yards and 2 TD at North Carolina, including the 9-yarder that made it 38-28'],
+ [3,'Malachi Toney','Miami','WR','+325 (was +350), priced before his Wednesday ankle injury; CBS reports surgery is expected, so he will miss Notre Dame &mdash; 7 catches for 75 yards and 2 TD at North Carolina, including the 9-yarder that made it 38-28'],
  [4,'CJ Carr','Notre Dame','QB','+1200 (was +2000) &mdash; 19-of-29 for 210 yards and 2 TD against Navy; hosts Miami'],
  [5,'Trinidad Chambliss','Ole Miss','QB','+1500 (was +2000) &mdash; 263 passing yards, 2 TD and a 26-yard TD run against Auburn; hosts Georgia'],
  [6,'Gunner Stockton','Georgia','QB','+5000 (was +6600) &mdash; no turnovers in the 27-8 win over Florida; at Ole Miss next'],
@@ -194,11 +200,11 @@ var INJURIES=[
  ['Indiana','Josh Hoover','QB','watch','Started against Minnesota with an injured right shoulder, landed hard on it on his interception and was pulled at halftime (AP); Grant Wilson finished. Indiana has a bye'],
  ['Indiana','Rolijah Hardy','LB','watch','Hurt in pregame warmups and did not play against Minnesota (AP)'],
  ['Indiana','Turbo Richard','RB','watch','Left in the third quarter against Minnesota with a left shoulder injury and did not return; CB A.J. Harris also left, with an undisclosed injury (AP)'],
- ['Ole Miss','Kewan Lacy','RB','out','Separated shoulder; missed Auburn, where Shekai Mills-Knight ran for 71 yards in his place (AP). Ole Miss hosts Georgia'],
+ ['Ole Miss','Kewan Lacy','RB','out','Shoulder; out again on Wednesday&rsquo;s SEC report. He missed Auburn, where Shekai Mills-Knight ran for 71 yards in his place (AP). Ole Miss hosts Georgia'],
  ['Oregon','Dante Moore','QB','out','Ruled out for the season (AP); Dylan Raiola has made the last two starts'],
  ['Oregon','Jordon Davison','RB','watch','Left the Northwestern game in the first half with a leg injury, Dan Lanning said; freshman Brandon Smith ran for 82 yards'],
  ['Oregon','Jeremiah McClellan','WR','out','Broken foot suffered in warmups before Portland State; out indefinitely'],
- ['Georgia','Chauncey Bowens','RB','watch','Foot; did not play against Florida, and neither did WR Thomas Blackshear (collarbone) (AP). Georgia is at Ole Miss'],
+ ['Georgia','Chauncey Bowens','RB','watch','Questionable on Wednesday&rsquo;s SEC report; he has missed three straight games. WR Thomas Blackshear (collarbone) is also questionable, OLB Amaris Williams (knee) is out, and CB Ellis Robinson, who left the Florida game, is not on the report'],
  ['Florida','Aaron Philo','QB','watch','Back from the right shoulder injury, started against Georgia, threw 2 interceptions and was benched for Tramell Jones Jr. (AP). Florida hosts Oklahoma'],
  ['Florida','Vernell Brown III','WR','out','Sprained right knee; missed his fourth straight game against Georgia (AP)'],
  ['Iowa State','Caden Crawford','DE','out','Out for Oklahoma State on last week&rsquo;s Big 12 report, along with DT Ka&rsquo;Mori Moore and CB Beni Ngoyi; the Week 10 report comes midweek'],
@@ -212,7 +218,9 @@ var INJURIES=[
  ['LSU','Dashawn Spears','DB','out','Torn ACL against Ole Miss; out for the season'],
  ['Texas','Colin Simmons','EDGE','watch','Hurt his ankle against Florida on Oct 17; no update from Texas'],
  ['Tennessee','Faizon Brandon','QB','watch','Shoulder; George MacIntyre has made the last three starts. Tennessee had a bye and hosts Kentucky'],
- ['Notre Dame','Kyngstonn Viliamu-Asa','LB','watch','Thumb; he, CB Leonard Moore (concussion) and S Brauntae Johnson have all missed time (Yahoo, Oct 11); no update since'],
+ ['Notre Dame','Drayk Bowen','LB','out','Starting middle linebacker, ruled out for Miami with a right ankle injury; CB DJ McKinney (out since BYU) and S Brauntae Johnson (left foot) are also out (Yahoo, Nov 3)'],
+ ['Notre Dame','Francis Brewu','DT','watch','Questionable for Miami with a knee injury from the Navy game, as is DT Jason Onye (Yahoo, Nov 3)'],
+ ['Miami','Malachi Toney','WR','out','High-ankle sprain in practice Wednesday Nov 4; expected to have surgery, per CBS Sports (Matt Zenitz). Miami hopes to have him back for the CFP. He has 73 catches for 1,027 yards and 13 TD'],
  ['Miami','Charmar Brown','RB','out','Out for the season'],
  ['Miami','Josh Moore','WR','out','Out for the season'],
  ['Texas A&amp;M','Terry Bussey','WR','out','Out for the season &mdash; hurt on the opening kickoff against Kentucky']
@@ -237,7 +245,9 @@ var STORIES=[
  ['Colorado, Michigan and Penn State all win','var(--cyan)','Colorado',['Colorado 27, Kansas State 24 (OT): Isaac Wilson hit Charlie Williams for 11 yards to end a five-game losing streak; Richard Young ran for a career-high 120 yards','Michigan 28, Rutgers 21: Tommy Carr ran 9 yards for the go-ahead score with 4:24 left and Michigan converted 12 of 16 third downs','Penn State 31, Purdue 17: the first Big Ten win under Matt Campbell, behind Cam Wallace&rsquo;s 135 rushing yards']],
  ['Upset losses for SMU and Oklahoma','var(--orange)','SMU',['Syracuse 30, SMU 27: Steve Angeli hit Noah Meyers for a 2-yard touchdown with 17 seconds left, and SMU fell out of the poll','South Carolina 42, Oklahoma 25: LaNorris Sellers threw for 301 yards and ran for 96 with five total touchdowns; Oklahoma trailed 35-10 after three quarters']],
  ['Everyone else in the pool','var(--green)','Texas',['Texas 31, Mississippi State 3; Texas Tech 34, Arizona 26, with Tommy Castellanos starting and J&rsquo;Koby Williams running for 175 yards','Ole Miss 45, Auburn 15; Notre Dame 35, Navy 13; Oregon 34, Northwestern 26; NC State 31, California 10 in its first game since Dave Doeren was fired','Alabama, LSU, Tennessee and Texas A&amp;M had byes']],
- ['Week 10: five Pool Matchups in one Saturday','var(--purple)','Notre Dame',['Miami at Notre Dame (Notre Dame -4.5), Georgia at Ole Miss (Georgia -3.5), Alabama at LSU (LSU -5.5), Oregon at Ohio State (Ohio State -7) and Oklahoma at Florida (Florida -7), all Saturday Nov 7','The first CFP Committee rankings come out Tuesday Nov 3']]
+ ['First CFP rankings: seven pool teams in the field','var(--gold)','Miami',['Miami is No. 1 in the committee&rsquo;s first ranking, with Georgia, Utah and Indiana in the other bye spots. Alabama (5), Texas (7), Ole Miss (10) and Notre Dame (11) are also in the field','The committee ranks Alabama four spots higher than the AP poll does, and Notre Dame seven spots lower. Ohio State is No. 12, but it is the first team out because No. 25 Boise State takes the Group of 6 bid','Next in line among drafted teams: Ohio State 12, Tennessee 13, LSU 14, Texas Tech 15']],
+ ['Miami loses Malachi Toney before Notre Dame','var(--red)','Miami',['Miami&rsquo;s top receiver hurt his ankle in practice Wednesday; CBS Sports reports a high-ankle sprain and expected surgery, with Miami hoping to have him back for the CFP','Toney has 73 catches for 1,027 yards and 13 TD. Notre Dame moved from -4.5 on Sunday to -7 on DraftKings Wednesday night']],
+ ['Week 10: five Pool Matchups in one Saturday','var(--purple)','Notre Dame',['Miami at Notre Dame (Notre Dame -7), Georgia at Ole Miss (Georgia -3.5), Alabama at LSU (LSU -6), Oregon at Ohio State (Ohio State -7.5) and Oklahoma at Florida (Florida -6.5), all Saturday Nov 7','DraftKings lines as of Wednesday night Nov 4']]
 ];
 /* RECAPS: twelve cards. Seven full cards - Oklahoma State-Iowa State (lead story), the two Week 9 Pool
    Matchups (Florida-Georgia, Ohio State-USC) and the always-covered Indiana, Michigan, Penn State and Colorado -
@@ -338,63 +348,63 @@ var PREVIEWS_INTRO='Nine full cards: all five Week 10 Pool Matchups &mdash; Miam
 var PREVIEWS=[
  {team:'Notre Dame',tracked:true,a:'Miami',b:'Notre Dame',tag:'Pool Matchup &middot; South Bend',
   meta:'Week 10 | Notre Dame Stadium | Sat Nov 7 | 6:30pm CT, NBC',
-  spread:['Notre Dame -4.5 (DraftKings)','O/U 57.5','Sunday Nov 1 line'],
-  storyline:'Push the Button&rsquo;s No. 1 Miami (8-0, 6-0 ACC) visits Cignatty&rsquo;s No. 4 Notre Dame (7-1), which beat Navy 35-13 in its first game since its 28-24 loss at BYU. Miami escaped North Carolina 38-35. Darian Mensah is now the Heisman favorite at +150, Malachi Toney is +325 and CJ Carr +1200. CBS projects Miami as the 1 seed and Notre Dame as the last team in at 11.',
-  injuries:[['Miami &mdash; RB Charmar Brown and WR Josh Moore are out for the season; no new injuries in the North Carolina game story','out'],['Notre Dame &mdash; LB Kyngstonn Viliamu-Asa (thumb), CB Leonard Moore (concussion) and S Brauntae Johnson missed time in October; no update since','doubt']],
-  keys:['Miami&rsquo;s defense: North Carolina&rsquo;s Billy Edwards Jr. went 28-of-34 for 341 yards and 4 TD','Notre Dame&rsquo;s run game: Nolan James Jr. had 107 yards on 9 carries against Navy','Ball security: Miami had no turnovers at North Carolina, and Mensah has not thrown an interception in his last two games'],
-  pred:['Notre Dame by 3','The line favors Notre Dame at home, and Miami&rsquo;s defense just gave up 407 yards to an unranked team.']},
+  spread:['Notre Dame -7 (DraftKings)','O/U 55.5','Wednesday Nov 4 line (was -4.5 Sunday)'],
+  storyline:'Push the Button&rsquo;s Miami (8-0, 6-0 ACC), No. 1 in the first CFP ranking, visits Cignatty&rsquo;s No. 11 Notre Dame (7-1), the 11 seed if the season ended today. Notre Dame beat Navy 35-13 in its first game since its 28-24 loss at BYU; Miami escaped North Carolina 38-35. Miami will be without Malachi Toney (73 catches, 1,027 yards, 13 TD), who hurt his ankle in practice Wednesday, and the line moved to Notre Dame -7. Darian Mensah is the Heisman favorite at +150 and CJ Carr is +1200.',
+  injuries:[['Miami &mdash; WR Malachi Toney (high-ankle sprain, surgery expected, per CBS Sports); RB Charmar Brown and WR Josh Moore are out for the season','out'],['Notre Dame &mdash; LB Drayk Bowen (ankle), CB DJ McKinney and S Brauntae Johnson (foot) are out; DTs Francis Brewu and Jason Onye (knees) are questionable','doubt']],
+  keys:['Miami&rsquo;s passing game without Toney: Mensah leans on Cooper Barkate and Daylyn Upshaw','Miami&rsquo;s defense: North Carolina&rsquo;s Billy Edwards Jr. went 28-of-34 for 341 yards and 4 TD','Notre Dame&rsquo;s run game: Nolan James Jr. had 107 yards on 9 carries against Navy','Ball security: Miami had no turnovers at North Carolina, and Mensah has not thrown an interception in his last two games'],
+  pred:['Notre Dame by 6','Losing Toney takes away Miami&rsquo;s top target, and its defense just gave up 407 yards to an unranked team. A thin Notre Dame front keeps it from being a blowout.']},
  {team:'Georgia',tracked:true,a:'Georgia',b:'Ole Miss',tag:'Pool Matchup &middot; Oxford',
   meta:'Week 10 | Vaught-Hemingway Stadium | Sat Nov 7 | 6:30pm CT, ABC',
-  spread:['Georgia -3.5 (DraftKings)','O/U 56.5','Sunday Nov 1 line'],
-  storyline:'plevas82&rsquo;s No. 2 Georgia (7-1, 5-1 SEC) visits GoBuffs!&rsquo; No. 12 Ole Miss (6-2, 4-2). Georgia forced four turnovers in its 27-8 win over Florida; Ole Miss scored the last 28 points in its 45-15 win over Auburn. CBS has Georgia as its projected SEC champion and 2 seed, and says Ole Miss moves back into its bracket if it beats Georgia.',
-  injuries:[['Georgia &mdash; RB Chauncey Bowens (foot) and WR Thomas Blackshear (collarbone) did not play against Florida (AP)','doubt'],['Ole Miss &mdash; RB Kewan Lacy (separated shoulder) missed Auburn (AP)','out']],
+  spread:['Georgia -3.5 (DraftKings)','O/U 56.5','Wednesday Nov 4 line (unchanged)'],
+  storyline:'plevas82&rsquo;s Georgia (7-1, 5-1 SEC), No. 2 in the first CFP ranking, visits GoBuffs!&rsquo; No. 10 Ole Miss (6-2, 4-2). Both are in the field if the season ended today: Georgia with a bye, Ole Miss as the 10 seed. Georgia forced four turnovers in its 27-8 win over Florida; Ole Miss scored the last 28 points in its 45-15 win over Auburn.',
+  injuries:[['Georgia (SEC report, Wed) &mdash; OLB Amaris Williams out; RB Chauncey Bowens, WR Thomas Blackshear, S Tyriq Green and TE Elyiss Williams questionable; CB Ellis Robinson not listed','doubt'],['Ole Miss (SEC report, Wed) &mdash; RB Kewan Lacy (shoulder) out; LB Luke Ferrelli and CB Jalyn Crawford probable','out']],
   keys:['Georgia&rsquo;s run game: 217 rushing yards against Florida','Trinidad Chambliss: 263 passing yards and 65 rushing yards against Auburn','Gunner Stockton&rsquo;s ball security: no turnovers against Florida after two interceptions and a lost fumble against Auburn'],
   pred:['Georgia by 3','Georgia&rsquo;s defense has been the steadier unit, but Ole Miss gets a night game at home.']},
  {team:'LSU',tracked:true,a:'Alabama',b:'LSU',tag:'Pool Matchup &middot; Baton Rouge',
   meta:'Week 10 | Tiger Stadium | Sat Nov 7 | 2:30pm CT, ABC',
-  spread:['LSU -5.5 (DraftKings)','O/U 52.5','Sunday Nov 1 line'],
-  storyline:'Block&rsquo;s No. 9 Alabama (6-2, 4-2 SEC) visits plevas82&rsquo;s No. 15 LSU (6-2, 3-2), and both come off byes. Alabama last beat Texas A&amp;M 31-20 behind three Keelon Russell TD passes; LSU last beat Auburn 38-17 with Sam Leavitt throwing for a career-high 387 yards. CBS projects LSU as the 9 seed and has Alabama out of the field.',
+  spread:['LSU -6 (DraftKings)','O/U 52.5','Wednesday Nov 4 line'],
+  storyline:'Block&rsquo;s Alabama (6-2, 4-2 SEC), No. 5 in the first CFP ranking (AP: No. 9), visits plevas82&rsquo;s No. 14 LSU (6-2, 3-2), and both come off byes. Alabama last beat Texas A&amp;M 31-20 behind three Keelon Russell TD passes; LSU last beat Auburn 38-17 with Sam Leavitt throwing for a career-high 387 yards. Alabama is the 5 seed if the season ended today; LSU is two spots outside the field.',
   injuries:[['Alabama &mdash; LB Cayden Jones out for the season; CB Zabien Brown (leg) and WR Ryan Coleman-Williams (knee) missed the A&amp;M game, with no update during the bye','out'],['LSU &mdash; LB Whit Weeks (broken fibula) and DB Dashawn Spears (torn ACL) are out','out']],
   keys:['Leavitt against Alabama&rsquo;s secondary, which may again be without Zabien Brown','Russell: 311 yards and 3 TD against Texas A&amp;M','LSU&rsquo;s pass rush: 6 sacks at Auburn'],
   pred:['LSU by 3','Both teams are rested; LSU is at home, and the line already leans its way.']},
  {team:'Ohio State',tracked:true,a:'Oregon',b:'Ohio State',tag:'Pool Matchup &middot; Columbus',
   meta:'Week 10 | Ohio Stadium | Sat Nov 7 | 2:30pm CT, CBS',
-  spread:['Ohio State -7 (DraftKings)','O/U 48.5','Sunday Nov 1 line'],
-  storyline:'Block&rsquo;s Oregon (5-3, 3-2 Big Ten) visits Fck Cancer!&rsquo;s No. 11 Ohio State (6-2, 4-1). Ohio State lost 30-18 at USC in Luke Fahey&rsquo;s first career start; CBS still projects it as the 7 seed. Oregon came back from 23-13 down to beat No. 20 Northwestern 34-26 in its first game with a new play-caller, as Dylan Raiola threw for 336 yards.',
+  spread:['Ohio State -7.5 (DraftKings)','O/U 46.5','Wednesday Nov 4 line'],
+  storyline:'Block&rsquo;s No. 23 Oregon (5-3, 3-2 Big Ten) visits Fck Cancer!&rsquo;s No. 12 Ohio State (6-2, 4-1), the first team out of the CFP field. Ohio State lost 30-18 at USC in Luke Fahey&rsquo;s first career start. Oregon came back from 23-13 down to beat No. 20 Northwestern 34-26 in its first game with a new play-caller, as Dylan Raiola threw for 336 yards.',
   injuries:[['Oregon &mdash; QB Dante Moore ruled out for the season; RB Jordon Davison left the Northwestern game with a leg injury','out'],['Ohio State &mdash; QB Julian Sayin (throwing arm) is out; Luke Fahey starts','out']],
   keys:['Fahey&rsquo;s second start: 21-of-38 for 260 yards at USC, with several drops','Finishing drives: Ohio State kicked four field goals at USC, one after reaching the 1','Dakorien Moore: 128 yards and 2 TD against Northwestern'],
   pred:['Ohio State by 7','Ohio State is at home and has the better defense, but its offense has not scored like it did with Sayin.']},
  {team:'Florida',tracked:true,a:'Oklahoma',b:'Florida',tag:'Pool Matchup &middot; Gainesville',
   meta:'Week 10 | Ben Hill Griffin Stadium | Sat Nov 7 | 6:45pm CT, SEC Network',
-  spread:['Florida -7 (DraftKings)','O/U 45.5','Sunday Nov 1 line'],
-  storyline:'GoBuffs!&rsquo; Oklahoma (4-4, 2-3 SEC) visits Cignatty&rsquo;s No. 25 Florida (5-3, 3-3). Oklahoma lost 42-25 at home to South Carolina after trailing 35-10; Florida turned it over four times in a 27-8 loss to Georgia. CBS projects Florida for the Gator Bowl and Oklahoma for the Music City Bowl.',
+  spread:['Florida -6.5 (DraftKings)','O/U 44.5','Wednesday Nov 4 line'],
+  storyline:'GoBuffs!&rsquo; Oklahoma (4-4, 2-3 SEC) visits Cignatty&rsquo;s No. 24 Florida (5-3, 3-3). Oklahoma lost 42-25 at home to South Carolina after trailing 35-10; Florida turned it over four times in a 27-8 loss to Georgia. CBS projects Florida for the Gator Bowl and Oklahoma for the Music City Bowl.',
   injuries:[['Oklahoma &mdash; no injuries noted in the South Carolina game story; the SEC report comes Wednesday','ok'],['Florida &mdash; QB Aaron Philo was benched for Tramell Jones Jr. after two interceptions; WR Vernell Brown III (knee) has missed four straight games','doubt']],
   keys:['Florida&rsquo;s quarterback: Jones or Philo','Jadan Baugh: 38 yards on 17 carries against Georgia after leading the SEC with 13 rushing TDs','Oklahoma&rsquo;s offense: 118 yards through three quarters against South Carolina (AP)'],
   pred:['Florida by 4','Florida is at home, but its quarterback situation keeps this closer than the line.']},
  {team:'Iowa State',tracked:true,a:'Iowa State',b:'Baylor',tag:'Big 12 &middot; Waco',
-  meta:'Week 10 | McLane Stadium | Sat Nov 7 | 11:00am CT, TV TBA',
-  spread:['Baylor -9.5 (DraftKings)','O/U 50.5','Sunday Nov 1 line'],
+  meta:'Week 10 | McLane Stadium | Sat Nov 7 | 11:00am CT, FS1',
+  spread:['Baylor -10 (DraftKings)','O/U 50.5','Wednesday Nov 4 line'],
   storyline:'Iowa State (4-4, 2-3 Big 12) goes on the road after its 51-49 win over No. 24 Oklahoma State, its first win over a ranked team under Jimmy Rogers. Baylor (5-3, 3-2) won 41-9 at UCF on Friday Oct 30. CBS projects either Iowa State or UCF, who meet Nov 20, into one of the Big 12&rsquo;s bowl slots.',
   injuries:[['Iowa State &mdash; CB Beni Ngoyi, DE Caden Crawford and DT Ka&rsquo;Mori Moore were out for Oklahoma State; the Week 10 report comes midweek','out'],['Baylor &mdash; no injuries reported yet','ok']],
   keys:['Aiden Flora: 221 rushing yards against Oklahoma State','Pass defense: Drew Mestemaker threw for 323 yards and 5 TD','Raynor&rsquo;s turnovers: one interception against Oklahoma State, and a fumble at Arizona'],
   pred:['Baylor by 3','Iowa State&rsquo;s offense just put up 581 yards, but its defense gave up 533 and it is on the road for an 11:00am kickoff.']},
  {team:'Penn State',tracked:true,a:'Penn State',b:'Washington',tag:'Big Ten &middot; Seattle',
   meta:'Week 10 | Husky Stadium | Sat Nov 7 | 2:30pm CT, FS1',
-  spread:['Washington -2.5 (DraftKings)','O/U 44.5','Sunday Nov 1 line'],
+  spread:['Washington -2.5 (DraftKings)','O/U 44.5','Wednesday Nov 4 line (unchanged)'],
   storyline:'Fck Cancer!&rsquo;s Penn State (4-4, 1-4 Big Ten) visits Washington (5-3, 2-3), which won 17-10 at Nebraska. Penn State got its first Big Ten win under Matt Campbell, 31-17 over Purdue, with 269 rushing yards. CBS projects Penn State to reach a bowl at 6-6.',
   injuries:[['Penn State &mdash; WRs Koby Howard and Chase Sowell did not play against Purdue (AP); EDGE Max Granville is out for the season','out'],['Washington &mdash; no injuries reported yet','ok']],
   keys:['The run game: 269 yards against Purdue, with Cam Wallace at 135','Run defense: Purdue ran for 33 yards','Kicking: Ryan Barker made 1 of 3 field goals'],
   pred:['Washington by 3','A long trip west and a Washington defense that held Nebraska to 10 points; Penn State&rsquo;s run game keeps it close.']},
  {team:'Michigan',tracked:true,a:'Michigan State',b:'Michigan',tag:'Big Ten &middot; Ann Arbor',
   meta:'Week 10 | Michigan Stadium | Sat Nov 7 | 6:30pm CT, Peacock',
-  spread:['Michigan -12.5 (DraftKings)','O/U 39.5','Sunday Nov 1 line'],
+  spread:['Michigan -13.5 (DraftKings)','O/U 39.5','Wednesday Nov 4 line'],
   storyline:'Push the Button&rsquo;s Michigan (5-3, 2-3 Big Ten) hosts Michigan State (2-6, 0-5) one win from bowl eligibility (CBS). Tommy Carr was 22-of-27 for 266 yards and ran for 2 TD in the 28-21 win at Rutgers. After this, Michigan finishes with Oregon, UCLA and Ohio State.',
   injuries:[['Michigan State &mdash; no injuries reported yet','ok'],['Michigan &mdash; OT Andrew Sprague was out for Rutgers on last week&rsquo;s report; the Week 10 report comes midweek','doubt']],
   keys:['Third downs: 12-of-16 at Rutgers','Kicking: Trey Butkowski is 2 of 6 on field goals over the last two games','The run game: Michigan has not had a 100-yard rusher this season (AP)'],
   pred:['Michigan by 14','Carr&rsquo;s best game came last week, and Michigan State has not won a Big Ten game.']},
  {team:'Colorado',tracked:true,a:'Colorado',b:'Arizona State',tag:'Big 12 &middot; Tempe',
   meta:'Week 10 | Mountain America Stadium | Sat Nov 7 | 6:30pm CT, ESPN2',
-  spread:['Arizona State -3.5 (DraftKings)','O/U 48.5','Sunday Nov 1 line'],
+  spread:['Arizona State -3 (DraftKings)','O/U 48.5','Wednesday Nov 4 line'],
   storyline:'GoBuffs!&rsquo; Colorado (3-5, 1-4 Big 12) visits Arizona State (4-4, 2-3), which lost 27-20 at BYU. Colorado ended a five-game losing streak by beating Kansas State 27-24 in overtime, with Richard Young running for a career-high 120 yards.',
   injuries:[['Colorado &mdash; QB Julian Lewis was doubtful on last week&rsquo;s report; Isaac Wilson starts','doubt'],['Arizona State &mdash; no injuries reported yet','ok']],
   keys:['The run game: 222 yards against Kansas State','Pass rush: 5 sacks against Kansas State','Wilson&rsquo;s ball security: no turnovers against K-State after three at Oklahoma State'],
@@ -408,9 +418,20 @@ var OTHER=[
  ['Arizona','Texas Tech','FINAL (Oct 31, Week 9)','Texas Tech 34, Arizona 26','Texas Tech (NotGamblingNCAA, No. 13) started Tommy Castellanos over Will Hammond; he threw 2 TD passes and ran for 117 yards. J&rsquo;Koby Williams ran for 175, including a 64-yard touchdown with 2:05 left, and Tech ran for 328 yards; Noah Fifita threw for 417 for Arizona. Texas Tech is 7-1, 4-1 in the Big 12. Next: hosts West Virginia, Sat Nov 7, 8:30pm CT, ESPN (Texas Tech -17.5, O/U 63.5).','Texas Tech'],
  ['SMU','Syracuse','FINAL (Oct 31, Week 9)','Syracuse 30, SMU 27','SMU (plevas82) led 27-20 on Kendrick Raphael&rsquo;s 13-yard run, then lost on Steve Angeli&rsquo;s 2-yard TD pass to Noah Meyers with 17 seconds left. Kevin Jennings was 29-of-36 for 351 yards and 2 TD. SMU is 6-2, 4-2 in the ACC, and fell out of the poll. Next: hosts Virginia Tech, Fri Nov 6, 6:00pm CT, ESPN (SMU -6.5, O/U 54.5).','SMU'],
  ['California','NC State','FINAL (Oct 31, Week 9)','NC State 31, California 10','NC State (Block) won its first game since Dave Doeren was fired, under interim coach Todd Goebbel. CJ Bailey threw 2 TD passes and Davion Gause ran for 104 yards; NC State broke a 10-10 halftime tie with two third-quarter touchdowns. It is 4-4, 2-3 in the ACC. Next: hosts Duke, Sat Nov 7, 11:30am CT, The CW (Duke -6, O/U 50.5).','NC State'],
- ['Kentucky','Tennessee','Sat Nov 7 &middot; 5:15pm CT, ESPN','Tennessee -6, O/U 51.5','Tennessee (NotGamblingNCAA, No. 16) had a bye after the 27-24 loss at South Carolina; it is 6-2, 3-2 in the SEC. Next: hosts No. 8 Kentucky (7-1, 5-1).','Tennessee'],
- ['Texas A&amp;M','South Carolina','Sat Nov 7 &middot; 2:00pm CT, ESPN','South Carolina -7, O/U 51.5','Texas A&amp;M (Fck Cancer!) had a bye after the 31-20 loss at Alabama; it is 4-4, 1-4 in the SEC. Next: at No. 23 South Carolina, which beat Oklahoma 42-25 for its third straight win.','Texas A&amp;M']
+ ['Kentucky','Tennessee','Sat Nov 7 &middot; 5:15pm CT, ESPN','Tennessee -6.5, O/U 50.5','Tennessee (NotGamblingNCAA, CFP No. 13) had a bye after the 27-24 loss at South Carolina; it is 6-2, 3-2 in the SEC. Next: hosts CFP No. 6 Kentucky (7-1, 5-1). Tennessee is the second team out of the field.','Tennessee'],
+ ['Texas A&amp;M','South Carolina','Sat Nov 7 &middot; 2:00pm CT, ESPN','South Carolina -7, O/U 51.5','Texas A&amp;M (Fck Cancer!) had a bye after the 31-20 loss at Alabama; it is 4-4, 1-4 in the SEC. Next: at CFP No. 21 South Carolina, which beat Oklahoma 42-25 for its third straight win.','Texas A&amp;M']
 ];
+/* POOL TITLE ODDS: national-championship futures, American odds, ONE book only (don't mix books - each book
+   has its own margin). Source: FanDuel board in CBS Sports' post-rankings story, published 10:11am CT Wed Nov 4.
+   The story's table lists Georgia at +330 but its text says +370; the table is used (at +370, plevas82 would read
+   27.6% instead of 28.8%). List the board's teams that appear, drafted or not - the renderer needs the whole
+   board to remove the bookmaker margin. Teams missing from the board (longer than +10000) count as ~0. */
+var TITLE_ODDS={
+ asof:'FanDuel national-title odds via CBS Sports, Wed Nov 4 (after the first CFP rankings). Priced before Malachi Toney&rsquo;s ankle injury Wednesday night, so Miami&rsquo;s number is likely to get longer.',
+ board:[['Georgia',330],['Notre Dame',550],['Miami',600],['LSU',750],['Alabama',1000],['Indiana',1000],['Texas',1100],
+  ['Ohio State',1400],['Ole Miss',1600],['Utah',3000],['UCLA',4500],['Tennessee',5500],['Missouri',6000],['Kentucky',6000],
+  ['Wake Forest',6500],['USC',6500],['BYU',7500],['Florida',8000],['Texas Tech',10000],['South Carolina',10000]]
+};
 /* DRAFT POOL: the pool has exactly one winner &mdash; whichever drafter&rsquo;s team wins the CFP National
    Championship. No tiebreaker, no second place; if no drafted team wins the title, the pool has no winner
    that season. Total Wins below is a leaderboard only and does not decide the pool.
@@ -438,6 +459,8 @@ var NEWS={
   ['Georgia rolls Florida','Georgia (plevas82) forced four turnovers and beat Florida (Cignatty) 27-8 in Atlanta, with Chris Cole&rsquo;s 66-yard fumble return before halftime. Georgia moved up to No. 2.'],
   ['Indiana survives in overtime again','Indiana (Cignatty) beat Minnesota 23-16 after Paddy McAteer&rsquo;s 60-yard field goal at the horn answered Minnesota&rsquo;s own 60-yarder; Grant Wilson, in for the injured Josh Hoover, won it with a 25-yard TD pass to Charlie Becker.'],
   ['Miami escapes Chapel Hill','No. 1 Miami (Push the Button) rallied past North Carolina 38-35 on Mark Fletcher Jr.&rsquo;s fourth-down touchdown and a fumble forced by Marquise Lightfoot. Miami is 8-0.'],
+  ['First CFP rankings','Miami, Georgia, Utah and Indiana hold the four bye spots in the committee&rsquo;s first ranking. Seven drafted teams are in the field if the season ended today; Ohio State (12) is the first team out because No. 25 Boise State takes the Group of 6 bid.'],
+  ['Toney hurt before Notre Dame','Miami WR Malachi Toney sprained his ankle in practice Wednesday and is expected to have surgery (CBS Sports). Notre Dame moved to a 7-point favorite.'],
   ['Heisman: Mensah takes over','Darian Mensah is the new favorite at +150 at BetMGM (was +300). Jeremiah Smith drifted from +110 to +275 after Ohio State&rsquo;s loss, Malachi Toney is +325 and CJ Carr shortened to +1200.'],
   ['Upsets: SMU and Oklahoma fall','Syracuse beat SMU 30-27 on a touchdown with 17 seconds left, and South Carolina beat Oklahoma 42-25 in Norman. SMU fell out of the poll.'],
   ['Five Pool Matchups in Week 10','Miami at Notre Dame, Georgia at Ole Miss, Alabama at LSU, Oregon at Ohio State and Oklahoma at Florida, all Saturday Nov 7. Iowa State plays at Baylor.']
@@ -448,13 +471,8 @@ var NEWS={
   ['AP Top 25','https://apnews.com/hub/ap-top-25-college-football-poll','The weekly AP poll'],
   ['The Athletic - CFB','https://www.nytimes.com/athletic/college-football/','Analysis and features']
  ],
- outlook:'Week 9 ended with Iowa State&rsquo;s 51-49 win over No. 24 Oklahoma State on a field goal at the horn. In the pool, Push the Button (USC over Ohio State) and plevas82 (Georgia over Florida) won the two Pool Matchups, and Push the Button and Cignatty share the wins lead at 20. Four pool teams lost: Ohio State, Florida, SMU and Oklahoma. CBS&rsquo;s post-Week 9 projection still has 7 drafted teams in the 12-team field (Miami, Georgia, Indiana, Notre Dame, Ohio State, Texas, LSU). The first CFP Committee rankings come out Tuesday Nov 3. <b>Next up: five Pool Matchups on Saturday Nov 7 &mdash; Miami at Notre Dame, Georgia at Ole Miss, Alabama at LSU, Oregon at Ohio State and Oklahoma at Florida. Iowa State plays at Baylor.</b>'
+ outlook:'Week 9 ended with Iowa State&rsquo;s 51-49 win over No. 24 Oklahoma State on a field goal at the horn. In the pool, Push the Button (USC over Ohio State) and plevas82 (Georgia over Florida) won the two Pool Matchups, and Push the Button and Cignatty share the wins lead at 20. Four pool teams lost: Ohio State, Florida, SMU and Oklahoma. The committee&rsquo;s first CFP ranking (Nov 3) has 7 drafted teams in the 12-team field: Miami (1), Georgia (2) and Indiana (4) with byes, plus Alabama, Texas, Ole Miss and Notre Dame. Ohio State is the first team out at 12. Miami lost WR Malachi Toney to an ankle injury in practice Wednesday. <b>Next up: five Pool Matchups on Saturday Nov 7 &mdash; Miami at Notre Dame, Georgia at Ole Miss, Alabama at LSU, Oregon at Ohio State and Oklahoma at Florida. Iowa State plays at Baylor.</b>'
 };
-/*DATA_END*/
-/*DATA_END*/
-/*DATA_END*/
-/*DATA_END*/
-/*DATA_END*/
 /*DATA_END*/
 /* ===== RENDERERS ===== */
 function chev(){return '<svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
@@ -568,6 +586,53 @@ function compactLine(g){var cp=col(g[5]);
  return '<div class="panel" style="padding:11px 14px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;flex-wrap:wrap;gap:4px"><div style="display:flex;align-items:center;gap:7px">'+tchip(g[0])+'<span style="font-size:12.5px;font-weight:800">'+g[0]+'</span><span style="color:var(--mut);font-size:10.5px">at</span><span style="font-size:12.5px;font-weight:800">'+g[1]+'</span>'+tchip(g[1])+'</div><span class="label">'+g[2]+'</span></div>'+
   '<div style="font-size:10.5px;color:var(--mut);margin-bottom:5px">Line: '+g[3]+'</div><p style="font-size:11px;color:var(--txt);line-height:1.5">'+g[4]+'</p></div>';}
 /* ---- Draft Pool standings (compact — lives at the bottom of Summary) ---- */
+/* ---- Pool Title Odds (added 2026-11-04) ------------------------------------------------
+   Math (all from TITLE_ODDS.board, one sportsbook):
+   1. American odds -> implied probability: +X -> 100/(X+100); -X -> X/(X+100).
+   2. Remove the bookmaker margin: implied probabilities on a board add up to more than 100%
+      (the overround). Divide each by the board total so they sum to 100% (proportional de-vig).
+   3. Drafter chance = SUM of their teams' chances. Only one team can win the title, so the
+      events are mutually exclusive and add directly (no 1-(1-p)(1-q) needed).
+   4. "No pool winner" = 1 - sum over all 21 drafted teams = chance an undrafted team wins.
+   Teams not on the board count as 0; they are all longer than the board's last price. */
+function amImp(o){return o>=0?100/(o+100):(-o)/(-o+100);}
+function titleOdds(){
+ var imp={},S=0;
+ TITLE_ODDS.board.forEach(function(r){var p=amImp(r[1]);imp[r[0]]=p;S+=p;});
+ var fair={};for(var k in imp)fair[k]=imp[k]/S;
+ var rows=DRAFT.drafters.map(function(d,i){
+  var teams=d[1].map(function(t){return {team:t[0],p:fair[t[0]]||0,on:(t[0] in fair)};});
+  var tot=0;teams.forEach(function(x){tot+=x.p;});
+  teams.sort(function(a,b){return b.p-a.p;});
+  return {name:d[0],idx:i,p:tot,teams:teams};
+ });
+ var drafted=0;rows.forEach(function(r){drafted+=r.p;});
+ rows.sort(function(a,b){return b.p-a.p;});
+ return {rows:rows,none:Math.max(0,1-drafted),overround:S};
+}
+function pct(p,dec){if(p<=0)return '&mdash;';var v=p*100;if(v<1&&!dec)return '&lt;1%';return (dec?v.toFixed(1):Math.round(v))+'%';}
+function titleOddsPanel(){
+ if(typeof TITLE_ODDS==='undefined'||!TITLE_ODDS.board||!TITLE_ODDS.board.length)return '';
+ var o=titleOdds(),max=o.rows.length?Math.max(o.rows[0].p,o.none):1;
+ var e=TITLE_ODDS.board[0],ex=e[0]+' '+(e[1]>=0?'+'+e[1]+' &rarr; 100 &divide; '+(e[1]+100):e[1]+' &rarr; '+(-e[1])+' &divide; '+(-e[1]+100))+' = '+Math.round(amImp(e[1])*100)+'%';
+ function bar(p,c){return '<div style="height:7px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:5px"><div style="height:100%;width:'+(max>0?(100*p/max).toFixed(1):0)+'%;background:'+c+';border-radius:4px"></div></div>';}
+ var rows=o.rows.map(function(r,i){
+  var c=DR_COLORS[r.idx%DR_COLORS.length];
+  var tl=r.teams.map(function(x){return '<span style="white-space:nowrap">'+ab(x.team)+' <b style="color:'+(x.p>0?'var(--txt)':'var(--mut)')+'">'+(x.on?pct(x.p):'&mdash;')+'</b></span>';}).join(' &middot; ');
+  return '<div style="padding:8px 0;'+(i?'border-top:1px solid var(--line)':'')+'">'+
+   '<div style="display:flex;align-items:baseline;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:'+c+';flex:0 0 auto;align-self:center"></span>'+
+   '<span style="font-size:12.5px;font-weight:800;flex:1;min-width:0">'+r.name+'</span>'+
+   '<span style="font-size:15px;font-weight:900;color:'+c+'">'+pct(r.p,1)+'</span></div>'+
+   bar(r.p,c)+
+   '<div style="font-size:10px;color:var(--mut);margin-top:4px">'+tl+'</div></div>';
+ }).join('');
+ rows+='<div style="padding:8px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:baseline;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mut);flex:0 0 auto;align-self:center"></span>'+
+  '<span style="font-size:12.5px;font-weight:700;flex:1;color:var(--mut)">No pool winner <span style="font-weight:500">(an undrafted team wins it all)</span></span>'+
+  '<span style="font-size:15px;font-weight:900;color:var(--mut)">'+pct(o.none,1)+'</span></div>'+bar(o.none,'var(--mut)')+'</div>';
+ return '<div class="panel" style="padding:13px 15px;margin-bottom:12px"><div class="ptitle" style="color:var(--gold)">Pool Title Odds <span style="font-size:10px;color:var(--mut);font-weight:600">each drafter&rsquo;s chance to own the national champion</span></div>'+
+  rows+
+  '<div style="font-size:9px;color:var(--mut);margin-top:8px;line-height:1.55">How it&rsquo;s figured: each team&rsquo;s title price is turned into a probability ('+ex+'). The board&rsquo;s probabilities add up to '+Math.round(o.overround*100)+'% because of the sportsbook&rsquo;s cut, so each one is scaled down to make the board total 100%. A drafter&rsquo;s chance is the sum of their three teams&rsquo;, since only one team can win. &mdash; means the team isn&rsquo;t on the board (longer than 100-1) and counts as about 0. Percentages are rounded. '+TITLE_ODDS.asof+'</div></div>';
+}
 function draftMini(){
  var ranked=DRAFT.drafters.slice().sort(function(a,b){return b[2]-a[2];});
  var head='<tr style="color:var(--mut);font-size:9px;text-transform:uppercase"><th style="text-align:left;padding:3px 0">Drafter</th><th style="text-align:left">Teams</th><th style="text-align:right">Wins</th></tr>';
@@ -665,6 +730,74 @@ function cfpTierPanel(title,color,items,rowFn){
   '<div style="font-size:11px;color:var(--mut);font-weight:600">'+items.length+' of 21 drafted teams</div></div>'+
   '<div class="panel" style="overflow:hidden">'+items.map(function(x,i){return rowFn(x,i===0);}).join('')+'</div>';
 }
+/* ---- CFP Bracket graphic (added 2026-11-04) --------------------------------------------
+   Drawn as two inline-SVG halves plus a title-game card, from CFP.byes (seeds 1-4, in order)
+   and CFP.first ([hiSeed,hiTeam,hiConf,loSeed,loTeam,loConf]). No new data: it follows
+   whatever the weekly refresh puts in CFP. 2026 bracket: no re-seeding; QFs are 1 v 8/9,
+   4 v 5/12, 2 v 7/10, 3 v 6/11, and semis pair the 1/4 pods and the 2/3 pods. Drafted
+   teams get their drafter's color (outline + dot); the legend taps highlight one drafter. */
+var DR_COLORS=['#4ea1ff','#ff5d6c','#f5c451','#36d399','#a78bfa','#ff9d52','#2dd4bf'];
+function drIdx(team){for(var i=0;i<DRAFT.drafters.length;i++){var r=DRAFT.drafters[i][1];for(var j=0;j<r.length;j++){if(r[j][0]===team)return i;}}return -1;}
+function cfpSeeds(){
+ var s={};CFP.byes.forEach(function(b,i){s[i+1]=b[0];});
+ CFP.first.forEach(function(g){s[g[0]]=g[1];s[g[3]]=g[4];});
+ return s;
+}
+function brkName(t){var n=t.replace(/&amp;/g,'&');if(n.length>10)n=n.replace(' State',' St');if(n.length>11)n=n.slice(0,10)+'…';return n.replace(/&/g,'&amp;');}
+function brkSlot(x,y,w,seed,team){
+ var h=22;
+ if(!team){return '<g><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="5" fill="#141b26" stroke="#26334a" stroke-dasharray="3 3"/>'+
+  '<text x="'+(x+9)+'" y="'+(y+14.5)+'" font-size="9" fill="#8a94a4" font-weight="600">'+seed+'</text></g>';}
+ var c=col(team),di=drIdx(team),dc=di>=0?DR_COLORS[di%DR_COLORS.length]:null;
+ return '<g class="bslot" data-dr="'+di+'">'+
+  '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="5" fill="#1b2433" stroke="'+(dc||'#26334a')+'" stroke-width="'+(dc?2:1)+'"/>'+
+  '<text x="'+(x+9)+'" y="'+(y+15)+'" text-anchor="middle" font-size="10" font-weight="900" fill="'+(seed<=4?'#f5c451':'#8a94a4')+'">'+seed+'</text>'+
+  '<rect x="'+(x+17)+'" y="'+(y+4)+'" width="30" height="14" rx="3" fill="'+c.b+'"/>'+
+  '<text x="'+(x+32)+'" y="'+(y+14)+'" text-anchor="middle" font-size="7.5" font-weight="800" fill="'+(team==='Iowa State'?'#F1BE48':'#fff')+'">'+ab(team)+'</text>'+
+  '<text x="'+(x+51)+'" y="'+(y+15)+'" font-size="10" font-weight="700" fill="#e8ebef">'+brkName(team)+'</text>'+'</g>';
+}
+function brkGame(x,y,w,a,b){return brkSlot(x,y,w,a[0],a[1])+brkSlot(x,y+24,w,b[0],b[1]);}
+function brkElbow(x1,y1,x2,y2){var m=(x1+x2)/2;return '<path d="M'+x1+' '+y1+'H'+m+'V'+y2+'H'+x2+'" fill="none" stroke="#3a4a66" stroke-width="1.2"/>';}
+/* one half: pods (top seed P vs winner of R1 game G1), (top seed Q vs winner of G2) */
+function brkHalf(S,p,g1,q,g2,label){
+ var W=112,X1=0,X2=124,X3=248,T=30;
+ function tm(n){return S[n]||null;}
+ var o='<text x="'+(X1+2)+'" y="11" font-size="8.5" font-weight="800" fill="#8a94a4" letter-spacing=".06em">FIRST ROUND</text>'+
+  '<text x="'+(X1+2)+'" y="22" font-size="8" fill="#8a94a4">Dec 18-19 &middot; on campus</text>'+
+  '<text x="'+(X2+2)+'" y="11" font-size="8.5" font-weight="800" fill="#8a94a4" letter-spacing=".06em">QUARTERFINAL</text>'+
+  '<text x="'+(X2+2)+'" y="22" font-size="8" fill="#8a94a4">Dec 30-Jan 1 &middot; bowls</text>'+
+  '<text x="'+(X3+2)+'" y="11" font-size="8.5" font-weight="800" fill="#8a94a4" letter-spacing=".06em">SEMIFINAL</text>'+
+  '<text x="'+(X3+2)+'" y="22" font-size="8" fill="#8a94a4">'+label+'</text>';
+ // R1 games (higher seed on top = host)
+ o+=brkGame(X1,T+8,W,[g1[0],tm(g1[0])],[g1[1],tm(g1[1])]);
+ o+=brkGame(X1,T+108,W,[g2[0],tm(g2[0])],[g2[1],tm(g2[1])]);
+ // QFs: bye seed on top, R1 winner below
+ o+=brkGame(X2,T+20,W,[p,tm(p)],['W '+g1[0]+'/'+g1[1],null]);
+ o+=brkGame(X2,T+120,W,[q,tm(q)],['W '+g2[0]+'/'+g2[1],null]);
+ // SF
+ o+=brkGame(X3,T+70,W,['Winner QF '+p,null],['Winner QF '+q,null]);
+ o+=brkElbow(X1+W,T+31,X2,T+55)+brkElbow(X1+W,T+131,X2,T+155)+brkElbow(X2+W,T+43,X3,T+81)+brkElbow(X2+W,T+143,X3,T+105);
+ return '<svg viewBox="0 0 360 '+(T+162)+'" width="100%" style="display:block;max-width:560px;font-family:Inter,system-ui,sans-serif" role="img" aria-label="CFP bracket half">'+o+'</svg>';
+}
+function bracketPanel(){
+ var S=cfpSeeds();
+ var legend=DRAFT.drafters.map(function(d,i){
+  var n=0;for(var k in S){if(drIdx(S[k])===i)n++;}
+  return '<button class="brkdr" data-dr="'+i+'" style="display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;border:1px solid var(--border);background:var(--panel2);color:'+(n?'var(--txt)':'var(--mut)')+';font-size:11px;font-weight:700;cursor:pointer">'+
+   '<span style="width:8px;height:8px;border-radius:50%;background:'+DR_COLORS[i%DR_COLORS.length]+'"></span>'+d[0]+' <span style="color:var(--mut);font-weight:600">'+n+'</span></button>';
+ }).join('');
+ var champ='<div class="panel" style="margin-top:6px;padding:10px 12px;background:var(--panel2);border-left:3px solid var(--gold);text-align:center">'+
+  '<div style="font-size:9px;font-weight:800;letter-spacing:.08em;color:var(--gold)">NATIONAL CHAMPIONSHIP &middot; MON JAN 25 &middot; LAS VEGAS</div>'+
+  '<div style="font-size:12px;font-weight:700;margin-top:3px">Top-half winner vs bottom-half winner</div>'+
+  '<div style="font-size:10px;color:var(--mut);margin-top:2px">The drafter whose team wins this game wins the pool.</div></div>';
+ return '<div class="panel" id="brk" style="padding:13px 15px;margin-bottom:6px">'+
+  '<div class="ptitle" style="color:var(--gold)">CFP Bracket <span style="font-size:10px;color:var(--mut);font-weight:600">if the season ended today</span></div>'+
+  '<div style="font-size:10px;color:var(--mut);margin:3px 0 8px">Outlined teams are drafted; the number is how many teams each drafter has in the field. Semifinals are the Orange (Jan 14) and Sugar (Jan 15) bowls. Tap a name to highlight that drafter&rsquo;s path.</div>'+
+  '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">'+legend+'</div>'+
+  '<div style="display:flex;flex-wrap:wrap;gap:8px 22px"><div style="flex:1 1 330px;max-width:560px"><div class="label" style="margin:2px 0 4px">Top half &middot; seeds 1 and 4</div>'+brkHalf(S,1,[8,9],4,[5,12],'Jan 14-15')+
+  '</div><div style="flex:1 1 330px;max-width:560px"><div class="label" style="margin:2px 0 4px">Bottom half &middot; seeds 2 and 3</div>'+brkHalf(S,2,[7,10],3,[6,11],'Jan 14-15')+'</div></div>'+
+  champ+'</div>';
+}
 function cfpFieldPanel(){
  var t=cfpFieldTiers();
  var intro='<p style="font-size:11px;color:var(--mut);margin-bottom:4px">'+(CFP.note||'')+'</p>';
@@ -675,12 +808,12 @@ function cfpFieldPanel(){
   return cfpTierRow(x,right,first);
  });
  var bubble=cfpTierPanel('ON THE BUBBLE','var(--gold)',t.bubble,function(x,first){
-  return cfpTierRow(x,'AP <b style="color:var(--txt)">No. '+x.rank+'</b>',first);
+  return cfpTierRow(x,'CFP <b style="color:var(--txt)">No. '+x.rank+'</b>',first);
  });
  var outside=cfpTierPanel('OUTSIDE THE FIELD','var(--mut)',t.outside,function(x,first){
   return cfpTierRow(x,'Unranked',first);
  });
- return intro+field+bubble+outside;
+ return bracketPanel()+intro+field+bubble+outside;
 }
 
 /* ===== POOL MATCHUP DETECTION + STAT-STRIP COUNTS (added 2026-09-05) ===== */
@@ -756,6 +889,7 @@ document.getElementById('tab-summary').innerHTML=statStrip()+
  poolTeaserBlock()+
  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:12px">'+rankingPanel()+storiesPanel()+'</div>'+
  cfpPanel()+
+ titleOddsPanel()+
  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:12px"><div>'+heismanPanel()+'</div><div>'+confPanel()+'</div></div>'+
  '<div style="margin-bottom:12px">'+injuriesPanel()+'</div>'+
  '<div style="margin-bottom:12px">'+draftMini()+'</div>'+
@@ -779,6 +913,15 @@ btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(func
 var dbtns=document.querySelectorAll('.drafterbtn');
 dbtns.forEach(function(b){b.addEventListener('click',function(){dbtns.forEach(function(x){x.classList.remove('active');});b.classList.add('active');
  document.querySelectorAll('.drafterpane').forEach(function(p){p.classList.toggle('hidden',p.dataset.drafter!==b.dataset.drafter);});});});
+/* bracket legend: tap a drafter to dim everyone else's teams; tap again to clear */
+var brkBtns=document.querySelectorAll('.brkdr');
+brkBtns.forEach(function(b){b.addEventListener('click',function(){
+ var box=document.getElementById('brk');var on=b.classList.contains('active');
+ brkBtns.forEach(function(x){x.classList.remove('active');});
+ box.classList.toggle('focus',!on);
+ if(!on)b.classList.add('active');
+ box.querySelectorAll('.bslot').forEach(function(g){g.classList.toggle('on',!on&&g.getAttribute('data-dr')===b.dataset.dr);});
+});});
 function syncStickyTop(){var dsw=document.getElementById('drafterSwitcher');var hdr=document.querySelector('header');
  if(!hdr)return;var nav=hdr.querySelector('nav');
  // On phones, pin the header at a negative offset so only the tab bar stays on screen.
