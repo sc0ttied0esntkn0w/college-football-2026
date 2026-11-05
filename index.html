@@ -44,12 +44,20 @@
   @media (max-width:640px){
     .tabnav{flex-wrap:nowrap !important;gap:20px !important;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
     .tabnav::-webkit-scrollbar{display:none;}
+    /* all 5 tabs fit one row on a ~410px phone (Flip 7 main screen): tighter gaps, spread edge to edge.
+       overflow-x:auto above stays as the fallback for narrower screens (cover screen). */
+    .tabnav{gap:12px !important;justify-content:space-between;}
+    .tabbtn{font-size:13px;}
     .tabbtn{flex:0 0 auto;white-space:nowrap;padding:11px 2px;}
     .tabbtn.active::after{bottom:0;}
     .tab-long{display:none;}
     #genStamp{text-align:left !important;width:100%;}
     #drafterSwitcher{gap:6px !important;padding:8px 0 9px !important;}
     .drafterbtn{white-space:nowrap;padding:6px 11px;font-size:12px;}
+  }
+  @media (max-width:380px){
+    .tabnav{gap:6px !important;}
+    .tabbtn{font-size:12.5px;}
   }
 </style>
 </head>
