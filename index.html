@@ -141,9 +141,9 @@ function mv(m){ // ranking movement: '+2' up (green), '-1' down (red), '0' none,
  var up=n>0;return '<span style="font-size:9px;font-weight:800;color:'+(up?'var(--green)':'var(--red)')+'">'+(up?'▲':'▼')+Math.abs(n)+'</span>';}
 
 /*DATA_START*/
-var BUILT='2026-11-08T19:00:00-06:00';
+var BUILT='2026-11-10T22:00:00-06:00';
 var WEEKLABEL='Week 10 complete &mdash; Utah 28, BYU 20; Notre Dame 31, Miami 24; Georgia 42, Ole Miss 7; Alabama 31, LSU 13; Oregon 41, Ohio State 28; Oklahoma 23, Florida 7 &middot; Week 11: four Pool Matchups, Sat Nov 14';
-var RANK_SRC='The Top 25 shown is the first CFP Selection Committee ranking of 2026 (released Tuesday Nov 3), with records through Saturday Oct 31. It does not reflect Week 10 yet. The next committee ranking comes out Tuesday Nov 10, and movement starts then.';
+var RANK_SRC='The Top 25 shown is the second CFP Selection Committee ranking of 2026 (released Tuesday Nov 10), with records through Week 10. Movement is vs the first committee ranking (Nov 3). The next ranking comes out Tuesday Nov 17.';
 /* Stat strip: tile 0 is the current week's kickoff (date/label, same cyan slot as
    the old "Week 0 final" tile); tiles 1-3 are LIVE COUNTS filled in after DATA_END
    (drafted teams ranked / this week's pool matchups / drafted teams in the CFP field). */
@@ -151,42 +151,44 @@ var STAT=[
  ['Nov 14','Week 11 kickoff','var(--cyan)']
 ];
 /* Summary spotlight panel: Iowa State (shared anchor) plus Indiana, Michigan, Colorado.
-   Deliberately NOT Penn State. [team, rank-or-null, 'W-L', blurb]. Ranks are the first CFP Committee ranking (Nov 3). */
+   Deliberately NOT Penn State. [team, rank-or-null, 'W-L', blurb]. Ranks are the second CFP Committee ranking (Nov 10). */
 var YOURTEAMS=[
  ['Iowa State',null,'4-5','Big 12 &middot; unranked &middot; lost 42-31 at Baylor after leading 17-7; Aiden Flora ran for 182 yards and Jaylen Raynor threw 2 TD &middot; 2-4 in the Big 12 &middot; hosts Cincinnati, Sat Nov 14 (11:00am CT, TNT; Iowa State -2.5)'],
- ['Indiana',4,'8-1','Big Ten &middot; No. 4 in the first CFP ranking, the last bye seed &middot; bye in Week 10; Josh Hoover&rsquo;s throwing shoulder is the open question &middot; hosts No. 20 USC in a Pool Matchup, Sat Nov 14 (2:30pm CT, CBS; Indiana -7.5)'],
- ['Michigan',null,'5-4','Big Ten &middot; unranked &middot; lost 15-6 at home to Michigan State with four turnovers; Tommy Carr threw 2 interceptions; Michigan fired OC Jason Beck on Sunday &middot; 2-4 in the Big Ten &middot; at No. 23 Oregon in a Pool Matchup, Sat Nov 14 (2:30pm CT, FS1; Oregon -10.5)'],
- ['Colorado',null,'3-6','Big 12 &middot; unranked &middot; lost 20-10 at Arizona State after trailing 17-0 at halftime &middot; 1-5 in the Big 12 &middot; hosts No. 17 Houston, Fri Nov 13 (9:15pm CT, ESPN; Houston -10.5)']
+ ['Indiana',9,'8-1','Big Ten &middot; No. 9 in the Nov 10 CFP ranking, down from No. 4 after a bye, and the 9 seed in the current field &middot; bye in Week 10; Josh Hoover&rsquo;s throwing shoulder is the open question &middot; hosts No. 18 USC in a Pool Matchup, Sat Nov 14 (2:30pm CT, CBS; Indiana -7.5)'],
+ ['Michigan',null,'5-4','Big Ten &middot; unranked &middot; lost 15-6 at home to Michigan State with four turnovers; Tommy Carr threw 2 interceptions; Michigan fired OC Jason Beck on Sunday &middot; 2-4 in the Big Ten &middot; at No. 16 Oregon in a Pool Matchup, Sat Nov 14 (2:30pm CT, FS1; Oregon -10.5)'],
+ ['Colorado',null,'3-6','Big 12 &middot; unranked &middot; lost 20-10 at Arizona State after trailing 17-0 at halftime &middot; 1-5 in the Big 12 &middot; hosts No. 14 Houston, Fri Nov 13 (9:15pm CT, ESPN; Houston -10.5)']
 ];
-/* AP25 (variable name kept for the renderers): from Nov 3 this holds the CFP Selection Committee Top 25,
-   per ESPN's rankings feed, cross-checked against NCAA.com's Nov 3 story. Records are through Oct 31.
-   Unchanged on Nov 8: the committee's second ranking comes out Tuesday Nov 10. Movement is '0' until then. */
+/* AP25 (variable name kept for the renderers): from Nov 3 this holds the CFP Selection Committee Top 25.
+   Now the second committee ranking (Tue Nov 10), per ESPN's rankings feed ("Playoff Committee Rankings",
+   CFP Rankings Week 11), cross-checked against NCAA.com's Nov 10 story (Stan Becton). Records are through
+   Week 10. Movement is vs the Nov 3 committee ranking. Florida (No. 24) dropped out; Oklahoma State is new. */
 var AP25=[
- [1,'Miami','ACC','8-0','0'],[2,'Georgia','SEC','7-1','0'],[3,'Utah','Big 12','8-0','0'],
- [4,'Indiana','Big Ten','8-1','0'],[5,'Alabama','SEC','6-2','0'],[6,'Kentucky','SEC','7-1','0'],
- [7,'Texas','SEC','6-2','0'],[8,'UCLA','Big Ten','8-0','0'],[9,'BYU','Big 12','7-1','0'],
- [10,'Ole Miss','SEC','6-2','0'],[11,'Notre Dame','Ind','7-1','0'],[12,'Ohio State','Big Ten','6-2','0'],
- [13,'Tennessee','SEC','6-2','0'],[14,'LSU','SEC','6-2','0'],[15,'Texas Tech','Big 12','7-1','0'],
- [16,'Wake Forest','ACC','7-1','0'],[17,'Houston','Big 12','6-2','0'],[18,'Missouri','SEC','6-2','0'],
- [19,'Iowa','Big Ten','6-2','0'],[20,'USC','Big Ten','7-2','0'],[21,'South Carolina','SEC','5-3','0'],
- [22,'Arizona','Big 12','6-2','0'],[23,'Oregon','Big Ten','5-3','0'],[24,'Florida','SEC','5-3','0'],
- [25,'Boise State','MW','7-1','0']
+ [1,'Georgia','SEC','8-1','+1'],[2,'Utah','Big 12','9-0','+1'],[3,'Alabama','SEC','7-2','+2'],
+ [4,'UCLA','Big Ten','9-0','+4'],[5,'Notre Dame','Ind','8-1','+6'],[6,'Texas','SEC','7-2','+1'],
+ [7,'Miami','ACC','8-1','-6'],[8,'Tennessee','SEC','7-2','+5'],[9,'Indiana','Big Ten','8-1','-5'],
+ [10,'BYU','Big 12','7-2','-1'],[11,'Kentucky','SEC','7-2','-5'],[12,'Texas Tech','Big 12','8-1','+3'],
+ [13,'Wake Forest','ACC','8-1','+3'],[14,'Houston','Big 12','7-2','+3'],[15,'Iowa','Big Ten','7-2','+4'],
+ [16,'Oregon','Big Ten','6-3','+7'],[17,'South Carolina','SEC','6-3','+4'],[18,'USC','Big Ten','7-2','+2'],
+ [19,'Ole Miss','SEC','6-3','-9'],[20,'Ohio State','Big Ten','6-3','-8'],[21,'LSU','SEC','6-3','-7'],
+ [22,'Missouri','SEC','6-3','-4'],[23,'Arizona','Big 12','7-2','-1'],[24,'Boise State','MW','8-1','+1'],
+ [25,'Oklahoma State','Big 12','6-3','NEW']
 ];
-/* 12-team CFP field "if the season ended today," built from the committee's first ranking (Nov 3). 2026 rules
+/* 12-team CFP field "if the season ended today," built from the committee's second ranking (Nov 10). 2026 rules
    (NCAA.com): straight seeding, so the top 4 ranked teams get byes whether or not they win their conference;
    automatic bids go to the ACC, Big 12, Big Ten and SEC champions plus the highest-ranked Group of 6 team.
-   Boise State (No. 25) is that team, so it takes the 12 seed and No. 12 Ohio State is the first team out.
-   Pairings are standard 5v12, 6v11, 7v10, 8v9; NCAA.com does not list them, so they are derived.
-   Not rebuilt on Nov 8 because the ranking has not changed; it gets rebuilt after the Nov 10 ranking. */
+   Boise State (No. 24) is that team, so it takes the 12 seed and No. 12 Texas Tech is the first team out,
+   then No. 13 Wake Forest (both per NCAA.com's Nov 10 story, which also names Georgia, Utah, Alabama and UCLA
+   as the four bye seeds). The conference leaders (Georgia, Utah, UCLA, Miami) are all in the top 12.
+   Pairings are standard 5v12, 6v11, 7v10, 8v9; NCAA.com does not list them, so they are derived. */
 var CFP={
- byes:[['Miami','ACC &middot; CFP No. 1'],['Georgia','SEC &middot; CFP No. 2'],['Utah','Big 12 &middot; CFP No. 3'],['Indiana','Big Ten &middot; CFP No. 4']],
+ byes:[['Georgia','SEC &middot; CFP No. 1'],['Utah','Big 12 &middot; CFP No. 2'],['Alabama','SEC &middot; CFP No. 3'],['UCLA','Big Ten &middot; CFP No. 4']],
  first:[
-  [5,'Alabama','SEC',12,'Boise State','MW'],
-  [6,'Kentucky','SEC',11,'Notre Dame','Ind'],
-  [7,'Texas','SEC',10,'Ole Miss','SEC'],
-  [8,'UCLA','Big Ten',9,'BYU','Big 12']
+  [5,'Notre Dame','Ind',12,'Boise State','MW'],
+  [6,'Texas','SEC',11,'Kentucky','SEC'],
+  [7,'Miami','ACC',10,'BYU','Big 12'],
+  [8,'Tennessee','SEC',9,'Indiana','Big Ten']
  ],
- note:'Built from the first CFP Selection Committee ranking (Tuesday Nov 3, 2026), as if the season ended today; it does not reflect Week 10 yet. In Week 10, four teams in this field lost &mdash; Miami, Kentucky, Ole Miss and BYU &mdash; and Ohio State, the first team out, lost too. The next ranking comes out Tuesday Nov 10. The top 4 ranked teams get byes; seeds 5-12 play the first round on campus Dec 18-19, and the higher seed hosts. Automatic bids go to the four Power 4 champions and the highest-ranked Group of 6 team, which right now is No. 25 Boise State. Seven drafted teams are in: Miami, Georgia, Indiana, Alabama, Texas, Ole Miss and Notre Dame.'
+ note:'Built from the second CFP Selection Committee ranking (Tuesday Nov 10, 2026), as if the season ended today. Georgia is the new No. 1, and Alabama and UCLA moved into the last two byes; Miami fell from No. 1 to No. 7 after losing to Notre Dame, and Indiana from No. 4 to No. 9 after a bye. Notre Dame (No. 5) and Tennessee (No. 8) moved in; Ole Miss fell to No. 19 and out. No. 12 Texas Tech is the first team out, then No. 13 Wake Forest. The top 4 ranked teams get byes; seeds 5-12 play the first round on campus Dec 18-19, and the higher seed hosts. Automatic bids go to the four Power 4 champions and the highest-ranked Group of 6 team, which right now is No. 24 Boise State. Seven drafted teams are in: Georgia, Alabama, Notre Dame, Texas, Miami, Tennessee and Indiana. Tennessee vs Indiana would be a Pool Matchup in the first round. The next ranking comes out Tuesday Nov 17.'
 };
 /* Heisman: BetMGM, per SportsBettingDime's post-Week 10 odds story (Sun Nov 8; odds as of early Nov 8 ET).
    "Was" numbers are the Nov 1 BetMGM prices from the same story. Malachi Toney is off the board; Trinidad
@@ -244,7 +246,7 @@ var CONF={
 /* Lead story per PJ: Utah over BYU (the Holy War). Same order in NEWS.stories and the first RECAPS card
    (BYU at Utah). Neither team is drafted. */
 var STORIES=[
- ['Utah wins the Holy War, stays unbeaten','var(--green)','Utah',['No. 3 Utah beat No. 9 BYU 28-20 at Rice-Eccles Stadium, ending a three-game losing streak in the rivalry. Devon Dampier accounted for four touchdowns: 177 passing yards and 2 TD to Braden Pegan, plus 89 rushing yards and 2 TD. He also caught a 29-yard pass from a receiver','Utah led 14-0 less than five minutes in, then trailed 20-14 at halftime after losing two fumbles. Its defense shut BYU out in the second half and intercepted Bear Bachmeier four times, twice in the end zone in the fourth quarter (AP)','Utah (9-0, 6-0 Big 12) and UCLA are the only unbeaten FBS teams left. Utah holds a bye as the 3 seed in the current CFP field and plays at No. 22 Arizona next']],
+ ['Utah wins the Holy War, stays unbeaten','var(--green)','Utah',['No. 3 Utah beat No. 9 BYU 28-20 at Rice-Eccles Stadium, ending a three-game losing streak in the rivalry. Devon Dampier accounted for four touchdowns: 177 passing yards and 2 TD to Braden Pegan, plus 89 rushing yards and 2 TD. He also caught a 29-yard pass from a receiver','Utah led 14-0 less than five minutes in, then trailed 20-14 at halftime after losing two fumbles. Its defense shut BYU out in the second half and intercepted Bear Bachmeier four times, twice in the end zone in the fourth quarter (AP)','Utah (9-0, 6-0 Big 12) and UCLA are the only unbeaten FBS teams left. Utah moved up to No. 2 in the Nov 10 CFP ranking and plays at No. 23 Arizona next']],
  ['Notre Dame knocks off No. 1 Miami','var(--purple)','Notre Dame',['Cignatty&rsquo;s Notre Dame beat Push the Button&rsquo;s Miami 31-24 in a Pool Matchup. CJ Carr threw for 319 yards and 3 TD, and Notre Dame led 24-3 early in the third quarter','Miami, playing without Malachi Toney, got within 7 twice. With 3:36 left, Elija Lofton appeared to catch a fourth-down touchdown in the end zone, but Luke Talich knocked the ball away and it was ruled incomplete','Carr is now the Heisman favorite at +120 at BetMGM']],
  ['Block sweeps two Pool Matchups','var(--purple)','Alabama',['Alabama 31, LSU 13: Keelon Russell threw 3 TD passes on an injured ankle, and LSU went 0-for-4 on fourth down','Oregon 41, Ohio State 28: Oregon scored 38 straight points after trailing 14-0. Ohio State has lost two straight for the first time since 2011 (AP)','Block moved from 15 wins to 17; plevas82 and Fck Cancer! took the losses']],
  ['Georgia routs Ole Miss, 42-7','var(--purple)','Georgia',['plevas82&rsquo;s Georgia led GoBuffs!&rsquo; Ole Miss 28-0 at halftime. Gunner Stockton threw 4 TD passes, three to Talyn Taylor, and ran for another','It ended Ole Miss&rsquo;s 16-game home winning streak (AP), and Stockton&rsquo;s Heisman price went from +5000 to +1500']],
@@ -253,7 +255,7 @@ var STORIES=[
  ['Tennessee, Texas and Texas Tech win','var(--green)','Tennessee',['Tennessee 34, Kentucky 6: Tennessee held No. 6 Kentucky to two field goals and forced three turnovers, and DeSean Bishop ran for 2 TD','Texas 34, Missouri 20: Arch Manning threw 3 TD passes, including a 23-yarder to Raleek Brown for the lead with 5:03 left','Texas Tech 53, West Virginia 48: Tommy Castellanos threw 5 TD passes, the last with 2:44 left. All three teams belong to NotGamblingNCAA']],
  ['Iowa State and Colorado lose; Penn State holds on','var(--cyan)','Iowa State',['Baylor 42, Iowa State 31: Iowa State led 17-7, then gave up four straight touchdowns; Aiden Flora ran for 182 yards','Arizona State 20, Colorado 10: Colorado trailed 17-0 at halftime and had a 74-yard touchdown called back','Penn State 28, Washington 25: Penn State led 28-6 in the second quarter and held on; Chase Sowell had 125 receiving yards']],
  ['Elsewhere in the pool','var(--green)','SMU',['SMU 51, Virginia Tech 28 on Friday: Kevin Jennings threw for 350 yards and 4 TD, three to Yamir Knight','Duke 41, NC State 3; South Carolina 17, Texas A&amp;M 9','Indiana and USC had byes']],
- ['Week 11: four Pool Matchups','var(--purple)','Indiana',['USC at Indiana (Indiana -7.5), Michigan at Oregon (Oregon -10.5), Texas at LSU (LSU -4.5) and Tennessee at Texas A&amp;M (Tennessee -2.5), all Saturday Nov 14','Ole Miss at Oklahoma is an all-GoBuffs! game. The next CFP ranking comes out Tuesday Nov 10','DraftKings lines as of Sunday evening Nov 8']]
+ ['Week 11: four Pool Matchups','var(--purple)','Indiana',['USC at Indiana (Indiana -7.5), Michigan at Oregon (Oregon -10.5), Texas at LSU (LSU -4.5) and Tennessee at Texas A&amp;M (Tennessee -2.5), all Saturday Nov 14','Ole Miss at Oklahoma is an all-GoBuffs! game. Georgia is the new CFP No. 1 in the Nov 10 ranking','DraftKings lines as of Sunday evening Nov 8']]
 ];
 /* RECAPS: ten full cards - BYU-Utah (lead story, neither team drafted), the five Week 10 Pool Matchups
    (Miami-Notre Dame, Georgia-Ole Miss, Alabama-LSU, Oregon-Ohio State, Oklahoma-Florida) and the always-covered
@@ -347,42 +349,42 @@ var PREVIEWS=[
  {team:'Indiana',tracked:true,a:'USC',b:'Indiana',tag:'Pool Matchup &middot; Bloomington',
   meta:'Week 11 | Memorial Stadium | Sat Nov 14 | 2:30pm CT, CBS',
   spread:['Indiana -7.5 (DraftKings)','O/U 49.5','Sunday Nov 8 evening line (opened Sunday at -7)'],
-  storyline:'Push the Button&rsquo;s USC (7-2, 4-2 Big Ten), No. 20 in the first CFP ranking, visits Cignatty&rsquo;s No. 4 Indiana (8-1, 5-1), and both come off byes. Indiana won its last two games in overtime, the second over Minnesota with Grant Wilson finishing for an injured Josh Hoover. USC beat Ohio State 30-18 on Oct 31. Curt Cignetti said Hoover is improving but has not named a starter.',
+  storyline:'Push the Button&rsquo;s No. 18 USC (7-2, 4-2 Big Ten) visits Cignatty&rsquo;s No. 9 Indiana (8-1, 5-1), and both come off byes. Indiana fell from No. 4 to No. 9 in the Nov 10 CFP ranking without playing. Indiana won its last two games in overtime, the second over Minnesota with Grant Wilson finishing for an injured Josh Hoover. USC beat Ohio State 30-18 on Oct 31. Curt Cignetti said Hoover is improving but has not named a starter.',
   injuries:[['Indiana &mdash; QB Josh Hoover (throwing shoulder) is day to day, with Grant Wilson the backup; LB Rolijah Hardy and RB Turbo Richard were hurt against Minnesota','doubt'],['USC &mdash; no injuries reported yet; the Big Ten report comes midweek','ok']],
   keys:['Indiana&rsquo;s quarterback: Hoover or Wilson, who threw the overtime winner against Minnesota','USC&rsquo;s big plays: Trent Mosley had a 69-yard TD and a 44-yard punt return against Ohio State','Indiana&rsquo;s kicking: Paddy McAteer hit from 60 against Minnesota, but Nico Radicic had one blocked and missed another'],
   pred:['Indiana by 6','Indiana is at home and rested, but until its quarterback is healthy, this stays inside the number.']},
  {team:'Oregon',tracked:true,a:'Michigan',b:'Oregon',tag:'Pool Matchup &middot; Eugene',
   meta:'Week 11 | Autzen Stadium | Sat Nov 14 | 2:30pm CT, FS1',
   spread:['Oregon -10.5 (DraftKings)','O/U 39.5','Sunday Nov 8 evening line'],
-  storyline:'Push the Button&rsquo;s Michigan (5-4, 2-4 Big Ten) visits Block&rsquo;s No. 23 Oregon (6-3, 4-2). Oregon scored 38 straight points in its 41-28 win at Ohio State, its second straight win; it lost two of three after Dante Moore&rsquo;s season-ending injury (AP). Michigan lost 15-6 at home to Michigan State with four turnovers, and has not scored in the first half of its last three home games. On Sunday, Kyle Whittingham fired offensive coordinator Jason Beck; offensive line coach Jim Harding is the interim coordinator (USA TODAY).',
+  storyline:'Push the Button&rsquo;s Michigan (5-4, 2-4 Big Ten) visits Block&rsquo;s No. 16 Oregon (6-3, 4-2). Oregon scored 38 straight points in its 41-28 win at Ohio State, its second straight win; it lost two of three after Dante Moore&rsquo;s season-ending injury (AP). Michigan lost 15-6 at home to Michigan State with four turnovers, and has not scored in the first half of its last three home games. On Sunday, Kyle Whittingham fired offensive coordinator Jason Beck; offensive line coach Jim Harding is the interim coordinator (USA TODAY).',
   injuries:[['Michigan &mdash; no new injuries in the Michigan State game story; the Big Ten report comes midweek','ok'],['Oregon &mdash; QB Dante Moore is out for the season and WR Jeremiah McClellan (foot) is out; RB Jordon Davison (leg) is a question','out']],
   keys:['Michigan&rsquo;s offense under interim coordinator Jim Harding: 192 yards against Michigan State','Dylan Raiola: 257 yards and 2 TD at Ohio State, no interceptions','Michigan&rsquo;s kicking: five missed field goals in three games (AP)'],
   pred:['Oregon by 13','Michigan&rsquo;s defense can keep it low-scoring, but its offense has not found answers.']},
  {team:'LSU',tracked:true,a:'Texas',b:'LSU',tag:'Pool Matchup &middot; Baton Rouge',
   meta:'Week 11 | Tiger Stadium | Sat Nov 14 | 6:30pm CT, ABC',
   spread:['LSU -4.5 (DraftKings)','O/U 46.5','Sunday Nov 8 evening line (opened Sunday at -4)'],
-  storyline:'NotGamblingNCAA&rsquo;s No. 7 Texas (7-2, 4-2 SEC) visits plevas82&rsquo;s No. 14 LSU (6-3, 3-3). Texas rallied past No. 18 Missouri 34-20 behind three Arch Manning TD passes, its fourth win over a top-20 team this season (AP). LSU lost 31-13 to Alabama after going 0-for-4 on fourth down and is left with long-shot CFP hopes at best (AP).',
+  storyline:'NotGamblingNCAA&rsquo;s No. 6 Texas (7-2, 4-2 SEC) visits plevas82&rsquo;s No. 21 LSU (6-3, 3-3). Texas rallied past No. 18 Missouri 34-20 behind three Arch Manning TD passes, its fourth win over a top-20 team this season (AP). LSU lost 31-13 to Alabama after going 0-for-4 on fourth down and is left with long-shot CFP hopes at best (AP).',
   injuries:[['Texas &mdash; EDGE Colin Simmons (ankle) has had no update since Oct 17','doubt'],['LSU &mdash; LB Whit Weeks (broken fibula) and DB Dashawn Spears (torn ACL) are out','out']],
   keys:['Sam Leavitt: 380 passing yards against Alabama, with Jackson Harris catching 11 passes for 166','LSU in the red zone: one touchdown against Alabama','Manning: 28-of-38 for 297 yards and 3 TD at Missouri'],
   pred:['LSU by 3','LSU moved the ball on Alabama and is at home at night, but Texas has already beaten four top-20 teams.']},
  {team:'Tennessee',tracked:true,a:'Tennessee',b:'Texas A&amp;M',tag:'Pool Matchup &middot; College Station',
   meta:'Week 11 | Kyle Field | Sat Nov 14 | 2:00pm CT, ESPN',
   spread:['Tennessee -2.5 (DraftKings)','O/U 42.5','Sunday Nov 8 evening line (opened Sunday at -3)'],
-  storyline:'NotGamblingNCAA&rsquo;s No. 13 Tennessee (7-2, 4-2 SEC) visits Fck Cancer!&rsquo;s Texas A&amp;M (4-5, 1-5). Tennessee beat No. 6 Kentucky 34-6, holding it to two field goals and forcing three turnovers. Texas A&amp;M lost 17-9 at No. 21 South Carolina, scoring only on three David Olano field goals, and needs two more wins to be bowl eligible.',
+  storyline:'NotGamblingNCAA&rsquo;s No. 8 Tennessee (7-2, 4-2 SEC) visits Fck Cancer!&rsquo;s Texas A&amp;M (4-5, 1-5). Tennessee beat No. 6 Kentucky 34-6, holding it to two field goals and forcing three turnovers. Texas A&amp;M lost 17-9 at No. 21 South Carolina, scoring only on three David Olano field goals, and needs two more wins to be bowl eligible.',
   injuries:[['Tennessee &mdash; QB Faizon Brandon (shoulder) threw a 24-yard TD pass against Kentucky; George MacIntyre threw most of the passes','watch'],['Texas A&amp;M &mdash; WR Terry Bussey is out for the season','out']],
   keys:['Tennessee&rsquo;s defense: 8 tackles for loss and 3 takeaways against Kentucky (AP)','Rueben Owens II: 137 rushing yards at South Carolina','A&amp;M in the red zone: three field goals and no touchdowns at South Carolina'],
   pred:['Tennessee by 4','Tennessee&rsquo;s defense is playing its best football, and A&amp;M&rsquo;s offense managed only field goals at South Carolina.']},
  {team:'Oklahoma',tracked:true,a:'Ole Miss',b:'Oklahoma',tag:'All-GoBuffs! game &middot; Norman',
   meta:'Week 11 | Memorial Stadium | Sat Nov 14 | 3:15pm CT, SEC Network',
   spread:['Ole Miss -1.5 (DraftKings)','O/U 49.5','Sunday Nov 8 evening line (opened Sunday at -2.5)'],
-  storyline:'Both teams belong to GoBuffs!, so this is not a Pool Matchup, and GoBuffs! gets a win either way. No. 10 Ole Miss (6-3, 4-3 SEC) lost 42-7 at home to Georgia. Oklahoma (5-4, 3-3) beat No. 24 Florida 23-7 in its first game with Jason Witten calling plays.',
+  storyline:'Both teams belong to GoBuffs!, so this is not a Pool Matchup, and GoBuffs! gets a win either way. No. 19 Ole Miss (6-3, 4-3 SEC) lost 42-7 at home to Georgia and fell out of the CFP field. Oklahoma (5-4, 3-3) beat No. 24 Florida 23-7 in its first game with Jason Witten calling plays.',
   injuries:[['Ole Miss &mdash; RB Kewan Lacy (shoulder) was ruled out for Georgia','out'],['Oklahoma &mdash; no injuries noted in the Florida game story','ok']],
   keys:['Trinidad Chambliss: sacked 5 times against Georgia','Oklahoma&rsquo;s ball control: 37:50 time of possession at Florida','Oklahoma&rsquo;s defense: held Florida to 203 yards'],
   pred:['Oklahoma by 3','Oklahoma is at home and its defense is playing well; Ole Miss has to recover from a 35-point loss.']},
  {team:'Colorado',tracked:true,a:'Houston',b:'Colorado',tag:'Big 12 &middot; Boulder (Friday)',
   meta:'Week 11 | Folsom Field | Fri Nov 13 | 9:15pm CT, ESPN',
   spread:['Houston -10.5 (DraftKings)','O/U 50.5','Sunday Nov 8 evening line'],
-  storyline:'GoBuffs!&rsquo; Colorado (3-6, 1-5 Big 12) hosts No. 17 Houston (7-2, 4-2) on Friday night. Colorado trailed Arizona State 17-0 at halftime and lost 20-10; it has lost six of its last seven and needs three more wins to be bowl eligible. Houston beat Cincinnati in Week 10.',
+  storyline:'GoBuffs!&rsquo; Colorado (3-6, 1-5 Big 12) hosts No. 14 Houston (7-2, 4-2) on Friday night. Colorado trailed Arizona State 17-0 at halftime and lost 20-10; it has lost six of its last seven and needs three more wins to be bowl eligible. Houston beat Cincinnati in Week 10.',
   injuries:[['Colorado &mdash; Isaac Wilson threw every pass at Arizona State; QB Julian Lewis was listed doubtful two weeks ago','doubt'],['Houston &mdash; no injuries reported yet','ok']],
   keys:['Starting fast: Colorado had 103 first-half yards at Arizona State, 62 of them in the last 45 seconds','Joseph Williams: 7 catches for 121 yards','Gideon ESPN Lampron: 18 tackles and 2 sacks'],
   pred:['Houston by 10','Colorado played better late at Arizona State, but Houston is ranked and Colorado has not put four good quarters together.']},
@@ -406,8 +408,8 @@ var PREVIEWS=[
    look-ahead). Texas, Tennessee and Texas A&M have Week 11 preview cards whose storylines carry their
    Week 10 results; USC and Indiana had byes and have the USC-Indiana preview card. */
 var OTHER=[
- ['Virginia Tech','SMU','FINAL (Nov 6, Week 10)','SMU 51, Virginia Tech 28','SMU (plevas82) scored on each of its first eight drives on Friday night; Kevin Jennings threw for 350 yards and 4 TD, three to Yamir Knight, and SMU had a season-high 569 yards (AP). It is 7-2, 5-2 in the ACC, and 12-0 in ACC home games. Next: hosts CFP No. 16 Wake Forest, Sat Nov 14, 11:00am CT, ESPN (Wake Forest -1.5, O/U 61.5).','SMU'],
- ['West Virginia','Texas Tech','FINAL (Nov 7, Week 10)','Texas Tech 53, West Virginia 48','Texas Tech (NotGamblingNCAA, CFP No. 15) trailed 48-41 after three quarters. Tommy Castellanos threw for 362 yards and a career-high 5 TD, the last a 5-yarder to Kenny Johnson with 2:44 left, and a safety sealed it; the teams combined for 1,220 yards (AP). Texas Tech is 8-1, 5-1 in the Big 12. Next: at Oklahoma State, Sat Nov 14, 8:30pm CT, ESPN (Oklahoma State -3.5, O/U 72.5).','Texas Tech'],
+ ['Virginia Tech','SMU','FINAL (Nov 6, Week 10)','SMU 51, Virginia Tech 28','SMU (plevas82) scored on each of its first eight drives on Friday night; Kevin Jennings threw for 350 yards and 4 TD, three to Yamir Knight, and SMU had a season-high 569 yards (AP). It is 7-2, 5-2 in the ACC, and 12-0 in ACC home games. Next: hosts CFP No. 13 Wake Forest, Sat Nov 14, 11:00am CT, ESPN (Wake Forest -1.5, O/U 61.5).','SMU'],
+ ['West Virginia','Texas Tech','FINAL (Nov 7, Week 10)','Texas Tech 53, West Virginia 48','Texas Tech (NotGamblingNCAA, CFP No. 12 and the first team out) trailed 48-41 after three quarters. Tommy Castellanos threw for 362 yards and a career-high 5 TD, the last a 5-yarder to Kenny Johnson with 2:44 left, and a safety sealed it; the teams combined for 1,220 yards (AP). Texas Tech is 8-1, 5-1 in the Big 12. Next: at No. 25 Oklahoma State, Sat Nov 14, 8:30pm CT, ESPN (Oklahoma State -3.5, O/U 72.5).','Texas Tech'],
  ['Duke','NC State','FINAL (Nov 7, Week 10)','Duke 41, NC State 3','NC State (Block) lost at home; Duke&rsquo;s Nate Sheppard ran for 217 yards and 3 TD, matching NC State&rsquo;s total offense, and Andrew Pellicciotta returned a missed 50-yard field goal 100 yards for a touchdown to end the first half (AP). NC State is 4-5, 2-4 in the ACC. Next: hosts Syracuse, Sat Nov 14, 11:00am CT, ACC Network (Syracuse -3, O/U 54.5).','NC State']
 ];
 /* POOL TITLE ODDS: national-championship futures, American odds, ONE book only (don't mix books - each book
@@ -453,7 +455,8 @@ var NEWS={
   ['Tennessee, Texas and Texas Tech win','Tennessee beat No. 6 Kentucky 34-6, Texas rallied past No. 18 Missouri 34-20, and Texas Tech outlasted West Virginia 53-48. All three belong to NotGamblingNCAA, who now leads the wins table with 22.'],
   ['Toney out for the regular season','Miami WR Malachi Toney has a high-ankle sprain that needed surgery; he is expected to miss the rest of the regular season, and Miami hopes to have him back for the CFP.'],
   ['Heisman: Carr takes over','CJ Carr went from +1200 to +120 at BetMGM. Darian Mensah drifted to +350 and Jeremiah Smith to +400; Gunner Stockton and Devon Dampier are both +1500.'],
-  ['Week 11: four Pool Matchups','USC at Indiana, Michigan at Oregon, Texas at LSU and Tennessee at Texas A&amp;M, all Saturday Nov 14. The next CFP ranking comes out Tuesday Nov 10.']
+  ['Georgia is the new CFP No. 1','The committee&rsquo;s second ranking (Nov 10) has Georgia, Utah, Alabama and UCLA in the bye spots. Miami fell to No. 7 and Indiana to No. 9; Notre Dame jumped to No. 5. Seven drafted teams are in the field, with Tennessee replacing Ole Miss.'],
+  ['Week 11: four Pool Matchups','USC at Indiana, Michigan at Oregon, Texas at LSU and Tennessee at Texas A&amp;M, all Saturday Nov 14. The next CFP ranking comes out Tuesday Nov 17.']
  ],
  watch:[
   ['ESPN College Football','https://www.espn.com/college-football/','Scores, rankings, and recaps'],
@@ -461,7 +464,7 @@ var NEWS={
   ['AP Top 25','https://apnews.com/hub/ap-top-25-college-football-poll','The weekly AP poll'],
   ['The Athletic - CFB','https://www.nytimes.com/athletic/college-football/','Analysis and features']
  ],
- outlook:'Week 10 opened with No. 3 Utah&rsquo;s 28-20 win over No. 9 BYU, which kept the Utes unbeaten. In the pool, five Pool Matchups went to Cignatty (Notre Dame over Miami), plevas82 (Georgia over Ole Miss), Block twice (Alabama over LSU, Oregon over Ohio State) and GoBuffs! (Oklahoma over Florida). NotGamblingNCAA leads the wins table with 22, ahead of plevas82 and Cignatty at 21. The committee&rsquo;s next ranking comes out Tuesday Nov 10; four teams in the current field lost: Miami, Kentucky, Ole Miss and BYU. On FanDuel, Georgia (+240) and Notre Dame (+390) are the title favorites. <b>Next up: four Pool Matchups on Saturday Nov 14 &mdash; USC at Indiana, Michigan at Oregon, Texas at LSU and Tennessee at Texas A&amp;M. Colorado hosts Houston on Friday night, and Iowa State hosts Cincinnati.</b>'
+ outlook:'Week 10 opened with No. 3 Utah&rsquo;s 28-20 win over No. 9 BYU, which kept the Utes unbeaten. In the pool, five Pool Matchups went to Cignatty (Notre Dame over Miami), plevas82 (Georgia over Ole Miss), Block twice (Alabama over LSU, Oregon over Ohio State) and GoBuffs! (Oklahoma over Florida). NotGamblingNCAA leads the wins table with 22, ahead of plevas82 and Cignatty at 21. In the committee&rsquo;s Nov 10 ranking, Georgia took over No. 1 ahead of Utah, Alabama and UCLA; Miami fell to No. 7, Indiana to No. 9, and Ole Miss out of the field. On FanDuel, Georgia (+240) and Notre Dame (+390) are the title favorites. <b>Next up: four Pool Matchups on Saturday Nov 14 &mdash; USC at Indiana, Michigan at Oregon, Texas at LSU and Tennessee at Texas A&amp;M. Colorado hosts Houston on Friday night, and Iowa State hosts Cincinnati.</b>'
 };
 /*DATA_END*/
 /* ===== RENDERERS ===== */
