@@ -44,9 +44,9 @@
   @media (max-width:640px){
     .tabnav{flex-wrap:nowrap !important;gap:20px !important;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
     .tabnav::-webkit-scrollbar{display:none;}
-    /* all 5 tabs fit one row on a ~410px phone (Flip 7 main screen): tighter gaps, spread edge to edge.
+    /* all 6 tabs fit one row on a ~410px phone (Flip 7 main screen): tighter gaps, spread edge to edge.
        overflow-x:auto above stays as the fallback for narrower screens (cover screen). */
-    .tabnav{gap:12px !important;justify-content:space-between;}
+    .tabnav{gap:8px !important;justify-content:space-between;}
     .tabbtn{font-size:13px;}
     .tabbtn{flex:0 0 auto;white-space:nowrap;padding:11px 2px;}
     .tabbtn.active::after{bottom:0;}
@@ -55,6 +55,19 @@
     #drafterSwitcher{gap:6px !important;padding:8px 0 9px !important;}
     .drafterbtn{white-space:nowrap;padding:6px 11px;font-size:12px;}
   }
+  /* Pool Odds tab only */
+  #poolStrip{position:-webkit-sticky;position:sticky;top:0;z-index:5;background:var(--bg);-webkit-transform:translateZ(0);transform:translateZ(0);}
+  .poolbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;flex:1 1 0;min-width:0;min-height:44px;padding:6px 8px;font-size:12px;font-weight:700;line-height:1.25;text-align:center;border-radius:9px;border:1px solid var(--border);background:var(--panel2);color:var(--txt);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .poolbtn.sug{background:rgba(78,161,255,.10);border-color:rgba(78,161,255,.55);}
+  .poolbtn.on{background:var(--cyan);border-color:var(--cyan);color:#04121f;}
+  .poolbtn.lock{cursor:default;border-color:var(--green);color:var(--green);}
+  .poolbtn.out{cursor:default;opacity:.45;text-decoration:line-through;}
+  .poolbtn.poolchip{flex:0 0 auto;min-height:40px;padding:5px 9px;font-size:11.5px;}
+  .poolsub{font-size:9px;font-weight:700;letter-spacing:.04em;opacity:.75;}
+  .poolrow{display:flex;align-items:stretch;gap:7px;margin-top:7px;}
+  .poolat{align-self:center;flex:0 0 auto;font-size:10px;color:var(--mut);font-weight:700;}
+  .poolsel{min-height:40px;max-width:68%;padding:6px 8px;font-size:12px;font-weight:600;border-radius:9px;border:1px solid var(--border);background:var(--panel2);color:var(--txt);}
+  .poolsel.on{border-color:var(--cyan);color:var(--cyan);}
   @media (max-width:380px){
     .tabnav{gap:6px !important;}
     .tabbtn{font-size:12.5px;}
@@ -73,6 +86,7 @@
       </div>
       <nav class="tabnav flex gap-6 mt-3" style="border-bottom:1px solid var(--line);flex-wrap:wrap">
         <button class="tabbtn active" data-tab="summary">Summary</button>
+        <button class="tabbtn" data-tab="pool">Pool Odds</button>
         <button class="tabbtn" data-tab="drafters">Drafters</button>
         <button class="tabbtn" data-tab="recaps">Recaps</button>
         <button class="tabbtn" data-tab="previews">Previews</button>
@@ -82,6 +96,7 @@
   </header>
   <main class="max-w-5xl mx-auto px-5 py-5">
     <section id="tab-summary"></section>
+    <section id="tab-pool" class="hidden" style="max-width:820px;margin:0 auto"></section>
     <section id="tab-drafters" class="hidden" style="max-width:800px;margin:0 auto"></section>
     <section id="tab-recaps" class="hidden" style="max-width:780px;margin:0 auto"></section>
     <section id="tab-previews" class="hidden" style="max-width:780px;margin:0 auto"></section>
@@ -141,7 +156,7 @@ function mv(m){ // ranking movement: '+2' up (green), '-1' down (red), '0' none,
  var up=n>0;return '<span style="font-size:9px;font-weight:800;color:'+(up?'var(--green)':'var(--red)')+'">'+(up?'▲':'▼')+Math.abs(n)+'</span>';}
 
 /*DATA_START*/
-var BUILT='2026-11-10T22:00:00-06:00';
+var BUILT='2026-11-13T12:30:00-06:00';
 var WEEKLABEL='Week 10 complete &mdash; Utah 28, BYU 20; Notre Dame 31, Miami 24; Georgia 42, Ole Miss 7; Alabama 31, LSU 13; Oregon 41, Ohio State 28; Oklahoma 23, Florida 7 &middot; Week 11: four Pool Matchups, Sat Nov 14';
 var RANK_SRC='The Top 25 shown is the second CFP Selection Committee ranking of 2026 (released Tuesday Nov 10), with records through Week 10. Movement is vs the first committee ranking (Nov 3). The next ranking comes out Tuesday Nov 17.';
 /* Stat strip: tile 0 is the current week's kickoff (date/label, same cyan slot as
@@ -153,10 +168,10 @@ var STAT=[
 /* Summary spotlight panel: Iowa State (shared anchor) plus Indiana, Michigan, Colorado.
    Deliberately NOT Penn State. [team, rank-or-null, 'W-L', blurb]. Ranks are the second CFP Committee ranking (Nov 10). */
 var YOURTEAMS=[
- ['Iowa State',null,'4-5','Big 12 &middot; unranked &middot; lost 42-31 at Baylor after leading 17-7; Aiden Flora ran for 182 yards and Jaylen Raynor threw 2 TD &middot; 2-4 in the Big 12 &middot; hosts Cincinnati, Sat Nov 14 (11:00am CT, TNT; Iowa State -2.5)'],
- ['Indiana',9,'8-1','Big Ten &middot; No. 9 in the Nov 10 CFP ranking, down from No. 4 after a bye, and the 9 seed in the current field &middot; bye in Week 10; Josh Hoover&rsquo;s throwing shoulder is the open question &middot; hosts No. 18 USC in a Pool Matchup, Sat Nov 14 (2:30pm CT, CBS; Indiana -7.5)'],
+ ['Iowa State',null,'4-5','Big 12 &middot; unranked &middot; lost 42-31 at Baylor after leading 17-7; Aiden Flora ran for 182 yards and Jaylen Raynor threw 2 TD &middot; 2-4 in the Big 12 &middot; hosts Cincinnati, Sat Nov 14 (11:00am CT, TNT; Iowa State -3)'],
+ ['Indiana',9,'8-1','Big Ten &middot; No. 9 in the Nov 10 CFP ranking, down from No. 4 after a bye, and the 9 seed in the current field &middot; bye in Week 10; Josh Hoover is not on the Big Ten availability report, but Curt Cignetti has not named a starter; RB Turbo Richard is out &middot; hosts No. 18 USC in a Pool Matchup, Sat Nov 14 (2:30pm CT, CBS; Indiana -8.5)'],
  ['Michigan',null,'5-4','Big Ten &middot; unranked &middot; lost 15-6 at home to Michigan State with four turnovers; Tommy Carr threw 2 interceptions; Michigan fired OC Jason Beck on Sunday &middot; 2-4 in the Big Ten &middot; at No. 16 Oregon in a Pool Matchup, Sat Nov 14 (2:30pm CT, FS1; Oregon -10.5)'],
- ['Colorado',null,'3-6','Big 12 &middot; unranked &middot; lost 20-10 at Arizona State after trailing 17-0 at halftime &middot; 1-5 in the Big 12 &middot; hosts No. 14 Houston, Fri Nov 13 (9:15pm CT, ESPN; Houston -10.5)']
+ ['Colorado',null,'3-6','Big 12 &middot; unranked &middot; lost 20-10 at Arizona State after trailing 17-0 at halftime &middot; 1-5 in the Big 12 &middot; hosts No. 14 Houston tonight, Fri Nov 13 (9:15pm CT, ESPN; Houston -8.5); S Naeten Mitchell is out']
 ];
 /* AP25 (variable name kept for the renderers): from Nov 3 this holds the CFP Selection Committee Top 25.
    Now the second committee ranking (Tue Nov 10), per ESPN's rankings feed ("Playoff Committee Rankings",
@@ -203,36 +218,42 @@ var HEIS=[
  [7,'Drew Mestemaker','Oklahoma State','QB','+2000 (was +5000) &mdash; Oklahoma State is 6-3 and hosts Texas Tech next']
 ];
 /* Key Injuries Watch: [team, player, position, status ('out'|'doubt'|'watch'), note] across the drafted
-   teams. Sunday Nov 8 update from Saturday's AP game stories and box scores; the Week 11 availability reports
-   come out Wednesday-Friday. Dropped: Alabama WR Ryan Coleman-Williams (scored a TD at LSU), Notre Dame DTs
+   teams. Friday Nov 13 update from the Week 11 conference availability reports (Wednesday reports, plus Thursday
+   updates where found), read in local coverage: Herald-Times and Hoosier Huddle (Indiana), MLive (Michigan),
+   cleveland.com (Ohio State), On3 (Penn State, Alabama, Notre Dame, Colorado), Orangebloods and And The Valley
+   Shook (Texas, LSU), The Eagle (Texas A&M), WRUF (Florida), Sooners Wire (Oklahoma), WTVA (Ole Miss), Yahoo
+   (Georgia, Tennessee, Miami). Earlier entries: Sunday's AP game stories. Dropped: Alabama WR Ryan Coleman-Williams (scored a TD at LSU), Notre Dame DTs
    Brewu/Onye (Miami-game questionables, no update), Alabama DB Dre Kirkpatrick Jr. (suspension was one game). */
 var INJURIES=[
- ['Miami','Malachi Toney','WR','out','High-ankle sprain in practice Nov 4; reported to need tightrope surgery, which usually takes 4-6 weeks to recover from. Expected to miss the rest of the regular season; Miami hopes to have him back for the CFP (AP, CBS Sports). He has 73 catches for 1,027 yards and 13 TD'],
+ ['Miami','Malachi Toney','WR','out','High-ankle sprain in practice Nov 4, then surgery; listed out on the ACC&rsquo;s initial report for Duke. Expected to miss the rest of the regular season; Miami hopes to have him back for the CFP (AP, CBS Sports). He has 73 catches for 1,027 yards and 13 TD'],
  ['Miami','Charmar Brown','RB','out','Out for the season'],
  ['Miami','Josh Moore','WR','out','Out for the season'],
- ['Ohio State','Julian Sayin','QB','out','Throwing-arm injury at Indiana on Oct 17; out indefinitely. Luke Fahey has made two starts and threw for 360 yards against Oregon. Ohio State hosts Northwestern'],
- ['Indiana','Josh Hoover','QB','watch','Throwing shoulder; pulled at halftime against Minnesota and rested during the bye. Curt Cignetti said he is improving but has not named a starter for USC; Grant Wilson is the backup'],
- ['Indiana','Rolijah Hardy','LB','watch','Hurt in pregame warmups and did not play against Minnesota (AP); no update during the bye'],
- ['Indiana','Turbo Richard','RB','watch','Left the Minnesota game with a left shoulder injury; CB A.J. Harris also left, with an undisclosed injury (AP). No update during the bye'],
- ['Alabama','Keelon Russell','QB','watch','Ankle; was examined in the injury tent in the third quarter at LSU and played through it, throwing 3 TD (AP). Alabama plays at Vanderbilt'],
- ['Alabama','Zabien Brown','CB','watch','Leg; missed Texas A&amp;M on Oct 24 (AP). No update since'],
+ ['Ohio State','Julian Sayin','QB','out','Out on the Big Ten report for Northwestern; has not played since the Oct 17 win at Indiana and will likely miss the rest of the season (cleveland.com). Luke Fahey makes his third start. WRs Brandon Inniss, Brock Boyd and Phillip Bell are questionable'],
+ ['Indiana','Josh Hoover','QB','watch','Not on the Big Ten availability report on Wednesday or Thursday, so he is expected to be available; Curt Cignetti still has not named a starter for USC. Pulled at halftime against Minnesota; Grant Wilson is the backup'],
+ ['Indiana','Rolijah Hardy','LB','doubt','Questionable for USC (back); was a late scratch against Minnesota. CB A.J. Harris was upgraded from questionable to probable on Thursday'],
+ ['Indiana','Turbo Richard','RB','out','Ruled out for USC; Indiana&rsquo;s leading rusher (745 yards, 6 TD). DE Kellan Wyatt is also out, and starting RG Joe Brunner was added as out on Thursday'],
+ ['Alabama','Keelon Russell','QB','watch','Ankle; probable on the SEC&rsquo;s initial report for Vanderbilt. Kalen DeBoer called him day to day; Austin Mack is the backup (On3)'],
+ ['Alabama','Zabien Brown','CB','watch','Probable for Vanderbilt on the SEC&rsquo;s initial report'],
  ['Alabama','Cayden Jones','LB','out','Out for the season, Kalen DeBoer said'],
- ['Ole Miss','Kewan Lacy','RB','out','Shoulder; ruled out for Georgia on the SEC report, his second straight missed game. Shekai Mills-Knight scored Ole Miss&rsquo;s only TD. Ole Miss plays at Oklahoma'],
+ ['Ole Miss','Kewan Lacy','RB','out','Shoulder; out for Oklahoma and expected to miss the rest of the season (On3, via WTVA). He has not played since Oct 24 at Texas'],
  ['Oregon','Dante Moore','QB','out','Out for the season (AP); Dylan Raiola has won his last two starts, including 41-28 at Ohio State'],
- ['Oregon','Jordon Davison','RB','watch','Leg injury against Northwestern on Oct 31; Dierre Hill Jr. ran for 2 TD at Ohio State'],
+ ['Oregon','Teitum Tuioti','OLB','out','Ruled out for Michigan on Oregon&rsquo;s availability report (MLive)'],
+ ['Oregon','Jordon Davison','RB','watch','Leg injury against Northwestern on Oct 31; no update found this week. Dierre Hill Jr. ran for 2 TD at Ohio State'],
  ['Oregon','Jeremiah McClellan','WR','out','Broken foot suffered in warmups before Portland State; out indefinitely'],
- ['Georgia','Chauncey Bowens','RB','watch','Questionable on the SEC report for Ole Miss after missing three straight games. OLB Amaris Williams (knee) was out'],
+ ['Georgia','Chauncey Bowens','RB','watch','Foot (Lisfranc); not on the SEC&rsquo;s initial report for Missouri after missing four straight games. He dressed but did not play against Ole Miss, and Kirby Smart said &ldquo;he&rsquo;s not 100%&rdquo;'],
  ['Florida','Aaron Philo','QB','watch','Back from the right shoulder injury but benched at Georgia; Tramell Jones Jr. threw every pass against Oklahoma. Florida plays at Kentucky'],
- ['Florida','Vernell Brown III','WR','out','Sprained right knee; had missed four straight games through Georgia (AP)'],
- ['Iowa State','Caden Crawford','DE','out','Out for Oklahoma State on the Oct 31 Big 12 report, along with DT Ka&rsquo;Mori Moore and CB Beni Ngoyi; the Week 11 report comes midweek'],
- ['Penn State','Koby Howard','WR','watch','Has not played since Big Ten play started (AP, Nov 1). Chase Sowell returned at Washington with 125 receiving yards'],
+ ['Florida','Vernell Brown III','WR','out','Right knee strain; out at Kentucky, his sixth straight missed game. S Bryce Thornton, LB Jaden Robinson and TE Evan Chieca are also out (WRUF)'],
+ ['Iowa State','Caden Crawford','DE','out','Out for Oklahoma State on the Oct 31 Big 12 report, along with DT Ka&rsquo;Mori Moore and CB Beni Ngoyi; this week&rsquo;s report for Cincinnati could not be found'],
+ ['Colorado','Naeten Mitchell','S','out','Out for Houston on the Big 12 report; started the first eight games. K Elliott Arnold (hurt at Arizona State) and LB Tyler Martinez (out since Sept 26) are questionable (On3)'],
+ ['Penn State','Koby Howard','WR','out','Out for Minnesota on the Big Ten report, along with LB Alex Tatsch, DT Alijah Carnell and CB Tyler Armstead. S Jeremiah Cooper, a five-game starter, was added as questionable on Thursday (On3)'],
  ['Penn State','Max Granville','EDGE','out','Out for the season with an undisclosed injury'],
- ['LSU','Whit Weeks','LB','out','Broken fibula against Texas A&amp;M; had surgery, and Lane Kiffin gave no timeline for the rest of the season'],
+ ['LSU','Whit Weeks','LB','watch','Questionable for Texas on the SEC report, after missing the Alabama game with a broken fibula. RT Weston Davis is probable'],
  ['LSU','Dashawn Spears','DB','out','Torn ACL against Ole Miss; out for the season'],
- ['Texas','Colin Simmons','EDGE','watch','Hurt his ankle against Florida on Oct 17; no update from Texas'],
+ ['Texas','Hollywood Smothers','RB','out','Out at LSU on the SEC report, with LT Trevor Goosby, TE Nick Townsend and EDGE Richard Wesley; all four missed Missouri. EDGE Colin Simmons (ankle) is off the report and expected back (Orangebloods)'],
  ['Tennessee','Faizon Brandon','QB','watch','Shoulder; back on the field against Kentucky and threw a 24-yard TD pass, while George MacIntyre threw most of the passes'],
- ['Notre Dame','Drayk Bowen','LB','out','Ankle; ruled out for Miami, along with CB DJ McKinney and S Brauntae Johnson (foot) (Yahoo, Nov 3). Notre Dame hosts Boston College'],
- ['Texas A&amp;M','Terry Bussey','WR','out','Out for the season &mdash; hurt on the opening kickoff against Kentucky']
+ ['Notre Dame','Drayk Bowen','LB','out','Ankle; still out for Boston College, along with CB DJ McKinney and S Brauntae Johnson. Starting DL Francis Brewu and Jason Onye (knees) are questionable (On3, Nov 9)'],
+ ['Texas A&amp;M','Terry Bussey','WR','out','Out for the season &mdash; hurt on the opening kickoff against Kentucky'],
+ ['Texas A&amp;M','Mario Craver','WR','watch','Questionable for Tennessee on Thursday&rsquo;s SEC report; OL Trovon Baugh was downgraded to out (The Eagle)']
 ];
 /* Conference standings [team, confRecord, overall]. Source: ESPN's conference standings feed, pulled Sunday
    afternoon Nov 8 after all Week 10 games were final, cross-checked against the Week 10 final scores. Teams are
@@ -255,7 +276,7 @@ var STORIES=[
  ['Tennessee, Texas and Texas Tech win','var(--green)','Tennessee',['Tennessee 34, Kentucky 6: Tennessee held No. 6 Kentucky to two field goals and forced three turnovers, and DeSean Bishop ran for 2 TD','Texas 34, Missouri 20: Arch Manning threw 3 TD passes, including a 23-yarder to Raleek Brown for the lead with 5:03 left','Texas Tech 53, West Virginia 48: Tommy Castellanos threw 5 TD passes, the last with 2:44 left. All three teams belong to NotGamblingNCAA']],
  ['Iowa State and Colorado lose; Penn State holds on','var(--cyan)','Iowa State',['Baylor 42, Iowa State 31: Iowa State led 17-7, then gave up four straight touchdowns; Aiden Flora ran for 182 yards','Arizona State 20, Colorado 10: Colorado trailed 17-0 at halftime and had a 74-yard touchdown called back','Penn State 28, Washington 25: Penn State led 28-6 in the second quarter and held on; Chase Sowell had 125 receiving yards']],
  ['Elsewhere in the pool','var(--green)','SMU',['SMU 51, Virginia Tech 28 on Friday: Kevin Jennings threw for 350 yards and 4 TD, three to Yamir Knight','Duke 41, NC State 3; South Carolina 17, Texas A&amp;M 9','Indiana and USC had byes']],
- ['Week 11: four Pool Matchups','var(--purple)','Indiana',['USC at Indiana (Indiana -7.5), Michigan at Oregon (Oregon -10.5), Texas at LSU (LSU -4.5) and Tennessee at Texas A&amp;M (Tennessee -2.5), all Saturday Nov 14','Ole Miss at Oklahoma is an all-GoBuffs! game. Georgia is the new CFP No. 1 in the Nov 10 ranking','DraftKings lines as of Sunday evening Nov 8']]
+ ['Week 11: four Pool Matchups','var(--purple)','Indiana',['USC at Indiana (Indiana -8.5), Michigan at Oregon (Oregon -10.5), Texas at LSU (LSU -4) and Tennessee at Texas A&amp;M (Tennessee -2.5), all Saturday Nov 14','Josh Hoover is not on Indiana&rsquo;s availability report, but RB Turbo Richard is out. Ole Miss, without Kewan Lacy for the rest of the season, plays at Oklahoma in an all-GoBuffs! game','DraftKings lines as of Friday morning Nov 13']]
 ];
 /* RECAPS: ten full cards - BYU-Utah (lead story, neither team drafted), the five Week 10 Pool Matchups
    (Miami-Notre Dame, Georgia-Ole Miss, Alabama-LSU, Oregon-Ohio State, Oklahoma-Florida) and the always-covered
@@ -342,64 +363,64 @@ var RECAPS_MINI=[];
    Matchups (USC at Indiana, Michigan at Oregon, Texas at LSU, Tennessee at Texas A&M), Ole Miss at Oklahoma
    (both GoBuffs!, so not a Pool Matchup) and three of the always-covered five (Houston at Colorado, Cincinnati
    at Iowa State, Minnesota at Penn State; Indiana and Michigan are in Pool Matchups). Lines and kickoffs are
-   DraftKings via ESPN's scoreboard feed, re-pulled Sunday evening Nov 8; kickoffs are Central. The Week 11
-   availability reports come out midweek, so injury lines rest on Saturday's game stories. */
-var PREVIEWS_INTRO='Eight full cards: the four Week 11 Pool Matchups &mdash; USC at Indiana, Michigan at Oregon, Texas at LSU and Tennessee at Texas A&amp;M &mdash; plus Ole Miss at Oklahoma (both GoBuffs! teams), Houston at Colorado on Friday night, Cincinnati at Iowa State and Minnesota at Penn State. Lines are DraftKings numbers as of Sunday evening Nov 8; the Week 11 availability reports come out Wednesday through Friday, so injury notes are from Saturday&rsquo;s game stories.';
+   DraftKings via ESPN's scoreboard feed, re-pulled Friday morning Nov 13; kickoffs are Central. Injury lines come
+   from the Week 11 availability reports (sources listed above INJURIES). */
+var PREVIEWS_INTRO='Eight full cards: the four Week 11 Pool Matchups &mdash; USC at Indiana, Michigan at Oregon, Texas at LSU and Tennessee at Texas A&amp;M &mdash; plus Ole Miss at Oklahoma (both GoBuffs! teams), Houston at Colorado on Friday night, Cincinnati at Iowa State and Minnesota at Penn State. Lines are DraftKings numbers as of Friday morning Nov 13, and injury notes come from the Week 11 availability reports. Final reports come out shortly before kickoff.';
 var PREVIEWS=[
  {team:'Indiana',tracked:true,a:'USC',b:'Indiana',tag:'Pool Matchup &middot; Bloomington',
   meta:'Week 11 | Memorial Stadium | Sat Nov 14 | 2:30pm CT, CBS',
-  spread:['Indiana -7.5 (DraftKings)','O/U 49.5','Sunday Nov 8 evening line (opened Sunday at -7)'],
-  storyline:'Push the Button&rsquo;s No. 18 USC (7-2, 4-2 Big Ten) visits Cignatty&rsquo;s No. 9 Indiana (8-1, 5-1), and both come off byes. Indiana fell from No. 4 to No. 9 in the Nov 10 CFP ranking without playing. Indiana won its last two games in overtime, the second over Minnesota with Grant Wilson finishing for an injured Josh Hoover. USC beat Ohio State 30-18 on Oct 31. Curt Cignetti said Hoover is improving but has not named a starter.',
-  injuries:[['Indiana &mdash; QB Josh Hoover (throwing shoulder) is day to day, with Grant Wilson the backup; LB Rolijah Hardy and RB Turbo Richard were hurt against Minnesota','doubt'],['USC &mdash; no injuries reported yet; the Big Ten report comes midweek','ok']],
-  keys:['Indiana&rsquo;s quarterback: Hoover or Wilson, who threw the overtime winner against Minnesota','USC&rsquo;s big plays: Trent Mosley had a 69-yard TD and a 44-yard punt return against Ohio State','Indiana&rsquo;s kicking: Paddy McAteer hit from 60 against Minnesota, but Nico Radicic had one blocked and missed another'],
+  spread:['Indiana -8.5 (DraftKings)','O/U 50.5','Friday Nov 13 line (was -7.5 on Sunday)'],
+  storyline:'Push the Button&rsquo;s No. 18 USC (7-2, 4-2 Big Ten) visits Cignatty&rsquo;s No. 9 Indiana (8-1, 5-1), and both come off byes. Indiana fell from No. 4 to No. 9 in the Nov 10 CFP ranking without playing. Indiana won its last two games in overtime, the second over Minnesota with Grant Wilson finishing for an injured Josh Hoover. USC beat Ohio State 30-18 on Oct 31. Hoover is not on the Big Ten availability report, which means he is expected to be available, but Curt Cignetti has not named a starter.',
+  injuries:[['Indiana &mdash; RB Turbo Richard, DE Kellan Wyatt and RG Joe Brunner are out; LB Rolijah Hardy is questionable; QB Josh Hoover is not on the report','out'],['USC &mdash; no significant injuries reported (Hoosier Huddle)','ok']],
+  keys:['Indiana&rsquo;s quarterback, Hoover or Wilson, and its run game without Turbo Richard','USC&rsquo;s big plays: Trent Mosley had a 69-yard TD and a 44-yard punt return against Ohio State','Indiana&rsquo;s kicking: Paddy McAteer hit from 60 against Minnesota, but Nico Radicic had one blocked and missed another'],
   pred:['Indiana by 6','Indiana is at home and rested, but until its quarterback is healthy, this stays inside the number.']},
  {team:'Oregon',tracked:true,a:'Michigan',b:'Oregon',tag:'Pool Matchup &middot; Eugene',
   meta:'Week 11 | Autzen Stadium | Sat Nov 14 | 2:30pm CT, FS1',
-  spread:['Oregon -10.5 (DraftKings)','O/U 39.5','Sunday Nov 8 evening line'],
+  spread:['Oregon -10.5 (DraftKings)','O/U 38.5','Friday Nov 13 line (same spread as Sunday)'],
   storyline:'Push the Button&rsquo;s Michigan (5-4, 2-4 Big Ten) visits Block&rsquo;s No. 16 Oregon (6-3, 4-2). Oregon scored 38 straight points in its 41-28 win at Ohio State, its second straight win; it lost two of three after Dante Moore&rsquo;s season-ending injury (AP). Michigan lost 15-6 at home to Michigan State with four turnovers, and has not scored in the first half of its last three home games. On Sunday, Kyle Whittingham fired offensive coordinator Jason Beck; offensive line coach Jim Harding is the interim coordinator (USA TODAY).',
-  injuries:[['Michigan &mdash; no new injuries in the Michigan State game story; the Big Ten report comes midweek','ok'],['Oregon &mdash; QB Dante Moore is out for the season and WR Jeremiah McClellan (foot) is out; RB Jordon Davison (leg) is a question','out']],
+  injuries:[['Michigan &mdash; RT Blake Frazier is doubtful and OL Andrew Sprague is out; S Rod Moore and DEs Dom Nichols and John Henry Daley are questionable','doubt'],['Oregon &mdash; OLB Teitum Tuioti is out, along with QB Dante Moore (season) and WR Jeremiah McClellan (foot)','out']],
   keys:['Michigan&rsquo;s offense under interim coordinator Jim Harding: 192 yards against Michigan State','Dylan Raiola: 257 yards and 2 TD at Ohio State, no interceptions','Michigan&rsquo;s kicking: five missed field goals in three games (AP)'],
   pred:['Oregon by 13','Michigan&rsquo;s defense can keep it low-scoring, but its offense has not found answers.']},
  {team:'LSU',tracked:true,a:'Texas',b:'LSU',tag:'Pool Matchup &middot; Baton Rouge',
   meta:'Week 11 | Tiger Stadium | Sat Nov 14 | 6:30pm CT, ABC',
-  spread:['LSU -4.5 (DraftKings)','O/U 46.5','Sunday Nov 8 evening line (opened Sunday at -4)'],
+  spread:['LSU -4 (DraftKings)','O/U 45.5','Friday Nov 13 line (was -4.5 on Sunday)'],
   storyline:'NotGamblingNCAA&rsquo;s No. 6 Texas (7-2, 4-2 SEC) visits plevas82&rsquo;s No. 21 LSU (6-3, 3-3). Texas rallied past No. 18 Missouri 34-20 behind three Arch Manning TD passes, its fourth win over a top-20 team this season (AP). LSU lost 31-13 to Alabama after going 0-for-4 on fourth down and is left with long-shot CFP hopes at best (AP).',
-  injuries:[['Texas &mdash; EDGE Colin Simmons (ankle) has had no update since Oct 17','doubt'],['LSU &mdash; LB Whit Weeks (broken fibula) and DB Dashawn Spears (torn ACL) are out','out']],
+  injuries:[['Texas &mdash; RB Hollywood Smothers, LT Trevor Goosby, TE Nick Townsend and EDGE Richard Wesley are out; EDGE Colin Simmons is off the report and expected back','out'],['LSU &mdash; LB Whit Weeks is questionable; S Dashawn Spears, WR Phillip Wright III, LB Charles Ross II and DT Richard Anderson are out','doubt']],
   keys:['Sam Leavitt: 380 passing yards against Alabama, with Jackson Harris catching 11 passes for 166','LSU in the red zone: one touchdown against Alabama','Manning: 28-of-38 for 297 yards and 3 TD at Missouri'],
   pred:['LSU by 3','LSU moved the ball on Alabama and is at home at night, but Texas has already beaten four top-20 teams.']},
  {team:'Tennessee',tracked:true,a:'Tennessee',b:'Texas A&amp;M',tag:'Pool Matchup &middot; College Station',
   meta:'Week 11 | Kyle Field | Sat Nov 14 | 2:00pm CT, ESPN',
-  spread:['Tennessee -2.5 (DraftKings)','O/U 42.5','Sunday Nov 8 evening line (opened Sunday at -3)'],
+  spread:['Tennessee -2.5 (DraftKings)','O/U 43.5','Friday Nov 13 line (same spread as Sunday)'],
   storyline:'NotGamblingNCAA&rsquo;s No. 8 Tennessee (7-2, 4-2 SEC) visits Fck Cancer!&rsquo;s Texas A&amp;M (4-5, 1-5). Tennessee beat No. 6 Kentucky 34-6, holding it to two field goals and forcing three turnovers. Texas A&amp;M lost 17-9 at No. 21 South Carolina, scoring only on three David Olano field goals, and needs two more wins to be bowl eligible.',
-  injuries:[['Tennessee &mdash; QB Faizon Brandon (shoulder) threw a 24-yard TD pass against Kentucky; George MacIntyre threw most of the passes','watch'],['Texas A&amp;M &mdash; WR Terry Bussey is out for the season','out']],
+  injuries:[['Tennessee &mdash; no new injuries on the SEC&rsquo;s initial report; eight players are out for the season','ok'],['Texas A&amp;M &mdash; WR Mario Craver is questionable; OL Trovon Baugh and WR Terry Bussey (season) are out','doubt']],
   keys:['Tennessee&rsquo;s defense: 8 tackles for loss and 3 takeaways against Kentucky (AP)','Rueben Owens II: 137 rushing yards at South Carolina','A&amp;M in the red zone: three field goals and no touchdowns at South Carolina'],
   pred:['Tennessee by 4','Tennessee&rsquo;s defense is playing its best football, and A&amp;M&rsquo;s offense managed only field goals at South Carolina.']},
  {team:'Oklahoma',tracked:true,a:'Ole Miss',b:'Oklahoma',tag:'All-GoBuffs! game &middot; Norman',
   meta:'Week 11 | Memorial Stadium | Sat Nov 14 | 3:15pm CT, SEC Network',
-  spread:['Ole Miss -1.5 (DraftKings)','O/U 49.5','Sunday Nov 8 evening line (opened Sunday at -2.5)'],
+  spread:['Oklahoma -1.5 (DraftKings)','O/U 49.5','Friday Nov 13 line (Ole Miss was -1.5 on Sunday)'],
   storyline:'Both teams belong to GoBuffs!, so this is not a Pool Matchup, and GoBuffs! gets a win either way. No. 19 Ole Miss (6-3, 4-3 SEC) lost 42-7 at home to Georgia and fell out of the CFP field. Oklahoma (5-4, 3-3) beat No. 24 Florida 23-7 in its first game with Jason Witten calling plays.',
-  injuries:[['Ole Miss &mdash; RB Kewan Lacy (shoulder) was ruled out for Georgia','out'],['Oklahoma &mdash; no injuries noted in the Florida game story','ok']],
+  injuries:[['Ole Miss &mdash; RB Kewan Lacy (shoulder) is out and expected to miss the rest of the season','out'],['Oklahoma &mdash; S Peyton Bowen is off the report and will start; LBs Cole Sullivan and James Nesta are questionable (Sooners Wire)','watch']],
   keys:['Trinidad Chambliss: sacked 5 times against Georgia','Oklahoma&rsquo;s ball control: 37:50 time of possession at Florida','Oklahoma&rsquo;s defense: held Florida to 203 yards'],
   pred:['Oklahoma by 3','Oklahoma is at home and its defense is playing well; Ole Miss has to recover from a 35-point loss.']},
  {team:'Colorado',tracked:true,a:'Houston',b:'Colorado',tag:'Big 12 &middot; Boulder (Friday)',
   meta:'Week 11 | Folsom Field | Fri Nov 13 | 9:15pm CT, ESPN',
-  spread:['Houston -10.5 (DraftKings)','O/U 50.5','Sunday Nov 8 evening line'],
+  spread:['Houston -8.5 (DraftKings)','O/U 51.5','Friday Nov 13 line (was -10.5 on Sunday)'],
   storyline:'GoBuffs!&rsquo; Colorado (3-6, 1-5 Big 12) hosts No. 14 Houston (7-2, 4-2) on Friday night. Colorado trailed Arizona State 17-0 at halftime and lost 20-10; it has lost six of its last seven and needs three more wins to be bowl eligible. Houston beat Cincinnati in Week 10.',
-  injuries:[['Colorado &mdash; Isaac Wilson threw every pass at Arizona State; QB Julian Lewis was listed doubtful two weeks ago','doubt'],['Houston &mdash; no injuries reported yet','ok']],
+  injuries:[['Colorado &mdash; S Naeten Mitchell is out; K Elliott Arnold and LB Tyler Martinez are questionable; Isaac Wilson threw every pass at Arizona State','out'],['Houston &mdash; no injuries found in this week&rsquo;s coverage','ok']],
   keys:['Starting fast: Colorado had 103 first-half yards at Arizona State, 62 of them in the last 45 seconds','Joseph Williams: 7 catches for 121 yards','Gideon ESPN Lampron: 18 tackles and 2 sacks'],
   pred:['Houston by 10','Colorado played better late at Arizona State, but Houston is ranked and Colorado has not put four good quarters together.']},
  {team:'Iowa State',tracked:true,a:'Cincinnati',b:'Iowa State',tag:'Big 12 &middot; Ames',
   meta:'Week 11 | Jack Trice Stadium | Sat Nov 14 | 11:00am CT, TNT',
-  spread:['Iowa State -2.5 (DraftKings)','O/U 61.5','Sunday Nov 8 evening line (opened Sunday at -1.5)'],
+  spread:['Iowa State -3 (DraftKings)','O/U 58.5','Friday Nov 13 line (was -2.5 on Sunday)'],
   storyline:'Iowa State (4-5, 2-4 Big 12) hosts Cincinnati (5-4, 2-4) and needs two more wins to be bowl eligible. Iowa State lost 42-31 at Baylor after leading 17-7; Cincinnati lost at No. 17 Houston.',
-  injuries:[['Iowa State &mdash; DE Caden Crawford, DT Ka&rsquo;Mori Moore and CB Beni Ngoyi were out two weeks ago; the Big 12 report comes midweek','doubt'],['Cincinnati &mdash; no injuries reported yet','ok']],
+  injuries:[['Iowa State &mdash; DE Caden Crawford, DT Ka&rsquo;Mori Moore and CB Beni Ngoyi were out two weeks ago; this week&rsquo;s Big 12 report could not be found','doubt'],['Cincinnati &mdash; no injuries reported yet','ok']],
   keys:['Aiden Flora: 221 and 182 rushing yards in the last two games','Run defense: Baylor ran for 194 yards, 119 of them by QB DJ Lagway','Third downs: 8-of-17 at Baylor'],
   pred:['Iowa State by 3','Iowa State is at home and has run for 488 yards in its last two games.']},
  {team:'Penn State',tracked:true,a:'Minnesota',b:'Penn State',tag:'Big Ten &middot; University Park',
   meta:'Week 11 | Beaver Stadium | Sat Nov 14 | 6:00pm CT, FS1',
-  spread:['Penn State -9.5 (DraftKings)','O/U 43.5','Sunday Nov 8 evening line (opened Sunday at -7.5)'],
+  spread:['Penn State -9.5 (DraftKings)','O/U 41.5','Friday Nov 13 line (same spread as Sunday)'],
   storyline:'Fck Cancer!&rsquo;s Penn State (5-4, 2-4 Big Ten) hosts Minnesota (5-4, 3-3) one win from bowl eligibility. Penn State has won two straight, holding off Washington 28-25 after leading 28-6 in the second quarter. Minnesota lost to unbeaten UCLA on Saturday after its overtime loss at Indiana.',
-  injuries:[['Penn State &mdash; WR Chase Sowell returned with 125 yards at Washington; WR Koby Howard has not played in Big Ten play; EDGE Max Granville is out for the season','watch'],['Minnesota &mdash; no injuries reported yet','ok']],
+  injuries:[['Penn State &mdash; WR Koby Howard, EDGE Max Granville, LB Alex Tatsch, DT Alijah Carnell and CB Tyler Armstead are out; S Jeremiah Cooper is questionable','out'],['Minnesota &mdash; DL Jaylin Hicks and five others are out; CB John Nestor is questionable (On3)','doubt']],
   keys:['Second halves: Penn State did not score after halftime at Washington','The run game: Carson Hansen ran for 119 yards on 14 carries','Pass defense: Washington scored the last 19 points'],
   pred:['Penn State by 7','Penn State is at home and running the ball well, but it has to finish better than it did in Seattle.']}
 ];
@@ -408,9 +429,9 @@ var PREVIEWS=[
    look-ahead). Texas, Tennessee and Texas A&M have Week 11 preview cards whose storylines carry their
    Week 10 results; USC and Indiana had byes and have the USC-Indiana preview card. */
 var OTHER=[
- ['Virginia Tech','SMU','FINAL (Nov 6, Week 10)','SMU 51, Virginia Tech 28','SMU (plevas82) scored on each of its first eight drives on Friday night; Kevin Jennings threw for 350 yards and 4 TD, three to Yamir Knight, and SMU had a season-high 569 yards (AP). It is 7-2, 5-2 in the ACC, and 12-0 in ACC home games. Next: hosts CFP No. 13 Wake Forest, Sat Nov 14, 11:00am CT, ESPN (Wake Forest -1.5, O/U 61.5).','SMU'],
- ['West Virginia','Texas Tech','FINAL (Nov 7, Week 10)','Texas Tech 53, West Virginia 48','Texas Tech (NotGamblingNCAA, CFP No. 12 and the first team out) trailed 48-41 after three quarters. Tommy Castellanos threw for 362 yards and a career-high 5 TD, the last a 5-yarder to Kenny Johnson with 2:44 left, and a safety sealed it; the teams combined for 1,220 yards (AP). Texas Tech is 8-1, 5-1 in the Big 12. Next: at No. 25 Oklahoma State, Sat Nov 14, 8:30pm CT, ESPN (Oklahoma State -3.5, O/U 72.5).','Texas Tech'],
- ['Duke','NC State','FINAL (Nov 7, Week 10)','Duke 41, NC State 3','NC State (Block) lost at home; Duke&rsquo;s Nate Sheppard ran for 217 yards and 3 TD, matching NC State&rsquo;s total offense, and Andrew Pellicciotta returned a missed 50-yard field goal 100 yards for a touchdown to end the first half (AP). NC State is 4-5, 2-4 in the ACC. Next: hosts Syracuse, Sat Nov 14, 11:00am CT, ACC Network (Syracuse -3, O/U 54.5).','NC State']
+ ['Virginia Tech','SMU','FINAL (Nov 6, Week 10)','SMU 51, Virginia Tech 28','SMU (plevas82) scored on each of its first eight drives on Friday night; Kevin Jennings threw for 350 yards and 4 TD, three to Yamir Knight, and SMU had a season-high 569 yards (AP). It is 7-2, 5-2 in the ACC, and 12-0 in ACC home games. Next: hosts CFP No. 13 Wake Forest, Sat Nov 14, 11:00am CT, ESPN (SMU -1.5, O/U 60.5).','SMU'],
+ ['West Virginia','Texas Tech','FINAL (Nov 7, Week 10)','Texas Tech 53, West Virginia 48','Texas Tech (NotGamblingNCAA, CFP No. 12 and the first team out) trailed 48-41 after three quarters. Tommy Castellanos threw for 362 yards and a career-high 5 TD, the last a 5-yarder to Kenny Johnson with 2:44 left, and a safety sealed it; the teams combined for 1,220 yards (AP). Texas Tech is 8-1, 5-1 in the Big 12. Next: at No. 25 Oklahoma State, Sat Nov 14, 8:30pm CT, ESPN (Oklahoma State -3.5, O/U 73.5).','Texas Tech'],
+ ['Duke','NC State','FINAL (Nov 7, Week 10)','Duke 41, NC State 3','NC State (Block) lost at home; Duke&rsquo;s Nate Sheppard ran for 217 yards and 3 TD, matching NC State&rsquo;s total offense, and Andrew Pellicciotta returned a missed 50-yard field goal 100 yards for a touchdown to end the first half (AP). NC State is 4-5, 2-4 in the ACC. Next: hosts Syracuse, Sat Nov 14, 11:00am CT, ACC Network (Syracuse -3, O/U 53.5).','NC State']
 ];
 /* POOL TITLE ODDS: national-championship futures, American odds, ONE book only (don't mix books - each book
    has its own margin). Source: FanDuel board in Sports Illustrated's post-Week 10 title-odds story (Peter
@@ -456,7 +477,8 @@ var NEWS={
   ['Toney out for the regular season','Miami WR Malachi Toney has a high-ankle sprain that needed surgery; he is expected to miss the rest of the regular season, and Miami hopes to have him back for the CFP.'],
   ['Heisman: Carr takes over','CJ Carr went from +1200 to +120 at BetMGM. Darian Mensah drifted to +350 and Jeremiah Smith to +400; Gunner Stockton and Devon Dampier are both +1500.'],
   ['Georgia is the new CFP No. 1','The committee&rsquo;s second ranking (Nov 10) has Georgia, Utah, Alabama and UCLA in the bye spots. Miami fell to No. 7 and Indiana to No. 9; Notre Dame jumped to No. 5. Seven drafted teams are in the field, with Tennessee replacing Ole Miss.'],
-  ['Week 11: four Pool Matchups','USC at Indiana, Michigan at Oregon, Texas at LSU and Tennessee at Texas A&amp;M, all Saturday Nov 14. The next CFP ranking comes out Tuesday Nov 17.']
+  ['Week 11 injury reports','Indiana&rsquo;s Josh Hoover is not on the Big Ten report for USC, but RB Turbo Richard is out. Ole Miss RB Kewan Lacy is expected to miss the rest of the season. Texas EDGE Colin Simmons is off the report for LSU, and LSU LB Whit Weeks is questionable.'],
+  ['Week 11: four Pool Matchups','USC at Indiana, Michigan at Oregon, Texas at LSU and Tennessee at Texas A&amp;M, all Saturday Nov 14; Colorado hosts Houston tonight. The next CFP ranking comes out Tuesday Nov 17.']
  ],
  watch:[
   ['ESPN College Football','https://www.espn.com/college-football/','Scores, rankings, and recaps'],
@@ -466,7 +488,507 @@ var NEWS={
  ],
  outlook:'Week 10 opened with No. 3 Utah&rsquo;s 28-20 win over No. 9 BYU, which kept the Utes unbeaten. In the pool, five Pool Matchups went to Cignatty (Notre Dame over Miami), plevas82 (Georgia over Ole Miss), Block twice (Alabama over LSU, Oregon over Ohio State) and GoBuffs! (Oklahoma over Florida). NotGamblingNCAA leads the wins table with 22, ahead of plevas82 and Cignatty at 21. In the committee&rsquo;s Nov 10 ranking, Georgia took over No. 1 ahead of Utah, Alabama and UCLA; Miami fell to No. 7, Indiana to No. 9, and Ole Miss out of the field. On FanDuel, Georgia (+240) and Notre Dame (+390) are the title favorites. <b>Next up: four Pool Matchups on Saturday Nov 14 &mdash; USC at Indiana, Michigan at Oregon, Texas at LSU and Tennessee at Texas A&amp;M. Colorado hosts Houston on Friday night, and Iowa State hosts Cincinnati.</b>'
 };
+
+/* POOL ODDS MODEL DATA - generated by tools/pool_odds_fetch.js. Do not edit by hand; rerun the tool.
+   Formats are described at the top of that tool. 138 FBS teams, 401 games (195 unplayed). */
+var POOL_DATE="2026-11-13";
+var POOL_ASOF="ESPN FPI ratings (updated 2026-11-13) and ESPN scoreboard results, pulled Nov 13, 2026, 11:02 AM CT";
+var POOL_RATINGS={
+ "Air Force":-3.2,"Akron":-23.7,"Alabama":26.1,"App State":-10.2,
+ "Arizona":12.6,"Arizona State":1.5,"Arkansas":1.6,"Arkansas State":-10.3,
+ "Army":-2.8,"Auburn":8.7,"BYU":14.8,"Ball State":-21.3,
+ "Baylor":11.4,"Boise State":11.8,"Boston College":-3.7,"Bowling Green":-17.7,
+ "Buffalo":-11.5,"California":-7.1,"Central Michigan":-11.8,"Charlotte":-21.5,
+ "Cincinnati":4.6,"Clemson":7.2,"Coastal Carolina":-12.1,"Colorado":-1.8,
+ "Colorado State":-12.9,"Delaware":-9.6,"Duke":12.4,"East Carolina":-3.6,
+ "Eastern Michigan":-18.1,"Florida":12.5,"Florida Atlantic":-6.9,"Florida International":-12.7,
+ "Florida State":8,"Fresno State":0.5,"Georgia":27.2,"Georgia Southern":-1.8,
+ "Georgia State":-7.5,"Georgia Tech":-4.6,"Hawai'i":-9.9,"Houston":13.8,
+ "Illinois":7.7,"Indiana":21.3,"Iowa":14.6,"Iowa State":2.5,
+ "Jacksonville State":-5.2,"James Madison":4.9,"Kansas":4.1,"Kansas State":1.5,
+ "Kennesaw State":-11.9,"Kent State":-23.6,"Kentucky":11.3,"LSU":22.5,
+ "Liberty":4.6,"Louisiana":-3.3,"Louisiana Tech":-0.1,"Louisville":14.8,
+ "Marshall":-15.7,"Maryland":-3.4,"Massachusetts":-16.5,"Memphis":3.5,
+ "Miami":26,"Miami (OH)":-9,"Michigan":9.2,"Michigan State":2.2,
+ "Middle Tennessee":-16.6,"Minnesota":1.8,"Mississippi State":6.9,"Missouri":12.9,
+ "Missouri State":-15.3,"NC State":-1.3,"Navy":-4.3,"Nebraska":13.2,
+ "Nevada":-9.5,"New Mexico":7.8,"New Mexico State":-15.4,"North Carolina":9.3,
+ "North Dakota State":0.7,"North Texas":3.8,"Northern Illinois":-21.4,"Northwestern":12.2,
+ "Notre Dame":27.3,"Ohio":-9.8,"Ohio State":24.3,"Oklahoma":13.6,
+ "Oklahoma State":13.9,"Old Dominion":-14.8,"Ole Miss":18.3,"Oregon":19.7,
+ "Oregon State":1.8,"Penn State":12.2,"Pittsburgh":8.2,"Purdue":1.3,
+ "Rice":-14.8,"Rutgers":-5.3,"SMU":11.9,"Sacramento State":-29.2,
+ "Sam Houston":-20.8,"San Diego State":-9.4,"San José State":-12,"South Alabama":-10.2,
+ "South Carolina":14.1,"South Florida":-3.2,"Southern Miss":-14.9,"Stanford":-10,
+ "Syracuse":2.2,"TCU":7.6,"Temple":-10.3,"Tennessee":18.5,
+ "Texas":23.9,"Texas A&amp;M":13,"Texas State":3,"Texas Tech":15.5,
+ "Toledo":-3.1,"Troy":-11,"Tulane":-9.9,"Tulsa":-0.1,
+ "UAB":-13.8,"UCF":3.6,"UCLA":12.6,"UConn":-6.1,
+ "UL Monroe":-24.1,"UNLV":-4.9,"USC":14.8,"UTEP":-24.1,
+ "UTSA":-2.9,"Utah":18.7,"Utah State":-4.1,"Vanderbilt":0.7,
+ "Virginia":3.9,"Virginia Tech":4.9,"Wake Forest":17.8,"Washington":6.6,
+ "Washington State":-9.7,"West Virginia":2.7,"Western Kentucky":-14.9,"Western Michigan":-2.6,
+ "Wisconsin":9.1,"Wyoming":-11
+};
+var POOL_TEAMS={
+ "Air Force":["MW",7,2,3,2],"Akron":["MAC",1,9,0,6],"Alabama":["SEC",7,2,5,2],"App State":["Sun Belt",5,4,2,3],
+ "Arizona":["Big 12",7,2,4,2],"Arizona State":["Big 12",5,4,3,3],"Arkansas":["SEC",3,6,1,5],"Arkansas State":["Sun Belt",4,5,2,3],
+ "Army":["American",5,4,4,2],"Auburn":["SEC",5,4,3,4],"BYU":["Big 12",7,2,4,2],"Ball State":["MAC",3,7,2,4],
+ "Baylor":["Big 12",6,3,4,2],"Boise State":["Pac-12",8,1,5,0],"Boston College":["ACC",4,5,2,4],"Bowling Green":["MAC",3,7,3,3],
+ "Buffalo":["MAC",7,3,5,1],"California":["ACC",3,6,2,4],"Central Michigan":["MAC",5,5,3,3],"Charlotte":["American",1,8,1,4],
+ "Cincinnati":["Big 12",5,4,2,4],"Clemson":["ACC",6,3,4,2],"Coastal Carolina":["Sun Belt",3,6,2,3],"Colorado":["Big 12",3,6,1,5],
+ "Colorado State":["Pac-12",3,6,1,4],"Delaware":["CUSA",4,5,2,3],"Duke":["ACC",7,2,4,2],"East Carolina":["American",5,4,3,2],
+ "Eastern Michigan":["MAC",4,6,3,3],"Florida":["SEC",5,4,3,4],"Florida Atlantic":["American",6,3,3,2],"Florida International":["CUSA",4,5,2,3],
+ "Florida State":["ACC",4,5,2,4],"Fresno State":["Pac-12",5,4,2,3],"Georgia":["SEC",8,1,6,1],"Georgia Southern":["Sun Belt",5,4,4,1],
+ "Georgia State":["Sun Belt",5,4,2,3],"Georgia Tech":["ACC",2,7,1,5],"Hawai'i":["MW",3,6,2,4],"Houston":["Big 12",7,2,4,2],
+ "Illinois":["Big Ten",6,3,4,2],"Indiana":["Big Ten",8,1,5,1],"Iowa":["Big Ten",7,2,4,2],"Iowa State":["Big 12",4,5,2,4],
+ "Jacksonville State":["CUSA",7,2,5,0],"James Madison":["Sun Belt",8,2,5,2],"Kansas":["Big 12",3,6,1,5],"Kansas State":["Big 12",4,5,1,5],
+ "Kennesaw State":["CUSA",3,6,2,3],"Kent State":["MAC",3,7,2,4],"Kentucky":["SEC",7,2,5,2],"LSU":["SEC",6,3,3,3],
+ "Liberty":["CUSA",8,1,5,0],"Louisiana":["Sun Belt",7,3,4,2],"Louisiana Tech":["Sun Belt",7,2,5,0],"Louisville":["ACC",6,3,5,2],
+ "Marshall":["Sun Belt",5,4,2,3],"Maryland":["Big Ten",3,6,1,5],"Massachusetts":["MAC",5,5,2,4],"Memphis":["American",8,2,5,1],
+ "Miami":["ACC",8,1,6,0],"Miami (OH)":["MAC",6,4,4,2],"Michigan":["Big Ten",5,4,2,4],"Michigan State":["Big Ten",3,6,1,5],
+ "Middle Tennessee":["CUSA",5,4,3,2],"Minnesota":["Big Ten",5,4,3,3],"Mississippi State":["SEC",4,5,2,5],"Missouri":["SEC",6,3,3,3],
+ "Missouri State":["CUSA",3,6,2,3],"NC State":["ACC",4,5,2,4],"Navy":["American",3,6,2,4],"Nebraska":["Big Ten",5,4,2,4],
+ "Nevada":["MW",3,6,2,3],"New Mexico":["MW",8,1,5,0],"New Mexico State":["CUSA",3,6,2,3],"North Carolina":["ACC",5,4,2,3],
+ "North Dakota State":["MW",7,2,4,2],"North Texas":["American",7,2,5,0],"Northern Illinois":["MW",0,9,0,5],"Northwestern":["Big Ten",6,3,3,3],
+ "Notre Dame":["Ind",8,1,0,0],"Ohio":["MAC",7,3,5,1],"Ohio State":["Big Ten",6,3,4,2],"Oklahoma":["SEC",5,4,3,3],
+ "Oklahoma State":["Big 12",6,3,4,2],"Old Dominion":["Sun Belt",3,7,2,5],"Ole Miss":["SEC",6,3,4,3],"Oregon":["Big Ten",6,3,4,2],
+ "Oregon State":["Pac-12",5,4,3,2],"Penn State":["Big Ten",5,4,2,4],"Pittsburgh":["ACC",6,3,3,3],"Purdue":["Big Ten",3,6,2,4],
+ "Rice":["American",1,8,0,5],"Rutgers":["Big Ten",2,7,1,5],"SMU":["ACC",7,2,5,2],"Sacramento State":["MAC",2,9,1,7],
+ "Sam Houston":["CUSA",1,8,0,5],"San Diego State":["Pac-12",4,5,3,2],"San José State":["MW",5,5,3,3],"South Alabama":["Sun Belt",4,5,2,3],
+ "South Carolina":["SEC",6,3,4,3],"South Florida":["American",6,4,2,4],"Southern Miss":["Sun Belt",3,6,2,3],"Stanford":["ACC",4,5,2,4],
+ "Syracuse":["ACC",4,5,2,5],"TCU":["Big 12",4,5,2,4],"Temple":["American",2,7,1,4],"Tennessee":["SEC",7,2,4,2],
+ "Texas":["SEC",7,2,4,2],"Texas A&amp;M":["SEC",4,5,1,5],"Texas State":["Pac-12",5,4,3,2],"Texas Tech":["Big 12",8,1,5,1],
+ "Toledo":["MAC",8,2,5,1],"Troy":["Sun Belt",4,5,2,3],"Tulane":["American",4,5,2,3],"Tulsa":["American",5,4,2,3],
+ "UAB":["American",5,4,3,2],"UCF":["Big 12",5,4,3,3],"UCLA":["Big Ten",9,0,6,0],"UConn":["Ind",4,5,0,0],
+ "UL Monroe":["Sun Belt",2,8,2,4],"UNLV":["MW",5,4,3,2],"USC":["Big Ten",7,2,4,2],"UTEP":["MW",1,8,0,5],
+ "UTSA":["American",7,2,4,1],"Utah":["Big 12",9,0,6,0],"Utah State":["Pac-12",4,5,3,2],"Vanderbilt":["SEC",4,5,1,5],
+ "Virginia":["ACC",4,5,2,4],"Virginia Tech":["ACC",6,3,3,3],"Wake Forest":["ACC",8,1,5,1],"Washington":["Big Ten",5,4,2,4],
+ "Washington State":["Pac-12",1,8,0,5],"West Virginia":["Big 12",5,4,2,4],"Western Kentucky":["CUSA",3,6,2,3],"Western Michigan":["MAC",7,3,5,1],
+ "Wisconsin":["Big Ten",6,3,4,2],"Wyoming":["MW",6,3,5,1]
+};
+var POOL_GAMES=[
+ ["401858202","2026-08-29","Virginia","NC State",0,1,1],
+ ["401858206","2026-09-04","Stanford","Miami",0,1,2],
+ ["401858212","2026-09-07","Florida State","SMU",0,1,2],
+ ["401856674","2026-09-12","Kentucky","Alabama",0,1,2],
+ ["401856810","2026-09-12","BYU","Arizona",0,1,1],
+ ["401858216","2026-09-12","Syracuse","California",0,1,2],
+ ["401858225","2026-09-17","Pittsburgh","Syracuse",0,1,1],
+ ["401858226","2026-09-18","Wake Forest","Miami",0,1,2],
+ ["401856811","2026-09-18","Texas Tech","Houston",0,1,1],
+ ["401856686","2026-09-19","Arkansas","Georgia",0,1,2],
+ ["401856812","2026-09-19","Kansas","Arizona State",1,1,2],
+ ["401858229","2026-09-19","Clemson","North Carolina",0,1,1],
+ ["401858230","2026-09-19","Louisville","SMU",0,1,1],
+ ["401858457","2026-09-19","Rutgers","USC",0,1,2],
+ ["401856694","2026-09-19","Texas A&amp;M","Kentucky",0,1,2],
+ ["401858231","2026-09-19","Duke","Stanford",0,1,1],
+ ["401856691","2026-09-19","South Carolina","Mississippi State",0,1,2],
+ ["401856687","2026-09-19","Auburn","Florida",0,1,2],
+ ["401856688","2026-09-19","Ole Miss","LSU",0,1,1],
+ ["401858458","2026-09-19","UCLA","Purdue",0,1,1],
+ ["401858461","2026-09-25","Indiana","Northwestern",0,1,1],
+ ["401858234","2026-09-25","California","Clemson",0,1,2],
+ ["401856704","2026-09-26","Tennessee","Texas",0,1,2],
+ ["401856813","2026-09-26","Baylor","Colorado",0,1,1],
+ ["401858242","2026-09-26","Boston College","Virginia Tech",0,1,2],
+ ["401858243","2026-09-26","Louisville","Wake Forest",0,1,2],
+ ["401858465","2026-09-26","Ohio State","Illinois",0,1,1],
+ ["401858462","2026-09-26","Maryland","UCLA",0,1,2],
+ ["401856699","2026-09-26","Florida","Ole Miss",0,1,1],
+ ["401856700","2026-09-26","Georgia","Oklahoma",0,1,1],
+ ["401856815","2026-09-26","UCF","TCU",0,1,1],
+ ["401856816","2026-09-26","Iowa State","Utah",0,1,2],
+ ["401858463","2026-09-26","Michigan","Iowa",0,1,2],
+ ["401856698","2026-09-26","Auburn","Vanderbilt",0,1,1],
+ ["401858464","2026-09-26","Michigan State","Nebraska",0,1,2],
+ ["401858466","2026-09-26","Penn State","Wisconsin",0,1,2],
+ ["401856814","2026-09-26","Cincinnati","Kansas State",0,1,1],
+ ["401856881","2026-09-26","West Virginia","Oklahoma State",0,1,2],
+ ["401856696","2026-09-26","Alabama","South Carolina",0,1,1],
+ ["401856702","2026-09-26","LSU","Texas A&amp;M",0,1,1],
+ ["401858469","2026-09-26","USC","Oregon",0,1,2],
+ ["401856703","2026-09-26","Mississippi State","Missouri",0,1,1],
+ ["401858240","2026-09-26","Stanford","Georgia Tech",0,1,1],
+ ["401858470","2026-09-26","Washington","Minnesota",0,1,2],
+ ["401858245","2026-10-02","Virginia Tech","Pittsburgh",0,1,2],
+ ["401858476","2026-10-02","Northwestern","Penn State",0,1,1],
+ ["401856707","2026-10-03","Mississippi State","Alabama",0,1,2],
+ ["401856819","2026-10-03","Houston","UCF",0,1,1],
+ ["401856822","2026-10-03","Iowa State","West Virginia",0,1,1],
+ ["401858246","2026-10-03","SMU","Boston College",0,1,1],
+ ["401858251","2026-10-03","Wake Forest","Stanford",0,1,1],
+ ["401858474","2026-10-03","Minnesota","Michigan",0,1,1],
+ ["401858479","2026-10-03","Wisconsin","Michigan State",0,1,1],
+ ["401856705","2026-10-03","Georgia","Vanderbilt",0,1,1],
+ ["401856710","2026-10-03","Tennessee","Auburn",0,1,1],
+ ["401858248","2026-10-03","NC State","Louisville",0,1,1],
+ ["401858253","2026-10-03","Florida State","Virginia",0,1,1],
+ ["401858473","2026-10-03","Iowa","Ohio State",0,1,2],
+ ["401856708","2026-10-03","Missouri","Florida",0,1,1],
+ ["401858475","2026-10-03","Nebraska","Maryland",0,1,1],
+ ["401856709","2026-10-03","South Carolina","Kentucky",0,1,2],
+ ["401858472","2026-10-03","Illinois","Purdue",0,1,2],
+ ["401856711","2026-10-03","Texas A&amp;M","Arkansas",0,1,1],
+ ["401856818","2026-10-03","TCU","BYU",0,1,2],
+ ["401856821","2026-10-03","Colorado","Texas Tech",0,1,2],
+ ["401858249","2026-10-03","Clemson","Miami",0,1,2],
+ ["401858478","2026-10-03","USC","Washington",0,1,1],
+ ["401858477","2026-10-03","Rutgers","Indiana",0,1,2],
+ ["401856817","2026-10-03","Arizona State","Baylor",0,1,2],
+ ["401856820","2026-10-03","Arizona","Cincinnati",0,1,1],
+ ["401858254","2026-10-09","Louisville","Florida State",0,1,1],
+ ["401858487","2026-10-09","Washington","Iowa",0,1,2],
+ ["401856826","2026-10-09","BYU","Iowa State",0,1,1],
+ ["401856716","2026-10-10","Missouri","Texas A&amp;M",0,1,1],
+ ["401856823","2026-10-10","West Virginia","Arizona",0,1,2],
+ ["401856824","2026-10-10","Oklahoma State","UCF",0,1,1],
+ ["401858256","2026-10-10","Pittsburgh","North Carolina",0,1,2],
+ ["401858260","2026-10-10","NC State","Wake Forest",0,1,2],
+ ["401858481","2026-10-10","Nebraska","Indiana",0,1,2],
+ ["401856714","2026-10-10","Florida","South Carolina",0,1,2],
+ ["401856717","2026-10-10","Oklahoma","Texas",1,1,1],
+ ["401856718","2026-10-10","Vanderbilt","Ole Miss",0,1,2],
+ ["401856825","2026-10-10","Kansas State","Houston",0,1,2],
+ ["401858255","2026-10-10","Georgia Tech","Duke",0,1,1],
+ ["401858259","2026-10-10","California","Virginia Tech",0,1,1],
+ ["401858480","2026-10-10","Michigan State","Illinois",0,1,2],
+ ["401858484","2026-10-10","Oregon","UCLA",0,1,2],
+ ["401856713","2026-10-10","Arkansas","Tennessee",0,1,2],
+ ["401858483","2026-10-10","Ohio State","Maryland",0,1,1],
+ ["401856715","2026-10-10","Kentucky","LSU",0,1,1],
+ ["401856712","2026-10-10","Alabama","Georgia",0,1,2],
+ ["401858258","2026-10-10","Virginia","Syracuse",0,1,1],
+ ["401858485","2026-10-10","Penn State","USC",0,1,2],
+ ["401856827","2026-10-10","Utah","Kansas",0,1,1],
+ ["401858486","2026-10-10","Purdue","Minnesota",0,1,1],
+ ["401858493","2026-10-16","Purdue","Washington",0,1,2],
+ ["401856720","2026-10-17","LSU","Mississippi State",0,1,1],
+ ["401856724","2026-10-17","Texas","Florida",0,1,2],
+ ["401856829","2026-10-17","West Virginia","Cincinnati",0,1,1],
+ ["401856830","2026-10-17","Kansas State","Kansas",0,1,1],
+ ["401858267","2026-10-17","Boston College","Pittsburgh",0,1,1],
+ ["401858268","2026-10-17","SMU","Virginia",0,1,1],
+ ["401858488","2026-10-17","Indiana","Ohio State",0,1,2],
+ ["401858491","2026-10-17","Michigan State","Northwestern",0,1,2],
+ ["401858489","2026-10-17","Maryland","Rutgers",0,1,2],
+ ["401856719","2026-10-17","Georgia","Auburn",0,1,2],
+ ["401856721","2026-10-17","Ole Miss","Missouri",0,1,1],
+ ["401856723","2026-10-17","Tennessee","Alabama",0,1,1],
+ ["401856828","2026-10-17","Texas Tech","Arizona State",0,1,1],
+ ["401858264","2026-10-17","Virginia Tech","Georgia Tech",0,1,1],
+ ["401858266","2026-10-17","Duke","North Carolina",0,1,2],
+ ["401858490","2026-10-17","Michigan","Penn State",0,1,1],
+ ["401856726","2026-10-17","Vanderbilt","Arkansas",0,1,2],
+ ["401856832","2026-10-17","Baylor","TCU",0,1,2],
+ ["401858263","2026-10-17","Miami","Florida State",0,1,1],
+ ["401856722","2026-10-17","Oklahoma","Kentucky",0,1,2],
+ ["401856831","2026-10-17","Houston","Oklahoma State",0,1,1],
+ ["401858265","2026-10-17","Syracuse","Louisville",0,1,2],
+ ["401858494","2026-10-17","UCLA","Wisconsin",0,1,1],
+ ["401856833","2026-10-17","Colorado","Utah",0,1,2],
+ ["401858269","2026-10-17","California","Wake Forest",0,1,2],
+ ["401858492","2026-10-17","Oregon","Nebraska",0,1,1],
+ ["401858271","2026-10-23","Virginia","Duke",0,1,2],
+ ["401858272","2026-10-23","Stanford","NC State",0,1,1],
+ ["401856728","2026-10-24","Auburn","LSU",0,1,2],
+ ["401856840","2026-10-24","Cincinnati","Texas Tech",0,1,1],
+ ["401856841","2026-10-24","TCU","West Virginia",0,1,2],
+ ["401858270","2026-10-24","SMU","California",0,1,1],
+ ["401858274","2026-10-24","Miami","Pittsburgh",0,1,1],
+ ["401858496","2026-10-24","Michigan","Indiana",0,1,2],
+ ["401858498","2026-10-24","Northwestern","Rutgers",0,1,1],
+ ["401856834","2026-10-24","Kansas","Baylor",0,1,1],
+ ["401858495","2026-10-24","Illinois","Oregon",0,1,1],
+ ["401856727","2026-10-24","Alabama","Texas A&amp;M",0,1,1],
+ ["401856730","2026-10-24","Mississippi State","Oklahoma",0,1,2],
+ ["401856731","2026-10-24","South Carolina","Tennessee",0,1,1],
+ ["401856835","2026-10-24","UCF","BYU",0,1,1],
+ ["401858273","2026-10-24","Georgia Tech","Boston College",0,1,2],
+ ["401858497","2026-10-24","Minnesota","Iowa",0,1,1],
+ ["401858499","2026-10-24","UCLA","Michigan State",0,1,1],
+ ["401856839","2026-10-24","Arizona State","Kansas State",0,1,1],
+ ["401856836","2026-10-24","Oklahoma State","Colorado",0,1,1],
+ ["401858276","2026-10-24","Clemson","Virginia Tech",0,1,2],
+ ["401856729","2026-10-24","Kentucky","Vanderbilt",0,1,1],
+ ["401856732","2026-10-24","Texas","Ole Miss",0,1,1],
+ ["401856838","2026-10-24","Arizona","Iowa State",0,1,1],
+ ["401858275","2026-10-24","North Carolina","Syracuse",0,1,2],
+ ["401858500","2026-10-24","Wisconsin","USC",0,1,1],
+ ["401856837","2026-10-24","Utah","Houston",0,1,1],
+ ["401856844","2026-10-30","UCF","Baylor",0,1,2],
+ ["401856842","2026-10-31","Texas Tech","Arizona",0,1,1],
+ ["401858277","2026-10-31","NC State","California",0,1,1],
+ ["401858278","2026-10-31","Syracuse","SMU",0,1,1],
+ ["401858279","2026-10-31","Duke","Boston College",0,1,1],
+ ["401858502","2026-10-31","Iowa","Wisconsin",0,1,1],
+ ["401858503","2026-10-31","Maryland","Illinois",0,1,2],
+ ["401858507","2026-10-31","Rutgers","Michigan",0,1,2],
+ ["401856735","2026-10-31","Ole Miss","Auburn",0,1,1],
+ ["401856846","2026-10-31","Colorado","Kansas State",0,1,1],
+ ["401858283","2026-10-31","Louisville","Stanford",0,1,1],
+ ["401856734","2026-10-31","Georgia","Florida",1,1,1],
+ ["401856843","2026-10-31","BYU","Arizona State",0,1,1],
+ ["401856845","2026-10-31","TCU","Kansas",0,1,1],
+ ["401858501","2026-10-31","Indiana","Minnesota",0,1,1],
+ ["401858505","2026-10-31","Oregon","Northwestern",0,1,1],
+ ["401856848","2026-10-31","Cincinnati","Utah",0,1,2],
+ ["401858284","2026-10-31","Wake Forest","Virginia",0,1,1],
+ ["401856736","2026-10-31","Oklahoma","South Carolina",0,1,2],
+ ["401858506","2026-10-31","Penn State","Purdue",0,1,1],
+ ["401856847","2026-10-31","Iowa State","Oklahoma State",0,1,1],
+ ["401858280","2026-10-31","Florida State","Clemson",0,1,2],
+ ["401856737","2026-10-31","Texas","Mississippi State",0,1,1],
+ ["401858281","2026-10-31","Pittsburgh","Georgia Tech",0,1,1],
+ ["401858282","2026-10-31","North Carolina","Miami",0,1,2],
+ ["401858509","2026-10-31","USC","Ohio State",0,1,1],
+ ["401856733","2026-10-31","Arkansas","Missouri",0,1,2],
+ ["401858504","2026-10-31","Nebraska","Washington",0,1,2],
+ ["401858288","2026-11-06","SMU","Virginia Tech",0,1,1],
+ ["401858510","2026-11-06","Illinois","Nebraska",0,1,1],
+ ["401856855","2026-11-06","Arizona","TCU",0,1,1],
+ ["401856743","2026-11-07","Missouri","Texas",0,1,2],
+ ["401856849","2026-11-07","Utah","BYU",0,1,1],
+ ["401856853","2026-11-07","Baylor","Iowa State",0,1,1],
+ ["401858285","2026-11-07","Syracuse","Clemson",0,1,2],
+ ["401858289","2026-11-07","Boston College","Florida State",0,1,2],
+ ["401858512","2026-11-07","Minnesota","UCLA",0,1,2],
+ ["401858286","2026-11-07","NC State","Duke",0,1,2],
+ ["401858515","2026-11-07","Purdue","Maryland",0,1,2],
+ ["401856738","2026-11-07","Auburn","Arkansas",0,1,1],
+ ["401856854","2026-11-07","Kansas State","Oklahoma State",0,1,2],
+ ["401856744","2026-11-07","South Carolina","Texas A&amp;M",0,1,1],
+ ["401856740","2026-11-07","LSU","Alabama",0,1,2],
+ ["401856851","2026-11-07","Houston","Cincinnati",0,1,1],
+ ["401858514","2026-11-07","Ohio State","Oregon",0,1,2],
+ ["401858516","2026-11-07","Washington","Penn State",0,1,2],
+ ["401856850","2026-11-07","Kansas","UCF",0,1,2],
+ ["401856742","2026-11-07","Mississippi State","Vanderbilt",0,1,2],
+ ["401858517","2026-11-07","Wisconsin","Rutgers",0,1,1],
+ ["401856745","2026-11-07","Tennessee","Kentucky",0,1,1],
+ ["401856741","2026-11-07","Ole Miss","Georgia",0,1,2],
+ ["401856852","2026-11-07","Arizona State","Colorado",0,1,1],
+ ["401858287","2026-11-07","Georgia Tech","Louisville",0,1,2],
+ ["401858511","2026-11-07","Michigan","Michigan State",0,1,2],
+ ["401858513","2026-11-07","Northwestern","Iowa",0,1,2],
+ ["401856739","2026-11-07","Florida","Oklahoma",0,1,2],
+ ["401856856","2026-11-07","Texas Tech","West Virginia",0,1,1],
+ ["401858293","2026-11-13","Pittsburgh","Florida State",0,1,0],
+ ["401858526","2026-11-13","UCLA","Illinois",0,1,0],
+ ["401856860","2026-11-13","Colorado","Houston",0,1,0],
+ ["401856859","2026-11-14","Iowa State","Cincinnati",0,1,0],
+ ["401856886","2026-11-14","Mississippi State","Auburn",0,1,0],
+ ["401858296","2026-11-14","Miami","Duke",0,1,0],
+ ["401858300","2026-11-14","NC State","Syracuse",0,1,0],
+ ["401858301","2026-11-14","SMU","Wake Forest",0,1,0],
+ ["401858520","2026-11-14","Maryland","Wisconsin",0,1,0],
+ ["401858522","2026-11-14","Ohio State","Northwestern",0,1,0],
+ ["401861967","2026-11-14","UConn","James Madison",0,0,0],
+ ["401858297","2026-11-14","Clemson","Georgia Tech",0,1,0],
+ ["401858525","2026-11-14","Rutgers","Nebraska",0,1,0],
+ ["401856889","2026-11-14","Vanderbilt","Alabama",0,1,0],
+ ["401862825","2026-11-14","Charlotte","East Carolina",0,1,0],
+ ["401862829","2026-11-14","Temple","UAB",0,1,0],
+ ["401869937","2026-11-14","Coastal Carolina","Arkansas State",0,1,0],
+ ["401856862","2026-11-14","TCU","Kansas State",0,1,0],
+ ["401862828","2026-11-14","Rice","Tulane",0,1,0],
+ ["401870769","2026-11-14","Sam Houston","Kennesaw State",0,1,0],
+ ["401856888","2026-11-14","Texas A&amp;M","Tennessee",0,1,0],
+ ["401870796","2026-11-14","Missouri State","New Mexico State",0,1,0],
+ ["401871060","2026-11-14","Delaware","Florida International",0,1,0],
+ ["401856857","2026-11-14","UCF","Arizona State",0,1,0],
+ ["401856858","2026-11-14","BYU","Baylor",0,1,0],
+ ["401856883","2026-11-14","Georgia","Missouri",0,1,0],
+ ["401858294","2026-11-14","Notre Dame","Boston College",0,0,0],
+ ["401858295","2026-11-14","Virginia","California",0,1,0],
+ ["401858518","2026-11-14","Indiana","USC",0,1,0],
+ ["401858523","2026-11-14","Oregon","Michigan",0,1,0],
+ ["401862826","2026-11-14","Tulsa","Florida Atlantic",0,1,0],
+ ["401864536","2026-11-14","Northern Illinois","Nevada",0,1,0],
+ ["401869952","2026-11-14","Georgia State","Georgia Southern",0,1,0],
+ ["401870752","2026-11-14","Western Kentucky","Jacksonville State",0,1,0],
+ ["401871061","2026-11-14","Liberty","Middle Tennessee",0,1,0],
+ ["401860916","2026-11-14","Texas State","Fresno State",0,1,0],
+ ["401856887","2026-11-14","Oklahoma","Ole Miss",0,1,0],
+ ["401858521","2026-11-14","Michigan State","Washington",0,1,0],
+ ["401871099","2026-11-14","Louisiana Tech","Southern Miss",0,1,0],
+ ["401856861","2026-11-14","West Virginia","Kansas",0,1,0],
+ ["401860914","2026-11-14","Boise State","Oregon State",0,1,0],
+ ["401869928","2026-11-14","Marshall","App State",0,1,0],
+ ["401856884","2026-11-14","Kentucky","Florida",0,1,0],
+ ["401858298","2026-11-14","North Carolina","Louisville",0,1,0],
+ ["401858524","2026-11-14","Penn State","Minnesota",0,1,0],
+ ["401864538","2026-11-14","Air Force","San José State",0,1,0],
+ ["401871100","2026-11-14","South Alabama","Troy",0,1,0],
+ ["401856864","2026-11-14","Arizona","Utah",0,1,0],
+ ["401856885","2026-11-14","LSU","Texas",0,1,0],
+ ["401858299","2026-11-14","Virginia Tech","Stanford",0,1,0],
+ ["401858519","2026-11-14","Iowa","Purdue",0,1,0],
+ ["401864539","2026-11-14","New Mexico","UNLV",0,1,0],
+ ["401856882","2026-11-14","Arkansas","South Carolina",0,1,0],
+ ["401862827","2026-11-14","UTSA","North Texas",0,1,0],
+ ["401856863","2026-11-14","Oklahoma State","Texas Tech",0,1,0],
+ ["401860915","2026-11-14","San Diego State","Utah State",0,1,0],
+ ["401864540","2026-11-14","UTEP","Wyoming",0,1,0],
+ ["401860917","2026-11-14","Washington State","Colorado State",0,1,0],
+ ["401864537","2026-11-14","Hawai'i","North Dakota State",0,1,0],
+ ["401866465","2026-11-17","Western Michigan","Eastern Michigan",0,1,0],
+ ["401866464","2026-11-17","Ohio","Ball State",0,1,0],
+ ["401866466","2026-11-17","Kent State","Miami (OH)",0,1,0],
+ ["401866467","2026-11-18","Massachusetts","Akron",0,1,0],
+ ["401866469","2026-11-18","Buffalo","Central Michigan",0,1,0],
+ ["401862830","2026-11-19","Temple","Rice",0,1,0],
+ ["401856869","2026-11-20","UCF","Iowa State",0,1,0],
+ ["401858303","2026-11-20","Duke","Clemson",0,1,0],
+ ["401866468","2026-11-20","Toledo","Bowling Green",0,1,0],
+ ["401858529","2026-11-20","Michigan State","Oregon",0,1,0],
+ ["401864545","2026-11-20","Air Force","UTEP",0,1,0],
+ ["401864542","2026-11-20","Wyoming","New Mexico",0,1,0],
+ ["401856865","2026-11-21","Kansas State","Arizona",0,1,0],
+ ["401856866","2026-11-21","Kansas","BYU",0,1,0],
+ ["401856868","2026-11-21","West Virginia","Houston",0,1,0],
+ ["401856871","2026-11-21","Baylor","Texas Tech",0,1,0],
+ ["401856872","2026-11-21","TCU","Utah",0,1,0],
+ ["401858302","2026-11-21","Miami","Virginia Tech",0,1,0],
+ ["401858306","2026-11-21","Louisville","Pittsburgh",0,1,0],
+ ["401858310","2026-11-21","Georgia Tech","Wake Forest",0,1,0],
+ ["401858528","2026-11-21","Michigan","UCLA",0,1,0],
+ ["401858531","2026-11-21","Nebraska","Ohio State",0,1,0],
+ ["401858535","2026-11-21","Washington","Indiana",0,1,0],
+ ["401862835","2026-11-21","Tulane","North Texas",0,1,0],
+ ["401862836","2026-11-21","UAB","UTSA",0,1,0],
+ ["401856748","2026-11-21","Florida","Vanderbilt",0,1,0],
+ ["401856749","2026-11-21","Ole Miss","Wofford",0,0,0],
+ ["401856752","2026-11-21","Oklahoma","Texas A&amp;M",0,1,0],
+ ["401856867","2026-11-21","Cincinnati","Colorado",0,1,0],
+ ["401858309","2026-11-21","Boston College","Syracuse",0,1,0],
+ ["401858530","2026-11-21","Minnesota","Northwestern",0,1,0],
+ ["401858533","2026-11-21","Purdue","Wisconsin",0,1,0],
+ ["401862831","2026-11-21","Army","East Carolina",0,1,0],
+ ["401862834","2026-11-21","Navy","Memphis",0,1,0],
+ ["401858305","2026-11-21","Virginia","North Carolina",0,1,0],
+ ["401856750","2026-11-21","Mississippi State","Tennessee Tech",0,0,0],
+ ["401871080","2026-11-21","Liberty","Western Kentucky",0,1,0],
+ ["401856746","2026-11-21","Alabama","Chattanooga",0,0,0],
+ ["401862832","2026-11-21","Tulsa","Charlotte",0,1,0],
+ ["401871079","2026-11-21","Jacksonville State","Missouri State",0,1,0],
+ ["401871081","2026-11-21","Sam Houston","Middle Tennessee",0,1,0],
+ ["401858527","2026-11-21","Illinois","Iowa",0,1,0],
+ ["401862833","2026-11-21","Florida Atlantic","South Florida",0,1,0],
+ ["401869929","2026-11-21","App State","UL Monroe",0,1,0],
+ ["401869946","2026-11-21","Louisiana","Coastal Carolina",0,1,0],
+ ["401871077","2026-11-21","New Mexico State","Delaware",0,1,0],
+ ["401871078","2026-11-21","Kennesaw State","Florida International",0,1,0],
+ ["401856747","2026-11-21","Auburn","Samford",0,0,0],
+ ["401856754","2026-11-21","Tennessee","LSU",0,1,0],
+ ["401856755","2026-11-21","Texas","Arkansas",0,1,0],
+ ["401858304","2026-11-21","Florida State","NC State",0,1,0],
+ ["401858532","2026-11-21","Penn State","Rutgers",0,1,0],
+ ["401861968","2026-11-21","UConn","Old Dominion",0,0,0],
+ ["401864543","2026-11-21","North Dakota State","Northern Illinois",0,1,0],
+ ["401869953","2026-11-21","Troy","Georgia Southern",0,1,0],
+ ["401869958","2026-11-21","Marshall","Georgia State",0,1,0],
+ ["401871101","2026-11-21","Southern Miss","South Alabama",0,1,0],
+ ["401860920","2026-11-21","Texas State","Washington State",0,1,0],
+ ["401858534","2026-11-21","USC","Maryland",0,1,0],
+ ["401864544","2026-11-21","San José State","UNLV",0,1,0],
+ ["401869938","2026-11-21","Louisiana Tech","Arkansas State",0,1,0],
+ ["401856751","2026-11-21","Missouri","Kentucky",0,1,0],
+ ["401856753","2026-11-21","South Carolina","Georgia",0,1,0],
+ ["401858307","2026-11-21","Notre Dame","SMU",0,0,0],
+ ["401858308","2026-11-21","California","Stanford",0,1,0],
+ ["401860918","2026-11-21","Fresno State","Colorado State",0,1,0],
+ ["401860925","2026-11-21","Boise State","San Diego State",0,1,0],
+ ["401856870","2026-11-21","Arizona State","Oklahoma State",0,1,0],
+ ["401860919","2026-11-21","Oregon State","Utah State",0,1,0],
+ ["401864541","2026-11-21","Nevada","Hawai'i",0,1,0],
+ ["401866471","2026-11-24","Western Michigan","Miami (OH)",0,1,0],
+ ["401866470","2026-11-24","Eastern Michigan","Kent State",0,1,0],
+ ["401856879","2026-11-26","Texas Tech","TCU",0,1,0],
+ ["401862838","2026-11-27","Memphis","Temple",0,1,0],
+ ["401862840","2026-11-27","UTSA","Tulsa",0,1,0],
+ ["401856762","2026-11-27","Ole Miss","Mississippi State",0,1,0],
+ ["401858536","2026-11-27","Iowa","Nebraska",0,1,0],
+ ["401866472","2026-11-27","Akron","Buffalo",0,1,0],
+ ["401866473","2026-11-27","Ohio","Toledo",0,1,0],
+ ["401869930","2026-11-27","South Alabama","App State",0,1,0],
+ ["401856759","2026-11-27","Florida State","Florida",0,0,0],
+ ["401864549","2026-11-27","San José State","North Dakota State",0,1,0],
+ ["401864546","2026-11-27","New Mexico","Air Force",0,1,0],
+ ["401856756","2026-11-27","Texas A&amp;M","Texas",0,1,0],
+ ["401858544","2026-11-27","Wisconsin","Minnesota",0,1,0],
+ ["401856880","2026-11-27","Utah","West Virginia",0,1,0],
+ ["401856757","2026-11-28","Alabama","Auburn",0,1,0],
+ ["401856758","2026-11-28","Arkansas","LSU",0,1,0],
+ ["401856760","2026-11-28","Georgia","Georgia Tech",0,0,0],
+ ["401856761","2026-11-28","Kentucky","Louisville",0,0,0],
+ ["401856763","2026-11-28","Missouri","Oklahoma",0,1,0],
+ ["401856764","2026-11-28","Clemson","South Carolina",0,0,0],
+ ["401856765","2026-11-28","Vanderbilt","Tennessee",0,1,0],
+ ["401856873","2026-11-28","Arizona","Arizona State",0,1,0],
+ ["401856874","2026-11-28","Houston","Baylor",0,1,0],
+ ["401856875","2026-11-28","Colorado","UCF",0,1,0],
+ ["401856876","2026-11-28","BYU","Cincinnati",0,1,0],
+ ["401856877","2026-11-28","Oklahoma State","Kansas",0,1,0],
+ ["401856878","2026-11-28","Iowa State","Kansas State",0,1,0],
+ ["401858311","2026-11-28","Miami","Boston College",0,1,0],
+ ["401858312","2026-11-28","Wake Forest","Duke",0,1,0],
+ ["401858313","2026-11-28","North Carolina","NC State",0,1,0],
+ ["401858314","2026-11-28","Syracuse","Notre Dame",0,0,0],
+ ["401858315","2026-11-28","California","Pittsburgh",0,1,0],
+ ["401858316","2026-11-28","Stanford","SMU",0,1,0],
+ ["401858317","2026-11-28","Virginia Tech","Virginia",0,1,0],
+ ["401858537","2026-11-28","Northwestern","Illinois",0,1,0],
+ ["401858538","2026-11-28","Indiana","Purdue",0,1,0],
+ ["401858539","2026-11-28","Maryland","Penn State",0,1,0],
+ ["401858541","2026-11-28","Oregon","Washington",0,1,0],
+ ["401858542","2026-11-28","Rutgers","Michigan State",0,1,0],
+ ["401858543","2026-11-28","UCLA","USC",0,1,0],
+ ["401861969","2026-11-28","Wyoming","UConn",0,0,0],
+ ["401862837","2026-11-28","East Carolina","Florida Atlantic",0,1,0],
+ ["401862839","2026-11-28","South Florida","Tulane",0,1,0],
+ ["401862841","2026-11-28","Rice","Army",0,1,0],
+ ["401862842","2026-11-28","Charlotte","Navy",0,1,0],
+ ["401862843","2026-11-28","North Texas","UAB",0,1,0],
+ ["401864550","2026-11-28","Northern Illinois","UTEP",0,1,0],
+ ["401869947","2026-11-28","James Madison","Coastal Carolina",0,1,0],
+ ["401869954","2026-11-28","Georgia Southern","Louisiana Tech",0,1,0],
+ ["401869959","2026-11-28","Georgia State","Louisiana",0,1,0],
+ ["401871102","2026-11-28","UL Monroe","Marshall",0,1,0],
+ ["401871103","2026-11-28","Old Dominion","Southern Miss",0,1,0],
+ ["401858540","2026-11-28","Ohio State","Michigan",0,1,0],
+ ["401866474","2026-11-28","Ball State","Central Michigan",0,1,0],
+ ["401866475","2026-11-28","Bowling Green","Massachusetts",0,1,0],
+ ["401870804","2026-11-28","Western Kentucky","Kennesaw State",0,1,0],
+ ["401871063","2026-11-28","Missouri State","Liberty",0,1,0],
+ ["401871082","2026-11-28","Florida International","Sam Houston",0,1,0],
+ ["401871083","2026-11-28","Middle Tennessee","New Mexico State",0,1,0],
+ ["401869939","2026-11-28","Arkansas State","Troy",0,1,0],
+ ["401871062","2026-11-28","Delaware","Jacksonville State",0,1,0],
+ ["401864548","2026-11-28","UNLV","Nevada",0,1,0],
+ ["401864547","2026-11-28","Hawai'i","Sacramento State",0,0,0],
+ ["401862844","2026-12-12","Army","Navy",1,1,0]
+];
 /*DATA_END*/
+/*POOL_RECORDS_START*/
+/* OFFICIAL POOL RECORDS. This block sits OUTSIDE the weekly data markers on purpose: the weekly
+   splice replaces only what is between the data markers, so it can never touch these two records.
+   Rules (tools/pool_odds_test.js checks them):
+   - POOL_SNAPSHOTS: one row per refresh = the official Pool Odds on that date:
+       ['YYYY-MM-DD', [seven owner chances, in DRAFT.drafters order], noWinnerChance]   (chances 0..1)
+     Rows are history. Only ever ADD a row at the end. Never edit, reorder, delete or recalculate
+     an old row, even if POOL_SETTINGS change later.
+   - CFP_BRACKET: null until Selection Day. Then, and until the season ends:
+       {seeds:['seed 1 team', ... 12 names in seed order], winners:{F1:'Team', Q1:'Team', ...}}
+     Never change seeds once entered. winners holds ONLY completed CFP games, each locked to its
+     actual winner; only ever add to it. Slot ids: F1 = 8v9, F2 = 5v12, F3 = 6v11, F4 = 7v10,
+     Q1 = 1 v F1 winner, Q2 = 4 v F2 winner, Q3 = 3 v F3 winner, Q4 = 2 v F4 winner,
+     S1 = Q1 winner v Q2 winner, S2 = Q4 winner v Q3 winner, T = title game.
+   Team names must be spelled exactly as in POOL_TEAMS (e.g. 'Texas A&amp;M', 'Miami', 'Ole Miss'). */
+var POOL_SNAPSHOTS=[['2026-11-11',[0.0023,0.0238,0.085,0.1606,0.211,0.2622,0.1757],0.0794],['2026-11-13',[0.0027,0.0246,0.0944,0.1554,0.2116,0.2618,0.1723],0.0772]];
+var CFP_BRACKET=null;
+/*POOL_RECORDS_END*/
 /* ===== RENDERERS ===== */
 function chev(){return '<svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
 function seclabel(t,c){return '<span class="seclabel" style="background:'+c.b+';color:#fff">'+t+'</span>';}
@@ -876,6 +1398,900 @@ function poolTeaserBlock(){
  return '<div style="display:grid;gap:10px;margin-bottom:12px">'+POOL_MATCHUPS.map(poolTeaserCard).join('')+'</div>';
 }
 
+/* ===================== POOL ODDS MODEL =====================
+   Simulates the rest of the season many times and counts how often each team wins the
+   national title. Owner chance = sum of their 3 teams. "No winner" = an undrafted team wins.
+   Data in:  POOL_RATINGS, POOL_TEAMS, POOL_GAMES, AP25, DRAFT (weekly data block) and
+             CFP_BRACKET (official records block).
+   Nothing in this section draws to the page. tools/pool_odds_test.js tests it.
+   Full plain-language description: MAINTENANCE.md. */
+
+/* ---------- SETTINGS: every modeling choice lives here ---------- */
+var POOL_SETTINGS={
+ SEED:20261206,          // Fixed random seed. Same seed + same data = same odds on every load.
+ SIMS:10000,             // How many times the rest of the season is simulated for the OFFICIAL odds.
+ WHATIF_SIMS:2500,       // Runs used for what-if picks only, so a tap answers quickly. Smaller =
+                         // faster but noisier (about 1 point). Official odds never use this.
+
+ /* -- how a single game is decided -- */
+ HOME_FIELD:2.5,         // Points added to the home team. Not used at neutral sites.
+ GAME_SD:16,             // Spread of real margins around the expected margin, in points.
+                         // Bigger = more upsets. Expected margin = rating gap + home field.
+ RATING_JITTER_SD:3,     // Each simulated season nudges every team's rating by a random amount
+                         // with this spread (points), because ratings are estimates, not facts.
+ NON_FBS_RATING:-25,     // Rating used for any opponent with no FPI rating (lower-division teams).
+
+ /* -- how the 12-team field is picked before Selection Day ("committee score") --
+    score = blended base  -  FIELD_LOSS_PENALTY x new losses
+            -  FIELD_TITLE_GAME_LOSS_PENALTY x conference-title-game loss
+            +  FIELD_CHAMP_BONUS if conference champion  +  random noise.
+    Teams are ranked by score; the official 2026 CFP rules are then applied to that ranking. */
+ FIELD_LOSS_PENALTY:6,   // Points a normal loss costs.
+ FIELD_TITLE_GAME_LOSS_PENALTY:2, // Points a conference-title-game loss costs (the committee
+                         // has punished these less than regular-season losses).
+ FIELD_CHAMP_BONUS:3,    // Points for winning a conference title.
+ FIELD_NOISE_SD:2,       // Random spread on each team's score: committee unpredictability.
+ COMMITTEE_WEIGHT:0.6,   // 0..1. How much the starting ("base") score leans on the latest CFP
+                         // committee ranking (AP25) instead of rating-minus-losses. 0 = ignore
+                         // the committee. Automatically 0 when AP25 is empty.
+
+ /* -- checks and labels (do not change the odds) -- */
+ SANITY_TEAM_GAP:5,      // Flag a team if model and betting-market title odds differ by more
+                         // than this many percentage points.
+ SANITY_OWNER_GAP:8,     // Same, for an owner's total.
+ LONG_SHOT:0.01          // Owners below this chance (but above zero) are labeled "Long shot".
+};
+
+/* Conference groups under the 2026 CFP rules (collegefootballplayoff.com FAQ): the four POOL_POWER4
+   champions get automatic bids; one more goes to the highest-ranked TEAM (not champion) from the
+   POOL_GROUP6 conferences; Notre Dame is in if ranked in the top 12. */
+var POOL_POWER4=['ACC','Big 12','Big Ten','SEC'];
+var POOL_GROUP6=['American','CUSA','MAC','MW','Pac-12','Sun Belt'];
+var POOL_NOTRE_DAME='Notre Dame';
+
+/* The CFP bracket: [slot id, round, side A, side B]. A number is a seed; a string is "the winner
+   of that slot". Side A hosts in the first round (it is always the better seed). No re-seeding. */
+var POOL_SLOTS=[
+ ['F1','First round',8,9],['F2','First round',5,12],['F3','First round',6,11],['F4','First round',7,10],
+ ['Q1','Quarterfinal',1,'F1'],['Q2','Quarterfinal',4,'F2'],['Q3','Quarterfinal',3,'F3'],['Q4','Quarterfinal',2,'F4'],
+ ['S1','Semifinal','Q1','Q2'],['S2','Semifinal','Q4','Q3'],
+ ['T','National championship','S1','S2']
+];
+
+/* Seeded random number generator (mulberry32). Returns a function giving numbers in [0,1). */
+function poolRng(seed){var a=seed>>>0,imul=Math.imul;return function(){a=(a+0x6D2B79F5)|0;var t=imul(a^(a>>>15),1|a);t=(t+imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296;};}
+/* Table of 8192 evenly spaced values of the bell curve (standard normal). Picking one at random is a
+   fast way to draw a normal random number; values stop near +/-3.8, which is plenty for game margins.
+   Built once with the Abramowitz-Stegun 26.2.23 formula (accurate to about 0.0005). */
+var POOL_NORMALS=(function(){
+ var n=8192,tab=new Float64Array(n);
+ for(var k=0;k<n;k++){
+  var p=(k+0.5)/n,q=p<0.5?p:1-p,t=Math.sqrt(-2*Math.log(q));
+  var z=t-(2.515517+0.802853*t+0.010328*t*t)/(1+1.432788*t+0.189269*t*t+0.001308*t*t*t);
+  tab[k]=p<0.5?-z:z;
+ }
+ return tab;
+})();
+function poolCopy(o){var c={};for(var k in o)c[k]=o[k];return c;}
+
+/* poolBuild(): turns the data into a model object M. Call with no argument to use the page's
+   data; tests pass replacements, e.g. poolBuild({bracket:sampleBracket}).
+   M.problems lists anything wrong with the data (empty = fine). M.run(picks) runs the simulation. */
+function poolBuild(d){
+ d=d||{};
+ var S=d.settings||POOL_SETTINGS;
+ var ratings=d.ratings||POOL_RATINGS,teamsIn=d.teams||POOL_TEAMS,gamesIn=d.games||POOL_GAMES;
+ var ranking=d.ranking||AP25,draft=d.draft||DRAFT;
+ var bracket=('bracket' in d)?d.bracket:CFP_BRACKET;
+ var M={settings:S,problems:[],names:[],idx:{},bracket:bracket||null};
+ var k,i;
+
+ /* --- teams: FBS teams first (index 0..n-1), then any lower-division opponents --- */
+ for(k in teamsIn){M.idx[k]=M.names.length;M.names.push(k);}
+ var n=M.n=M.names.length;
+ gamesIn.forEach(function(g){[g[2],g[3]].forEach(function(t){if(!(t in M.idx)){M.idx[t]=M.names.length;M.names.push(t);}});});
+ var NT=M.names.length;
+ M.nonFbs=M.names.slice(n);
+ var rating=new Float64Array(NT),confOf=new Int8Array(NT);   // confOf: 0-3 = POOL_POWER4 index, 4 = Group of 6, 5 = other FBS, -1 = not FBS
+ var l0=new Int16Array(NT),cw0=new Int16Array(NT),cl0=new Int16Array(NT),ccl0=new Int16Array(NT); // losses, conf wins, conf losses, title-game losses so far
+ M.confTeams=[[],[],[],[]];
+ for(i=0;i<NT;i++){
+  var nm=M.names[i];
+  if(i>=n){rating[i]=S.NON_FBS_RATING;confOf[i]=-1;continue;}
+  if(typeof ratings[nm]!=='number')M.problems.push('No rating for '+nm);else rating[i]=ratings[nm];
+  var tr=teamsIn[nm],p4=POOL_POWER4.indexOf(tr[0]);
+  confOf[i]=p4>=0?p4:(POOL_GROUP6.indexOf(tr[0])>=0?4:5);
+  if(p4>=0)M.confTeams[p4].push(i);
+  l0[i]=tr[2];cw0[i]=tr[3];cl0[i]=tr[4];
+ }
+ M.ndIdx=(POOL_NOTRE_DAME in teamsIn)?M.idx[POOL_NOTRE_DAME]:-1;
+
+ /* --- owners --- */
+ var owner=new Int8Array(NT);for(i=0;i<NT;i++)owner[i]=-1;
+ M.ownerNames=draft.drafters.map(function(dr){return dr[0];});
+ M.ownerTeams=draft.drafters.map(function(dr,oi){return dr[1].map(function(t){
+  if(!(t[0] in teamsIn))M.problems.push('Drafted team "'+t[0]+'" is not in POOL_TEAMS');else owner[M.idx[t[0]]]=oi;
+  return t[0];});});
+
+ /* --- games --- */
+ M.games=[];      // unplayed: {id,date,h,a,neutral,kind} with h/a = team indexes
+ M.gameById={};   // unplayed game id -> position in M.games
+ M.locked={};     // completed game id (or CFP slot id) -> winner's name. Picks can never change these.
+ M.done=[];       // completed games kept in the data: {id,date,h,a,kind,winner}
+ var h2h={};      // "lo*NT+hi" -> winner index, completed conference games (for tiebreaks)
+ var pairGame={}; // "lo*NT+hi" -> position in M.games, unplayed conference games
+ var ccGame=[-1,-1,-1,-1],ccDone=[-1,-1,-1,-1]; // Power 4 title game: position in M.games if scheduled / champion index if played
+ var doneChamps=[];
+ function pairKey(a,b){return a<b?a*NT+b:b*NT+a;}
+ gamesIn.forEach(function(g){
+  var id=g[0],h=M.idx[g[2]],a=M.idx[g[3]],kind=g[5],res=g[6];
+  if(id in M.locked||id in M.gameById){M.problems.push('Game id '+id+' appears twice');return;}
+  if(res===0){
+   M.gameById[id]=M.games.length;
+   if(kind===1)pairGame[pairKey(h,a)]=M.games.length;
+   if(kind===2&&confOf[h]>=0&&confOf[h]<4)ccGame[confOf[h]]=M.games.length;
+   M.games.push({id:id,date:g[1],h:h,a:a,neutral:g[4],kind:kind});
+  }else{
+   var wi=res===1?h:a,lo=res===1?a:h;
+   M.locked[id]=M.names[wi];
+   M.done.push({id:id,date:g[1],h:h,a:a,kind:kind,winner:wi});
+   if(kind===1)h2h[pairKey(h,a)]=wi;
+   if(kind===2){   // a played title game: its loss is counted as a title-game loss, not a normal loss
+    doneChamps.push(wi);if(l0[lo]>0)l0[lo]--;ccl0[lo]++;
+    if(confOf[h]>=0&&confOf[h]<4)ccDone[confOf[h]]=wi;
+   }
+  }
+ });
+ /* a "CC:<conference>" pick is allowed only while that title game is still simulated from standings */
+ M.ccOpen={};POOL_POWER4.forEach(function(c,ci){if(ccGame[ci]<0&&ccDone[ci]<0)M.ccOpen[c]=ci;});
+ M.confTeams.forEach(function(ct,ci){if(ct.length<2)M.problems.push('Fewer than 2 teams found for '+POOL_POWER4[ci]);});
+
+ /* --- starting committee score ("base") per team ---
+    formula[i] = rating - penalties for losses so far.
+    committee[i] = the formula value sitting at that team's committee rank (so the committee's
+    ORDER is expressed on the formula's point scale). Unranked teams are capped just below No. 25.
+    base = blend of the two, weighted by COMMITTEE_WEIGHT. */
+ var formula=new Float64Array(n),base=new Float64Array(n);
+ for(i=0;i<n;i++)formula[i]=rating[i]-S.FIELD_LOSS_PENALTY*l0[i]-S.FIELD_TITLE_GAME_LOSS_PENALTY*ccl0[i];
+ var sortedF=Array.prototype.slice.call(formula).sort(function(x,y){return y-x;});
+ var rankOf={};
+ (ranking||[]).forEach(function(r){if(!(r[1] in teamsIn))M.problems.push('Ranked team "'+r[1]+'" is not in POOL_TEAMS');else rankOf[M.idx[r[1]]]=r[0];});
+ var nRanked=(ranking||[]).length;
+ M.committeeWeight=nRanked>0?S.COMMITTEE_WEIGHT:0;
+ for(i=0;i<n;i++){
+  var cmt=formula[i];
+  if(nRanked>0){
+   if(rankOf[i]>=1&&rankOf[i]<=n)cmt=sortedF[rankOf[i]-1];
+   else if(nRanked<n)cmt=Math.min(formula[i],sortedF[nRanked]);
+  }
+  base[i]=(1-M.committeeWeight)*formula[i]+M.committeeWeight*cmt;
+ }
+ M.base=base;
+
+ /* --- bracket layout --- */
+ var NS=POOL_SLOTS.length;
+ M.slotIndex={};POOL_SLOTS.forEach(function(s,si){M.slotIndex[s[0]]=si;});
+ /* side codes: positive = seed number, negative = -(slot position+1) meaning "winner of that slot" */
+ var sideA=new Int8Array(NS),sideB=new Int8Array(NS);
+ POOL_SLOTS.forEach(function(s,si){
+  sideA[si]=typeof s[2]==='number'?s[2]:-(M.slotIndex[s[2]]+1);
+  sideB[si]=typeof s[3]==='number'?s[3]:-(M.slotIndex[s[3]]+1);
+ });
+ /* seedPath[seed] = the slots a team with that seed must win, in order */
+ M.seedPath=[];
+ for(var sd=1;sd<=12;sd++){
+  var path=[],cur=sd;   // cur: positive seed, or negative slot code
+  for(var si2=0;si2<NS;si2++){if(sideA[si2]===cur||sideB[si2]===cur){path.push(si2);cur=-(si2+1);}}
+  M.seedPath[sd]=path;
+ }
+ var lockW=new Int16Array(NS);for(i=0;i<NS;i++)lockW[i]=-1;   // slot -> actual winner index, -1 = not played
+ var seedTeam0=new Int32Array(13);
+ M.pathOf={};     // team name -> slots on its path (bracket mode only)
+ M.slotKnown=[];  // slot -> [teamA,teamB] once both are known from actual results, else null
+ if(bracket){
+  var sds=bracket.seeds||[],seenSeed={};
+  if(sds.length!==12)M.problems.push('CFP_BRACKET.seeds must list exactly 12 teams');
+  sds.forEach(function(t,si3){
+   if(!(t in teamsIn))M.problems.push('Bracket team "'+t+'" is not in POOL_TEAMS');
+   else if(seenSeed[t])M.problems.push('Bracket team "'+t+'" is listed twice');
+   else{seenSeed[t]=1;seedTeam0[si3+1]=M.idx[t];M.pathOf[t]=M.seedPath[si3+1];}
+  });
+  var wn=bracket.winners||{};
+  for(k in wn){if(!(k in M.slotIndex))M.problems.push('CFP_BRACKET.winners has an unknown slot "'+k+'"');}
+  if(!M.problems.length){
+   var knownW=[];
+   for(i=0;i<NS;i++){
+    var ka=sideA[i]>0?seedTeam0[sideA[i]]:knownW[-sideA[i]-1],kb=sideB[i]>0?seedTeam0[sideB[i]]:knownW[-sideB[i]-1];
+    var both=(ka>=0&&kb>=0);
+    M.slotKnown[i]=both?[ka,kb]:null;
+    knownW[i]=-1;
+    var wname=wn[POOL_SLOTS[i][0]];
+    if(wname!==undefined){
+     if(!both)M.problems.push('Bracket slot '+POOL_SLOTS[i][0]+' has a winner but an earlier game is not entered');
+     else if(M.idx[wname]!==ka&&M.idx[wname]!==kb)M.problems.push('Bracket slot '+POOL_SLOTS[i][0]+' winner "'+wname+'" is not one of its two teams');
+     else{knownW[i]=lockW[i]=M.idx[wname];M.locked[POOL_SLOTS[i][0]]=wname;}
+    }
+   }
+  }
+ }
+ M.lockW=lockW;
+
+ /* ---------- M.run(picks): simulate and count ----------
+    picks = {gameId:'Team', 'CC:SEC':'Team', F1:'Team', ...}. Picks force that winner in every
+    simulated season. Locked (completed) results always beat picks. Unknown ids are ignored.
+    A random number is drawn for EVERY game, even a forced one, so the random stream stays lined
+    up and official vs what-if odds differ only because of the picks themselves. */
+ M.run=function(picks,sims){   // sims is optional: number of runs (default SETTINGS.SIMS)
+  picks=picks||{};
+  var t0=Date.now(),N=sims||S.SIMS,rnd=poolRng(S.SEED),NORM=POOL_NORMALS;
+  var i,k;   // local loop counters (kept local for speed)
+  function nrm(){return NORM[(rnd()*8192)|0];}   // one standard normal random number
+  var HF=S.HOME_FIELD,SD=S.GAME_SD,JIT=S.RATING_JITTER_SD,LP=S.FIELD_LOSS_PENALTY,TP=S.FIELD_TITLE_GAME_LOSS_PENALTY,CB=S.FIELD_CHAMP_BONUS,FN=S.FIELD_NOISE_SD;
+  var G=M.games.length,g,c,s,j,sim;
+  var useBracket=!!M.bracket;
+
+  /* flat copies of the game list for speed */
+  var gh=new Int32Array(G),ga=new Int32Array(G),gkind=new Int8Array(G),ghf=new Float64Array(G),force=new Int8Array(G);
+  for(g=0;g<G;g++){
+   var gm=M.games[g];gh[g]=gm.h;ga[g]=gm.a;gkind[g]=gm.kind;ghf[g]=gm.neutral?0:HF;
+   var pk=picks[gm.id];force[g]=pk===M.names[gm.h]?0:(pk===M.names[gm.a]?1:-1);   // 0 = home forced, 1 = away forced
+  }
+  var ccForce=[-1,-1,-1,-1];
+  for(k in M.ccOpen){var cp=picks['CC:'+k];if(cp!==undefined&&(cp in M.idx)&&confOf[M.idx[cp]]===M.ccOpen[k])ccForce[M.ccOpen[k]]=M.idx[cp];}
+  var slotForce=new Int16Array(NS);
+  for(s=0;s<NS;s++){var sp=picks[POOL_SLOTS[s][0]];slotForce[s]=(useBracket&&sp!==undefined&&(sp in M.idx))?M.idx[sp]:-1;}
+
+  /* games whose swing is tracked: all unplayed games, or (bracket mode) CFP games with both teams known */
+  var tracked=[];
+  if(useBracket){for(s=0;s<NS;s++)if(M.slotKnown[s]&&lockW[s]<0)tracked.push(s);}
+  else{for(g=0;g<G;g++)tracked.push(g);}
+  var T=tracked.length,cnt=new Int32Array(T*16);   // [game][side A or B won][owner 0-6, 7 = no winner]
+
+  var r=new Float64Array(NT),l=new Int16Array(NT),cw=new Int16Array(NT),cl=new Int16Array(NT),ccl=new Int16Array(NT);
+  var tb=new Float64Array(NT),isChamp=new Uint8Array(NT),inField=new Uint8Array(NT),out=new Uint8Array(G);
+  var score=new Float64Array(n),seedTeam=new Int32Array(13),fieldArr=new Int32Array(12),slotWin=new Int32Array(NS),slotOut=new Uint8Array(NS);
+  var title=new Int32Array(NT),fieldCt=new Int32Array(NT),champCt=new Int32Array(NT),own=new Int32Array(8);
+  var slotWinCt=new Int32Array(NS*NT);   // [bracket game][team] = runs in which that team won that game. COUNTING ONLY:
+                                         // it reads results, draws no random numbers and changes no odds. Used to show favorites.
+  for(i=n;i<NT;i++)r[i]=rating[i];
+  if(useBracket)for(i=1;i<=12;i++)seedTeam[i]=seedTeam0[i];
+
+  function confAhead(x,y){   // is x ahead of y in the conference standings? win %, then this season's random draw
+   var px=cw[x]*(cw[y]+cl[y]),py=cw[y]*(cw[x]+cl[x]);
+   if(px!==py)return px>py;return tb[x]>tb[y];
+  }
+  function samePct(x,y){return cw[x]*(cw[y]+cl[y])===cw[y]*(cw[x]+cl[x]);}
+  function headToHead(x,y){  // winner of the x-y conference game, or -1 if they do not play
+   var key=pairKey(x,y);
+   if(key in h2h)return h2h[key];
+   if(key in pairGame){var pg=pairGame[key];return out[pg]===0?gh[pg]:ga[pg];}
+   return -1;
+  }
+
+  for(sim=0;sim<N;sim++){
+   for(i=0;i<n;i++)r[i]=rating[i]+JIT*nrm();
+
+   if(!useBracket){
+    l.set(l0);cw.set(cw0);cl.set(cl0);ccl.set(ccl0);
+    for(i=0;i<NT;i++)isChamp[i]=0;
+    for(j=0;j<doneChamps.length;j++)isChamp[doneChamps[j]]=1;
+
+    /* 1. every unplayed game on the schedule */
+    for(g=0;g<G;g++){
+     var h=gh[g],a=ga[g];
+     var homeWon=(r[h]-r[a]+ghf[g]+SD*nrm())>0;
+     if(force[g]>=0)homeWon=force[g]===0;
+     out[g]=homeWon?0:1;
+     var wT=homeWon?h:a,lT=homeWon?a:h;
+     if(gkind[g]===2){ccl[lT]++;isChamp[wT]=1;}
+     else{l[lT]++;if(gkind[g]===1){cw[wT]++;cl[lT]++;}}
+    }
+
+    /* 2. Power 4 champions. If the real title game is on the schedule it was played in step 1.
+       Otherwise: top two by conference win %, then a neutral-site game.
+       Simplified tiebreak: if exactly two teams tie for the LAST spot, their head-to-head game
+       decides it; every other tie is a random draw. */
+    for(c=0;c<4;c++){
+     var ch;
+     if(ccDone[c]>=0)ch=ccDone[c];
+     else if(ccGame[c]>=0)ch=out[ccGame[c]]===0?gh[ccGame[c]]:ga[ccGame[c]];
+     else{
+      var ct=M.confTeams[c],first=-1,second=-1,third=-1;
+      for(j=0;j<ct.length;j++)tb[ct[j]]=rnd();
+      for(j=0;j<ct.length;j++){
+       var x=ct[j];
+       if(first<0||confAhead(x,first)){third=second;second=first;first=x;}
+       else if(second<0||confAhead(x,second)){third=second;second=x;}
+       else if(third<0||confAhead(x,third)){third=x;}
+      }
+      if(third>=0&&samePct(second,third)&&!samePct(first,second)){
+       var tied=0;for(j=0;j<ct.length;j++)if(samePct(ct[j],second))tied++;
+       if(tied===2&&headToHead(second,third)===third)second=third;
+      }
+      var firstWon=(r[first]-r[second]+SD*nrm())>0;
+      ch=firstWon?first:second;
+      var loser=firstWon?second:first;
+      if(ccForce[c]>=0){ch=ccForce[c];loser=(ch===first)?second:first;}   // a "CC:" pick: that team wins the title
+      ccl[loser]++;isChamp[ch]=1;
+     }
+     fieldArr[c]=ch;champCt[ch]++;
+    }
+
+    /* 3. committee score for every FBS team */
+    for(i=0;i<n;i++)score[i]=base[i]-LP*(l[i]-l0[i])-TP*(ccl[i]-ccl0[i])+(isChamp[i]?CB:0)+FN*nrm();
+
+    /* 4. the field: 4 champions + best Group of 6 team + Notre Dame if top 12, then best remaining */
+    for(i=0;i<n;i++)inField[i]=0;
+    var nf=0;
+    for(c=0;c<4;c++){var cc=fieldArr[c];if(!inField[cc]){inField[cc]=1;fieldArr[nf++]=cc;}}
+    var g6=-1;for(i=0;i<n;i++)if(confOf[i]===4&&(g6<0||score[i]>score[g6]))g6=i;
+    if(g6>=0&&!inField[g6]){inField[g6]=1;fieldArr[nf++]=g6;}
+    if(M.ndIdx>=0&&!inField[M.ndIdx]){
+     var above=0,nds=score[M.ndIdx];for(i=0;i<n;i++)if(score[i]>nds)above++;
+     if(above<12){inField[M.ndIdx]=1;fieldArr[nf++]=M.ndIdx;}
+    }
+    while(nf<12){
+     var best=-1;for(i=0;i<n;i++)if(!inField[i]&&(best<0||score[i]>score[best]))best=i;
+     inField[best]=1;fieldArr[nf++]=best;
+    }
+    /* straight seeding: order the 12 by score (automatic bids from outside the top 12 land at the bottom) */
+    for(i=1;i<12;i++){var fv2=fieldArr[i];j=i-1;while(j>=0&&score[fieldArr[j]]<score[fv2]){fieldArr[j+1]=fieldArr[j];j--;}fieldArr[j+1]=fv2;}
+    for(i=0;i<12;i++)seedTeam[i+1]=fieldArr[i];
+   }
+   for(i=1;i<=12;i++)fieldCt[seedTeam[i]]++;
+
+   /* 5. the bracket: 11 games. First round at the better seed's home; the rest are neutral. */
+   for(s=0;s<NS;s++){
+    var ta=sideA[s]>0?seedTeam[sideA[s]]:slotWin[-sideA[s]-1],tbm=sideB[s]>0?seedTeam[sideB[s]]:slotWin[-sideB[s]-1];
+    var wv=(r[ta]-r[tbm]+(s<4?HF:0)+SD*nrm())>0?ta:tbm;
+    if(lockW[s]>=0)wv=lockW[s];
+    else if(slotForce[s]===ta||slotForce[s]===tbm)wv=slotForce[s];
+    slotWin[s]=wv;slotOut[s]=wv===ta?0:1;slotWinCt[s*NT+wv]++;
+   }
+   var champion=slotWin[NS-1],oi=owner[champion]<0?7:owner[champion];
+   title[champion]++;own[oi]++;
+   if(useBracket){for(j=0;j<T;j++)cnt[j*16+slotOut[tracked[j]]*8+oi]++;}
+   else{for(j=0;j<T;j++)cnt[j*16+out[j]*8+oi]++;}
+  }
+
+  /* ---------- results ---------- */
+  var res={sims:N,mode:useBracket?'bracket':'projection',picked:0,ownerCounts:[],noneCount:own[7],none:own[7]/N,
+   owners:[],title:{},titleCounts:{},field:{},confChamp:{},games:[]};
+  for(k in picks)res.picked++;
+  res.slotWin={};   // bracket game id -> {team: chance that team wins that game}
+  for(s=0;s<NS;s++){var swin={};for(i=0;i<NT;i++)if(slotWinCt[s*NT+i])swin[M.names[i]]=slotWinCt[s*NT+i]/N;res.slotWin[POOL_SLOTS[s][0]]=swin;}
+  for(i=0;i<NT;i++){
+   if(title[i]){res.titleCounts[M.names[i]]=title[i];res.title[M.names[i]]=title[i]/N;}
+   if(fieldCt[i])res.field[M.names[i]]=fieldCt[i]/N;
+   if(champCt[i])res.confChamp[M.names[i]]=champCt[i]/N;
+  }
+  M.ownerNames.forEach(function(nm2,o){
+   res.ownerCounts.push(own[o]);
+   res.owners.push({name:nm2,idx:o,p:own[o]/N,teams:M.ownerTeams[o].map(function(t){return {team:t,p:(res.title[t]||0),field:(res.field[t]||0)};})});
+  });
+  /* per game: each owner's chance if side A wins vs if side B wins (A = home team, or bracket side A) */
+  for(j=0;j<T;j++){
+   var nA=0,nB=0,o2;
+   for(o2=0;o2<8;o2++){nA+=cnt[j*16+o2];nB+=cnt[j*16+8+o2];}
+   /* swing = chance if A wins minus chance if B wins. impact = how much the game is expected to move
+      the most-affected owner, 2 x pA x pB x |swing|; it is small for near-certain games. Rank by impact. */
+   var e={pA:nA/N,ifA:null,ifB:null,swing:null,maxSwing:0,impact:0};
+   if(useBracket){var sk=M.slotKnown[tracked[j]],sl=POOL_SLOTS[tracked[j]];e.id=sl[0];e.slot=true;e.label=sl[1];e.a=M.names[sk[0]];e.b=M.names[sk[1]];e.neutral=tracked[j]<4?0:1;e.date='';}
+   else{var gg=M.games[j];e.id=gg.id;e.slot=false;e.label=gg.kind===2?'Conference championship':'';e.a=M.names[gg.h];e.b=M.names[gg.a];e.neutral=gg.neutral;e.date=gg.date;}
+   if(nA>0&&nB>0){   // a forced game has only one side, so it has no swing
+    e.ifA=[];e.ifB=[];e.swing=[];
+    for(o2=0;o2<8;o2++){var fa=cnt[j*16+o2]/nA,fb=cnt[j*16+8+o2]/nB;e.ifA.push(fa);e.ifB.push(fb);e.swing.push(fa-fb);if(o2<7&&Math.abs(fa-fb)>e.maxSwing)e.maxSwing=Math.abs(fa-fb);}
+    e.impact=2*e.pA*(1-e.pA)*e.maxSwing;
+   }
+   res.games.push(e);
+  }
+  res.ms=Date.now()-t0;
+  return res;
+ };
+ return M;
+}
+
+/* ---------- PICKS (what-if). Pure functions: they return a NEW picks object and never touch
+   the data, the official odds or anything saved. A completed game is locked and cannot be picked. ---------- */
+
+/* Pick (or un-pick, by picking the same team again) the winner of an unplayed regular-season or
+   conference-title game. id = a game id from POOL_GAMES, or 'CC:<conference>' while that title game's
+   teams are not known yet. Returns {ok, picks, note}. */
+function poolPickGame(M,picks,id,team){
+ var out=poolCopy(picks||{});
+ if(id in M.locked)return {ok:false,picks:out,note:'That game is final. Its result is locked.'};
+ if(id.indexOf('CC:')===0){
+  var conf=id.slice(3);
+  if(!(conf in M.ccOpen))return {ok:false,picks:out,note:'That conference title game cannot be picked this way.'};
+  if(M.confTeams[M.ccOpen[conf]].indexOf(M.idx[team])<0)return {ok:false,picks:out,note:team+' is not in the '+conf+'.'};
+ }else{
+  var gi=M.gameById[id];
+  if(gi===undefined)return {ok:false,picks:out,note:'Unknown game.'};
+  var gm=M.games[gi];
+  if(team!==M.names[gm.h]&&team!==M.names[gm.a])return {ok:false,picks:out,note:team+' is not playing in that game.'};
+ }
+ if(out[id]===team)delete out[id];else out[id]=team;
+ return {ok:true,picks:out,note:''};
+}
+
+/* Remove bracket picks that no longer make sense. A pick "team X wins slot S" is valid only if S is
+   unplayed, S is on X's path, and every earlier game on X's path is won by X (really, or by a pick).
+   Slots are checked in round order, so removing one pick also removes later picks that needed it.
+   Returns {picks, removed:[{slot,team}]}. */
+function poolBracketConsistent(M,picks){
+ var out=poolCopy(picks||{}),removed=[];
+ POOL_SLOTS.forEach(function(sl,s){
+  var team=out[sl[0]];if(team===undefined)return;
+  var path=M.pathOf[team],ok=!!path&&path.indexOf(s)>=0&&M.lockW[s]<0;
+  if(ok){
+   for(var j=0;j<path.length&&path[j]!==s;j++){
+    var e=path[j];
+    if(M.lockW[e]>=0){if(M.names[M.lockW[e]]!==team)ok=false;}
+    else if(out[POOL_SLOTS[e][0]]!==team)ok=false;
+   }
+  }
+  if(!ok){delete out[sl[0]];removed.push({slot:sl[0],team:team});}
+ });
+ return {picks:out,removed:removed};
+}
+
+/* Bracket pick (after Selection Day): "team wins slot slotId". Also marks the team as winner of
+   every earlier unplayed game on its path, and clears any other picks this knocks out. Picking the
+   same team in the same slot again un-picks it. Returns {ok, picks, note}. */
+function poolPickBracket(M,picks,slotId,team){
+ var out=poolCopy(picks||{});
+ if(!M.bracket)return {ok:false,picks:out,note:'The bracket is not set yet.'};
+ var s=M.slotIndex[slotId];
+ if(s===undefined)return {ok:false,picks:out,note:'Unknown bracket game.'};
+ if(M.lockW[s]>=0)return {ok:false,picks:out,note:'That game is final. Its result is locked.'};
+ var path=M.pathOf[team];
+ if(!path||path.indexOf(s)<0)return {ok:false,picks:out,note:team+' cannot reach that game.'};
+ var j;
+ for(j=0;j<path.length&&path[j]!==s;j++){
+  if(M.lockW[path[j]]>=0&&M.names[M.lockW[path[j]]]!==team)return {ok:false,picks:out,note:team+' has been eliminated.'};
+ }
+ if(out[slotId]===team)delete out[slotId];
+ else{for(j=0;j<path.length;j++){if(M.lockW[path[j]]<0)out[POOL_SLOTS[path[j]][0]]=team;if(path[j]===s)break;}}
+ return {ok:true,picks:poolBracketConsistent(M,out).picks,note:''};
+}
+
+/* Check picks against the current official results. A pick on a game that has since finished is
+   dropped; if it disagreed with the real result, a note says so, and any later bracket picks that
+   depended on it are dropped too. Returns {picks, notes:[text]}. */
+function poolReconcilePicks(M,picks){
+ var out={},notes=[],k;
+ for(k in picks){
+  var isSlot=(k in M.slotIndex);
+  if(k in M.locked){
+   if(M.locked[k]!==picks[k])notes.push((isSlot?POOL_SLOTS[M.slotIndex[k]][1]:'Game')+' is final: '+M.locked[k]+' won. Your pick of '+picks[k]+' was cleared.');
+   continue;
+  }
+  if(isSlot){if(M.bracket)out[k]=picks[k];continue;}
+  if(k.indexOf('CC:')===0){if(k.slice(3) in M.ccOpen)out[k]=picks[k];continue;}
+  if(k in M.gameById)out[k]=picks[k];
+ }
+ var fixed=poolBracketConsistent(M,out);
+ fixed.removed.forEach(function(x){notes.push('Your pick of '+x.team+' in the '+POOL_SLOTS[M.slotIndex[x.slot]][1].toLowerCase()+' was cleared because it depended on a result that did not happen.');});
+ return {picks:fixed.picks,notes:notes};
+}
+
+/* ===================== POOL ODDS TAB (drawing + taps) =====================
+   Everything the Pool Odds tab shows is built here from a "ui" object:
+     ui.M        the model (poolBuild)
+     ui.official official odds = M.run({}) with NO picks. Never changed by taps.
+     ui.current  what is on screen: the same object as ui.official when there are no picks,
+                 otherwise M.run(ui.picks)
+     ui.picks    the viewer's what-if picks. Kept in memory only: never saved, gone on reload.
+     ui.notes    short messages to show (e.g. why a pick was cleared)
+   The elimination tracker and the group-text card always read ui.official. */
+var POOL_UI={M:null,official:null,current:null,picks:{},notes:[],showAll:false,pHome:{},impact:{}};
+var POOL_LOCK_ICON='<svg width="10" height="10" viewBox="0 0 24 24" style="display:inline-block;vertical-align:-1px"><path d="M7 10V7a5 5 0 0110 0v3" fill="none" stroke="currentColor" stroke-width="2.6"/><rect x="4" y="10" width="16" height="11" rx="2.5" fill="currentColor"/></svg>';
+
+function poolPct(p){if(p<=0)return '0%';if(p>=1)return '100%';var v=p*100;return (v<0.1?v.toFixed(2):v.toFixed(1))+'%';}
+/* "ACTUALLY OUT" - decided from real results (and, in what-if mode, the picks), NEVER from how many
+   simulation runs a team won. Before Selection Day nobody is out. After it a team is out if it is not
+   in the bracket, lost a completed CFP game, or a what-if pick has another team winning a game on its path. */
+function poolTeamOut(M,picks,team){
+ if(!M.bracket)return false;
+ var path=M.pathOf[team];if(!path)return true;
+ for(var j=0;j<path.length;j++){
+  var s=path[j],w=M.lockW[s]>=0?M.names[M.lockW[s]]:(picks?picks[POOL_SLOTS[s][0]]:undefined);
+  if(w!==undefined&&w!==team)return true;
+ }
+ return false;
+}
+function poolOwnerOut(M,picks,oi){return M.ownerTeams[oi].every(function(t){return poolTeamOut(M,picks,t);});}
+/* "No winner" is impossible only when every team still alive in the bracket is a drafted team */
+function poolNoneOut(M,picks){return !!M.bracket&&M.bracket.seeds.every(function(t){return drIdx(t)>=0||poolTeamOut(M,picks,t);});}
+/* A chance as text. Zero runs is shown as "under 0.01%" (less than 1 run in n), not 0%, unless the
+   team/owner is actually out. short = use "<" instead of the word "under" where space is tight. */
+function poolShow(p,out,n,short){if(p>0)return poolPct(p);if(out)return '0%';return (short?'&lt;':'under ')+(100/n)+'%';}
+function poolPickCount(picks){var n=0;for(var k in picks)n++;return n;}
+function poolDay(d){   // '2026-11-14' -> 'Sat, Nov 14'
+ var p=d.split('-');if(p.length!==3)return d;
+ return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+}
+function poolAddDays(d,n){var p=d.split('-');var t=new Date(Date.UTC(+p[0],+p[1]-1,+p[2]+n));return t.toISOString().slice(0,10);}
+function poolDot(c){return '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+c+';flex:0 0 auto"></span>';}
+/* team name with its owner's color dot in front (no dot = undrafted). shown = optional shorter display name */
+function poolTeamLabel(team,shown){var di=drIdx(team);return (di>=0?poolDot(DR_COLORS[di%DR_COLORS.length])+' ':'')+(shown||team);}
+/* owner status: Eliminated only when all three teams are actually out (see poolTeamOut);
+   otherwise Long shot below POOL_SETTINGS.LONG_SHOT (this includes zero runs); otherwise Alive */
+function poolStatus(p,out){return out?['Eliminated','var(--red)']:(p<POOL_SETTINGS.LONG_SHOT?['Long shot','var(--orange)']:['Alive','var(--green)']);}
+
+/* sticky bar, shown only while picks are active */
+function poolStripHtml(ui){
+ var n=poolPickCount(ui.picks);
+ var notes=ui.notes.map(function(t){return '<div style="font-size:11px;color:var(--orange);margin-top:5px">'+t+'</div>';}).join('');
+ if(!n)return notes?'<div style="padding:8px 0">'+notes+'</div>':'';
+ var chips=ui.current.owners.slice().sort(function(a,b){return b.p-a.p;}).map(function(o){
+  return '<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;white-space:nowrap">'+poolDot(DR_COLORS[o.idx%DR_COLORS.length])+'<b>'+poolShow(o.p,poolOwnerOut(ui.M,ui.picks,o.idx),ui.current.sims,true)+'</b></span>';}).join('')+
+  '<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;white-space:nowrap">'+poolDot('var(--mut)')+'<b>'+poolShow(ui.current.none,poolNoneOut(ui.M,ui.picks),ui.current.sims,true)+'</b></span>';
+ return '<div style="padding:8px 0 9px;border-bottom:1px solid var(--line)">'+
+  '<div style="display:flex;align-items:center;gap:8px"><span class="pill" style="background:var(--gold);color:#1a1300">WHAT-IF MODE</span>'+
+  '<span style="font-size:11px;color:var(--mut);flex:1">'+n+' pick'+(n===1?'':'s')+' &middot; not official</span>'+
+  '<button class="poolbtn" data-act="reset" style="flex:0 0 auto;min-height:36px;padding:6px 14px">Reset</button></div>'+
+  '<div style="display:flex;flex-wrap:wrap;gap:5px 11px;margin-top:7px">'+chips+'</div>'+notes+'</div>';
+}
+
+/* feature 1: the odds. Big number = what is on screen (what-if if picks are active); official shown beside it. */
+function poolOddsHtml(ui){
+ var whatIf=poolPickCount(ui.picks)>0,cur=ui.current,off=ui.official;
+ var rowsIn=cur.owners.slice().sort(function(a,b){return b.p-a.p||a.idx-b.idx;});
+ var max=Math.max(rowsIn[0].p,cur.none,0.0001);
+ function bar(p,c){return '<div style="height:7px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:5px"><div style="height:100%;width:'+(100*p/max).toFixed(1)+'%;background:'+c+';border-radius:4px"></div></div>';}
+ var M=ui.M,pk=ui.picks;
+ function offNote(p,out){return whatIf?'<span style="font-size:10px;color:var(--mut);font-weight:600;white-space:nowrap">official '+poolShow(p,out,off.sims,true)+'</span>':'';}
+ var rows=rowsIn.map(function(r,i){
+  var c=DR_COLORS[r.idx%DR_COLORS.length],out=poolOwnerOut(M,pk,r.idx),st=poolStatus(r.p,out);   // status follows what is on screen
+  var tl=r.teams.map(function(x){return '<span style="white-space:nowrap">'+ab(x.team)+' <b style="color:'+(x.p>0?'var(--txt)':'var(--mut)')+'">'+poolShow(x.p,poolTeamOut(M,pk,x.team),cur.sims,true)+'</b></span>';}).join(' &middot; ');
+  return '<div style="padding:8px 0;'+(i?'border-top:1px solid var(--line)':'')+'">'+
+   '<div style="display:flex;align-items:baseline;gap:8px"><span style="align-self:center;display:flex">'+poolDot(c)+'</span>'+
+   '<span style="font-size:12.5px;font-weight:800;flex:1;min-width:0">'+r.name+(st[0]!=='Alive'?' <span class="pill" style="background:rgba(255,255,255,.07);color:'+st[1]+'">'+st[0].toUpperCase()+'</span>':'')+'</span>'+
+   offNote(off.owners[r.idx].p,poolOwnerOut(M,{},r.idx))+'<span style="font-size:15px;font-weight:900;white-space:nowrap;color:'+c+'">'+poolShow(r.p,out,cur.sims)+'</span></div>'+
+   bar(r.p,c)+'<div style="font-size:10px;color:var(--mut);margin-top:4px">'+tl+'</div></div>';
+ }).join('');
+ rows+='<div style="padding:8px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:baseline;gap:8px"><span style="align-self:center;display:flex">'+poolDot('var(--mut)')+'</span>'+
+  '<span style="font-size:12.5px;font-weight:700;flex:1;color:var(--mut)">No winner <span style="font-weight:500">(an undrafted team wins it all)</span></span>'+
+  offNote(off.none,poolNoneOut(M,{}))+'<span style="font-size:15px;font-weight:900;white-space:nowrap;color:var(--mut)">'+poolShow(cur.none,poolNoneOut(M,pk),cur.sims)+'</span></div>'+bar(cur.none,'var(--mut)')+'</div>';
+ return '<div class="panel" style="padding:13px 15px;margin-bottom:12px;'+(whatIf?'border-color:var(--gold)':'')+'">'+
+  '<div class="ptitle" style="color:var(--gold);flex-wrap:wrap">Pool Odds <span class="pill" style="background:rgba(78,161,255,.16);color:var(--cyan)">MODEL ODDS</span>'+
+  (whatIf?'<span class="pill" style="background:var(--gold);color:#1a1300">WHAT-IF MODE</span>':'')+
+  '<span style="font-size:10px;color:var(--mut);font-weight:600">'+(whatIf?'with your picks forced; official odds shown beside each':'each owner&rsquo;s chance to own the national champion')+'</span></div>'+
+  rows+
+  '<div style="font-size:9.5px;color:var(--mut);margin-top:8px;line-height:1.55">Model odds: the rest of the season simulated '+cur.sims.toLocaleString('en-US')+' times from team power ratings and actual results'+(cur.mode==='bracket'?', using the official CFP bracket':', with a projected 12-team field')+'. The Summary tab shows betting-market odds, so the two will differ.<br>'+
+  'Data: '+POOL_ASOF+'. <span style="white-space:nowrap">Calculated in '+cur.ms+' ms.</span></div></div>';
+}
+
+/* feature 4: elimination tracker (official odds only; picks are ignored here) */
+function poolTrackerHtml(ui){
+ var M=ui.M,off=ui.official;
+ var rows=off.owners.slice().sort(function(a,b){return b.p-a.p||a.idx-b.idx;}).map(function(o,i){
+  var st=poolStatus(o.p,poolOwnerOut(M,{},o.idx));
+  var alive=o.teams.filter(function(t){return !poolTeamOut(M,{},t.team);}).length;
+  var tl=o.teams.map(function(t){var out=poolTeamOut(M,{},t.team);
+   return '<span style="white-space:nowrap;'+(out?'text-decoration:line-through;opacity:.6':'')+'">'+ab(t.team)+(out?'':' '+poolShow(t.p,false,off.sims,true))+'</span>';}).join(' &middot; ');
+  return '<div style="display:flex;align-items:center;gap:8px;padding:7px 0;'+(i?'border-top:1px solid var(--line)':'')+'">'+poolDot(DR_COLORS[o.idx%DR_COLORS.length])+
+   '<span style="font-size:12px;font-weight:700;flex:1;min-width:0">'+o.name+'<span style="display:block;font-size:10px;color:var(--mut);font-weight:500">'+(M.bracket?alive+' of 3 teams still in it: ':'')+tl+'</span></span>'+
+   '<span class="pill" style="background:rgba(255,255,255,.07);color:'+st[1]+'">'+st[0].toUpperCase()+'</span></div>';
+ }).join('');
+ return '<div class="panel" style="padding:13px 15px;margin-bottom:12px"><div class="ptitle" style="color:var(--red)">Elimination Tracker <span style="font-size:10px;color:var(--mut);font-weight:600">official odds</span></div>'+rows+
+  '<div style="font-size:9.5px;color:var(--mut);margin-top:6px;line-height:1.5">Eliminated = all three teams are actually out: left out of the CFP field on Selection Day, or beaten in the CFP. It is never based on simulation counts'+(M.bracket?'':', so nobody is eliminated before Selection Day')+'. Long shot = under '+(POOL_SETTINGS.LONG_SHOT*100)+'%.</div></div>';
+}
+
+/* feature 2: games that matter. Next slate (7 days from the next game) before Selection Day; every
+   CFP game with both teams known after it. Ranked by impact, top 10. */
+function poolMatterHtml(ui){
+ var cur=ui.current,games=cur.games.filter(function(g){return g.swing&&g.impact>0;}),through='';
+ if(cur.mode!=='bracket'&&games.length){
+  var first=games.reduce(function(m,g){return g.date<m?g.date:m;},games[0].date);
+  through=poolAddDays(first,6);
+  games=games.filter(function(g){return g.date<=through;});
+ }
+ games.sort(function(a,b){return b.impact-a.impact;});
+ games=games.slice(0,10);
+ var body=games.map(function(g,i){
+  var roots=[];
+  for(var o=0;o<7;o++){if(Math.abs(g.swing[o])>=0.005)roots.push({o:o,team:g.swing[o]>0?g.a:g.b,pts:Math.abs(g.swing[o])*100});}
+  roots.sort(function(x,y){return y.pts-x.pts;});
+  var rl=roots.map(function(r){return '<span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;font-size:10.5px">'+poolDot(DR_COLORS[r.o%DR_COLORS.length])+
+   '<span style="color:var(--mut)">'+ui.M.ownerNames[r.o]+':</span> <b>'+ab(r.team)+'</b> <span style="color:var(--green)">+'+r.pts.toFixed(1)+'</span></span>';}).join('');
+  return '<div style="padding:9px 0;'+(i?'border-top:1px solid var(--line)':'')+'">'+
+   '<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="font-size:12.5px;font-weight:800">'+(g.slot||g.neutral?g.a+' vs '+g.b:g.b+' at '+g.a)+'</span>'+
+   '<span style="font-size:10px;color:var(--mut)">'+(g.label?g.label+' &middot; ':'')+(g.date?poolDay(g.date)+' &middot; ':'')+g.a+' wins '+Math.round(g.pA*100)+'%</span></div>'+
+   '<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:5px">'+(rl||'<span style="font-size:10.5px;color:var(--mut)">No owner moves by half a point.</span>')+'</div></div>';
+ }).join('');
+ return '<div class="panel" style="padding:13px 15px;margin-bottom:12px"><div class="ptitle" style="color:var(--cyan)">Games That Matter <span style="font-size:10px;color:var(--mut);font-weight:600">who to root for'+(through?' &middot; through '+poolDay(through):'')+'</span></div>'+
+  (body||'<div style="font-size:11.5px;color:var(--mut);padding:10px 0">No upcoming game changes the odds right now.</div>')+
+  '<div style="font-size:9.5px;color:var(--mut);margin-top:6px;line-height:1.5">Each owner is listed with the team to root for. +2.0 means that owner&rsquo;s chance is 2 points higher if that team wins than if it loses. Games are ranked by how much they are expected to move the odds.'+(poolPickCount(ui.picks)?' Based on your what-if picks.':'')+'</div></div>';
+}
+
+/* feature 3 before Selection Day: tap the winner of unplayed games */
+/* FAVORITES ARE SUGGESTIONS, NOT PICKS. The favorite is the team with the higher OFFICIAL win chance
+   (the home team on an exact 50/50). It only changes how a button looks; it is never put in ui.picks,
+   so it cannot change official odds, what-if odds, Reset or snapshots.
+   poolGameLook = how one team's button looks in a regular-season game: picked, suggested, or plain. */
+function poolGameFavorite(ui,g){return ui.pHome[g.id]>=0.5?g.h:g.a;}
+function poolGameLook(ui,g,ti){
+ var pk=ui.picks[g.id],ph=ui.pHome[g.id],p=ti===g.h?ph:1-ph;
+ if(pk===ui.M.names[ti])return {on:true,sug:false,sub:'YOUR PICK'};
+ var sug=pk===undefined&&ti===poolGameFavorite(ui,g);
+ return {on:false,sug:sug,sub:Math.round(p*100)+'%'+(sug?' &middot; favorite':'')};
+}
+function poolGameRow(ui,g){
+ var M=ui.M;
+ function btn(ti){var lk=poolGameLook(ui,g,ti);
+  return '<button class="poolbtn'+(lk.on?' on':'')+(lk.sug?' sug':'')+'" data-act="game" data-id="'+g.id+'" data-t="'+ti+'"><span>'+poolTeamLabel(M.names[ti])+'</span><span class="poolsub">'+lk.sub+'</span></button>';}
+ return '<div class="poolrow">'+btn(g.a)+'<span class="poolat">'+(g.neutral?'vs':'at')+'</span>'+btn(g.h)+'</div>';
+}
+/* "Favorites win the regular season": returns picks with the favorite filled in for every unplayed game
+   and every conference title that has NO pick yet. Picks the viewer already made are kept, never
+   overwritten. These are ordinary what-if picks (Reset clears them). The playoff is left alone, so it
+   stays simulated. Does nothing in bracket mode (the regular season is over). */
+function poolFavoritePicks(ui){
+ var M=ui.M,out=poolCopy(ui.picks);
+ if(M.bracket)return out;
+ M.games.forEach(function(g){if(!(g.id in out))out[g.id]=M.names[poolGameFavorite(ui,g)];});
+ /* title games whose teams are not known yet: with every game above decided, one what-if run shows who
+    is most likely to win each title; that team is the favorite of that title game */
+ var open=POOL_POWER4.filter(function(c){return (c in M.ccOpen)&&!(('CC:'+c) in out);});
+ if(open.length){
+  var r=M.run(out,M.settings.WHATIF_SIMS);
+  open.forEach(function(c){var best=null,bp=-1;
+   M.confTeams[M.ccOpen[c]].forEach(function(ti){var p=r.confChamp[M.names[ti]]||0;if(p>bp){bp=p;best=M.names[ti];}});
+   if(best)out['CC:'+c]=best;});
+ }
+ return out;
+}
+function poolDayCount(n,npk){return n+' game'+(n===1?'':'s')+(npk?' &middot; '+npk+' picked':'');}
+/* After a tap on one game: update just that game's two buttons and its day's count, instead of
+   rebuilding the whole game list (keeps taps quick, and keeps the list from jumping). */
+function poolTouchGame(ui,id){
+ var M=ui.M,g=M.games[M.gameById[id]];
+ document.querySelectorAll('#poolPicker button[data-act="game"][data-id="'+id+'"]').forEach(function(b){
+  var lk=poolGameLook(ui,g,+b.getAttribute('data-t')),sub=b.querySelector('.poolsub');
+  b.classList.toggle('on',lk.on);b.classList.toggle('sug',lk.sug);
+  if(sub)sub.innerHTML=lk.sub;
+ });
+ var cnt=document.querySelector('#poolPicker [data-cnt="'+g.date+'"]');
+ if(cnt){
+  var npk=M.games.filter(function(x){return x.date===g.date&&(x.id in ui.picks);}).length;
+  cnt.innerHTML=poolDayCount(+cnt.getAttribute('data-n'),npk);cnt.style.color=npk?'var(--gold)':'var(--mut)';
+ }
+}
+function poolGamePickerHtml(ui){
+ var M=ui.M,off=ui.official;
+ /* conference title games whose teams are not known yet: choose the champion from a list */
+ var cc=POOL_POWER4.filter(function(c){return c in M.ccOpen;}).map(function(c){
+  var id='CC:'+c,pk=ui.picks[id];
+  var teams=M.confTeams[M.ccOpen[c]].map(function(ti){return {ti:ti,name:M.names[ti],p:off.confChamp[M.names[ti]]||0};})
+   .filter(function(t){return t.p>0||t.name===pk;}).sort(function(a,b){return b.p-a.p;});
+  return '<label style="display:flex;align-items:center;gap:8px;padding:5px 0"><span style="font-size:12px;font-weight:700;flex:1">'+c+' champion</span>'+
+   '<select class="poolsel'+(pk?' on':'')+'" data-act="cc" data-id="'+id+'"><option value="">'+(teams.length?'Simulate (fav: '+teams[0].name+' '+Math.round(teams[0].p*100)+'%)':'Simulate (no pick)')+'</option>'+
+   teams.map(function(t){return '<option value="'+t.ti+'"'+(t.name===pk?' selected':'')+'>'+t.name+' ('+Math.round(t.p*100)+'%)</option>';}).join('')+'</select></label>';
+ }).join('');
+ /* unplayed games by date. Default list = the next 7 days of games that involve a drafted team or move
+    the odds (plus anything already picked). "Show all" lists every unplayed game. */
+ var byDate={},dates=[],shown=0;
+ var firstDate=M.games.reduce(function(m,g){return (!m||g.date<m)?g.date:m;},''),through=firstDate?poolAddDays(firstDate,6):'';
+ M.games.forEach(function(g){
+  var keep=ui.showAll||(g.id in ui.picks)||(g.date<=through&&(drIdx(M.names[g.h])>=0||drIdx(M.names[g.a])>=0||(ui.impact[g.id]||0)>=0.002));
+  if(!keep)return;shown++;
+  if(!byDate[g.date]){byDate[g.date]=[];dates.push(g.date);}
+  byDate[g.date].push(g);
+ });
+ dates.sort();
+ var days=dates.map(function(d,i){
+  var npk=byDate[d].filter(function(g){return g.id in ui.picks;}).length;
+  return '<details data-k="d'+d+'"'+(i===0?' open':'')+' style="margin-bottom:8px"><summary style="padding:11px 13px;display:flex;align-items:center;gap:8px">'+chev()+
+   '<span style="font-size:12.5px;font-weight:800;flex:1">'+poolDay(d)+'</span><span data-cnt="'+d+'" data-n="'+byDate[d].length+'" style="font-size:10.5px;color:'+(npk?'var(--gold)':'var(--mut)')+'">'+poolDayCount(byDate[d].length,npk)+'</span></summary>'+
+   '<div style="padding:0 11px 9px">'+byDate[d].map(function(g){return poolGameRow(ui,g);}).join('')+'</div></details>';
+ }).join('');
+ /* completed games: locked, shown for the last 10 days, not tappable */
+ var lastDone=M.done.reduce(function(m,g){return g.date>m?g.date:m;},''),since=lastDone?poolAddDays(lastDone,-9):'';
+ var recent=M.done.filter(function(g){return g.date>=since;}).sort(function(a,b){return a.date<b.date?1:-1;});
+ var locked=recent.length?'<details data-k="locked" style="margin-bottom:8px"><summary style="padding:11px 13px;display:flex;align-items:center;gap:8px">'+chev()+
+  '<span style="font-size:12.5px;font-weight:800;flex:1">Final results</span><span style="font-size:10.5px;color:var(--mut)">'+POOL_LOCK_ICON+' locked &middot; '+recent.length+' recent</span></summary><div style="padding:0 11px 9px">'+
+  recent.map(function(g){var w=M.names[g.winner],l=M.names[g.winner===g.h?g.a:g.h];
+   return '<div class="poolrow"><span class="poolbtn lock"><span>'+POOL_LOCK_ICON+' '+poolTeamLabel(w)+'</span><span class="poolsub">WON &middot; '+poolDay(g.date)+'</span></span><span class="poolat">def.</span><span class="poolbtn out"><span>'+l+'</span></span></div>';}).join('')+
+  '</div></details>':'';
+ return '<div class="panel" style="padding:13px 15px;margin-bottom:12px"><div class="ptitle" style="color:var(--gold)">What-If Picker <span style="font-size:10px;color:var(--mut);font-weight:600">tap a winner; tap again to undo</span></div>'+
+  '<div style="font-size:10.5px;color:var(--mut);margin:5px 0 8px;line-height:1.5">Picked games are forced; everything else is still simulated. Picks only change your screen and vanish on reload. Percentages on the buttons are official win chances. The lighter button is the favorite: a suggestion, not a pick.</div>'+
+  '<button class="poolbtn" data-act="favs" style="width:100%">Favorites win the regular season</button>'+
+  '<div style="font-size:10px;color:var(--mut);margin:5px 0 10px;line-height:1.45">Picks the favorite in every game you have not picked, including the conference title games. Your own picks are kept. The playoff stays simulated.</div>'+
+  (cc?'<div style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 0;margin-bottom:10px">'+cc+'</div>':'')+
+  days+locked+
+  '<button class="poolbtn" data-act="all" style="width:100%">'+(ui.showAll?'Show only the next 7 days':'Show all '+M.games.length+' unplayed games (showing '+shown+(through?', through '+poolDay(through):'')+')')+'</button></div>';
+}
+
+/* feature 3 after Selection Day: the bracket. Each game lists every team that can still reach it;
+   tap one to advance it to that point. Completed games show the winner with a lock and cannot be tapped. */
+function poolBracketHtml(ui){
+ var M=ui.M,seeds=M.bracket.seeds,seedOf={};
+ seeds.forEach(function(t,i){seedOf[t]=i+1;});
+ function cands(side){   // teams that can still fill this side of a game
+  if(typeof side==='number')return [seeds[side-1]];
+  var s=M.slotIndex[side];
+  if(M.lockW[s]>=0)return [M.names[M.lockW[s]]];
+  return cands(POOL_SLOTS[s][2]).concat(cands(POOL_SLOTS[s][3]));
+ }
+ var html='',lastRound='';
+ POOL_SLOTS.forEach(function(sl,s){
+  var isLocked=M.lockW[s]>=0,winner=isLocked?M.names[M.lockW[s]]:null,pk=ui.picks[sl[0]];
+  /* favorite = the team most likely to win THIS game, among teams that can still reach it, using the odds
+     on screen. A suggestion only: it is not a pick. None for a finished or already-picked game. */
+  var fav=null,favP=0,sw=(ui.current.slotWin||{})[sl[0]]||{};
+  if(!isLocked&&pk===undefined)cands(sl[2]).concat(cands(sl[3])).forEach(function(tm){var p=sw[tm]||0;if(p>favP){favP=p;fav=tm;}});
+  function chip(team){
+   var inner='<span>'+(isLocked&&team===winner?POOL_LOCK_ICON+' ':'')+'<span style="color:'+(pk===team?'inherit':(seedOf[team]<=4?'var(--gold)':'var(--mut)'))+';font-weight:900">'+seedOf[team]+'</span> '+poolTeamLabel(team,brkName(team))+'</span>';
+   if(isLocked)return '<span class="poolbtn poolchip '+(team===winner?'lock':'out')+'">'+inner+'</span>';
+   return '<button class="poolbtn poolchip'+(pk===team?' on':'')+(team===fav?' sug':'')+'" data-act="slot" data-id="'+sl[0]+'" data-t="'+M.idx[team]+'">'+inner+(team===fav?'<span class="poolsub">'+Math.round(favP*100)+'% &middot; favorite</span>':'')+'</button>';
+  }
+  function side(x){return '<div style="display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0">'+cands(x).map(chip).join('')+'</div>';}
+  if(sl[1]!==lastRound){lastRound=sl[1];html+='<div class="label" style="margin:12px 0 6px">'+sl[1]+(sl[1]==='First round'?' &middot; at the better seed':'')+'</div>';}
+  html+='<div style="background:var(--panel2);border:1px solid '+(!isLocked&&pk?'var(--cyan)':'var(--border)')+';border-radius:10px;padding:8px;margin-bottom:7px">'+
+   (isLocked?'<div style="font-size:9.5px;color:var(--green);font-weight:800;margin-bottom:5px">'+POOL_LOCK_ICON+' FINAL &middot; '+winner+' won</div>':(pk?'<div style="font-size:9.5px;color:var(--cyan);font-weight:800;margin-bottom:5px">YOUR PICK: '+pk+'</div>':''))+
+   '<div style="display:flex;align-items:center;gap:7px">'+side(sl[2])+'<span class="poolat">vs</span>'+side(sl[3])+'</div></div>';
+ });
+ return '<div class="panel" style="padding:13px 15px;margin-bottom:12px"><div class="ptitle" style="color:var(--gold);flex-wrap:wrap">CFP Bracket &middot; What-If Picker <span style="font-size:10px;color:var(--mut);font-weight:600">tap a team to advance it; tap again to undo</span></div>'+
+  '<div style="font-size:10.5px;color:var(--mut);margin:5px 0 2px;line-height:1.5">Tap a team in any round to send it that far; its earlier games are picked for you. Finished games are locked to the real result. Picks only change your screen and vanish on reload. The lighter team in each game is the favorite to win it: a suggestion, not a pick.</div>'+html+'</div>';
+}
+function poolPickerHtml(ui){return ui.M.bracket?poolBracketHtml(ui):poolGamePickerHtml(ui);}
+
+/* feature 6: group-text card. ALWAYS official odds, never what-if. Narrow on purpose for screenshots. */
+function poolCardHtml(ui){
+ var off=ui.official,rows=off.owners.slice().sort(function(a,b){return b.p-a.p||a.idx-b.idx;});
+ var max=Math.max(rows[0].p,off.none,0.0001);
+ function line(name,p,c,dim,out){return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0">'+poolDot(c)+
+  '<span style="font-size:13px;font-weight:700;width:128px;flex:0 0 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'+(dim?'color:var(--mut)':'')+'">'+name+'</span>'+
+  '<span style="flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden"><span style="display:block;height:100%;width:'+(100*p/max).toFixed(1)+'%;background:'+c+';border-radius:4px"></span></span>'+
+  '<span style="font-size:14px;font-weight:900;min-width:52px;text-align:right;white-space:nowrap;color:'+c+'">'+poolShow(p,out,off.sims)+'</span></div>';}
+ return '<div class="label" style="margin:4px 0 6px">Group-text card &middot; screenshot this &middot; always official odds</div>'+
+  '<div id="poolShot" style="max-width:360px;background:#0e1622;border:1px solid var(--border);border-radius:14px;padding:14px 15px;margin-bottom:12px">'+
+  '<div class="label" style="color:var(--gold)">BLANTON&rsquo;S BOWL 2026</div>'+
+  '<div style="font-size:16px;font-weight:900;margin:2px 0 7px">Pool Odds</div>'+
+  rows.map(function(o){return line(o.name,o.p,DR_COLORS[o.idx%DR_COLORS.length],false,poolOwnerOut(ui.M,{},o.idx));}).join('')+
+  line('No winner',off.none,'#8a94a4',true,poolNoneOut(ui.M,{}))+
+  '<div style="font-size:9.5px;color:var(--mut);margin-top:7px;line-height:1.45">Chance to own the national champion. Model odds, '+off.sims.toLocaleString('en-US')+' simulations.<br>'+POOL_ASOF+'</div></div>';
+}
+
+/* feature 5: odds over time. One line per owner (in the owner's color) plus a dashed gray line for
+   "No winner", drawn from POOL_SNAPSHOTS (official odds saved at each refresh; never what-if).
+   rows = POOL_SNAPSHOTS. sel = which snapshot's numbers the legend shows (default: the latest);
+   tapping a date on the chart changes it. Dates are spaced by real time, not evenly. */
+function poolChartHtml(rows,sel){
+ var head='<div class="ptitle" style="color:var(--purple);flex-wrap:wrap">Odds Over Time <span style="font-size:10px;color:var(--mut);font-weight:600">official odds saved at each refresh'+(rows&&rows.length>1?' &middot; tap a date':'')+'</span></div>';
+ if(!rows||!rows.length)return '<div class="panel" style="padding:13px 15px;margin-bottom:12px">'+head+'<div style="font-size:11.5px;color:var(--mut);padding:10px 0 2px">No snapshots yet. The chart starts with the next refresh.</div></div>';
+ var n=rows.length;if(sel===undefined||sel===null||sel<0||sel>=n)sel=n-1;
+ function short(d){var p=d.split('-');return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+ function dayNum(d){var p=d.split('-');return Date.UTC(+p[0],+p[1]-1,+p[2])/86400000;}
+ var W=340,H=190,L=32,R=12,T=10,B=24,pw=W-L-R,ph=H-T-B;
+ var d0=dayNum(rows[0][0]),d1=dayNum(rows[n-1][0]),span=Math.max(d1-d0,1);
+ function x(i){return n===1?L+pw/2:L+pw*(dayNum(rows[i][0])-d0)/span;}
+ var top=0;rows.forEach(function(r){r[1].forEach(function(v){if(v>top)top=v;});if(r[2]>top)top=r[2];});
+ var step=top>0.5?0.25:(top>0.2?0.1:0.05),ymax=Math.max(step,Math.ceil(top/step-1e-9)*step);
+ function y(v){return T+ph*(1-v/ymax);}
+ var g='';
+ for(var v=0;v<=ymax+1e-9;v+=step){g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v).toFixed(1)+'" y2="'+y(v).toFixed(1)+'" stroke="#1f2a3a" stroke-width="1"/><text x="'+(L-5)+'" y="'+(y(v)+3).toFixed(1)+'" text-anchor="end" font-size="8.5" fill="#8a94a4">'+Math.round(v*100)+'%</text>';}
+ /* date labels: first, last and the selected date, skipping any that would overlap */
+ var lab=[0,n-1,sel].filter(function(v2,i,a){return a.indexOf(v2)===i;}),used=[];
+ lab.forEach(function(i){var xi=x(i);if(used.some(function(u){return Math.abs(u-xi)<34;}))return;used.push(xi);
+  g+='<text x="'+xi.toFixed(1)+'" y="'+(H-7)+'" text-anchor="'+(n>1&&i===0?'start':(n>1&&i===n-1?'end':'middle'))+'" font-size="8.5" font-weight="'+(i===sel?'800':'500')+'" fill="'+(i===sel?'#e8ebef':'#8a94a4')+'">'+short(rows[i][0])+'</text>';});
+ g+='<line x1="'+x(sel).toFixed(1)+'" x2="'+x(sel).toFixed(1)+'" y1="'+T+'" y2="'+(T+ph)+'" stroke="#3a4a66" stroke-width="1"/>';
+ function series(val,c,dash){
+  var pts=rows.map(function(r,i){return x(i).toFixed(1)+','+y(val(r)).toFixed(1);}).join(' ');
+  return (n>1?'<polyline points="'+pts+'" fill="none" stroke="'+c+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"'+(dash?' stroke-dasharray="4 3"':'')+'/>':'')+
+   '<circle cx="'+x(sel).toFixed(1)+'" cy="'+y(val(rows[sel])).toFixed(1)+'" r="4" fill="'+c+'" stroke="#141b26" stroke-width="2"/>';
+ }
+ g+=series(function(r){return r[2];},'#8a94a4',true);
+ DRAFT.drafters.forEach(function(d,o){g+=series(function(r){return r[1][o];},DR_COLORS[o%DR_COLORS.length],false);});
+ /* one invisible tap column per snapshot, wider than the marks */
+ rows.forEach(function(r,i){var lo=i===0?L:(x(i-1)+x(i))/2,hi=i===n-1?W-R:(x(i)+x(i+1))/2;
+  g+='<rect data-act="snap" data-i="'+i+'" x="'+lo.toFixed(1)+'" y="0" width="'+Math.max(hi-lo,1).toFixed(1)+'" height="'+H+'" fill="transparent" style="cursor:pointer"/>';});
+ /* legend: always present, shows the selected date's numbers; names in normal text color */
+ var order=DRAFT.drafters.map(function(d,o){return o;}).sort(function(a,b){return rows[sel][1][b]-rows[sel][1][a]||a-b;});
+ function item(c,name,p,dim){return '<span style="display:flex;align-items:center;gap:6px;font-size:11px;min-width:0">'+poolDot(c)+'<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'+(dim?'color:var(--mut)':'')+'">'+name+'</span><b>'+poolPct(p)+'</b></span>';}
+ var legend=order.map(function(o){return item(DR_COLORS[o%DR_COLORS.length],DRAFT.drafters[o][0],rows[sel][1][o],false);}).join('')+item('#8a94a4','No winner (dashed)',rows[sel][2],true);
+ /* the same numbers as a table */
+ var table='<details data-k="snaptable" style="margin:10px 0 0"><summary style="padding:9px 12px;display:flex;align-items:center;gap:8px">'+chev()+'<span style="font-size:11.5px;font-weight:700">Show as a table</span></summary><div style="overflow-x:auto;padding:0 10px 9px"><table style="font-size:10.5px;white-space:nowrap"><tr><th style="text-align:left;padding:3px 6px;color:var(--mut)">Date</th>'+
+  DRAFT.drafters.map(function(d,o){return '<th style="text-align:right;padding:3px 6px">'+poolDot(DR_COLORS[o%DR_COLORS.length])+' '+d[0]+'</th>';}).join('')+'<th style="text-align:right;padding:3px 6px;color:var(--mut)">No winner</th></tr>'+
+  rows.map(function(r){return '<tr style="border-top:1px solid var(--line)"><td style="padding:3px 6px;color:var(--mut)">'+short(r[0])+'</td>'+r[1].map(function(v2){return '<td style="text-align:right;padding:3px 6px">'+poolPct(v2)+'</td>';}).join('')+'<td style="text-align:right;padding:3px 6px;color:var(--mut)">'+poolPct(r[2])+'</td></tr>';}).join('')+'</table></div></details>';
+ return '<div class="panel" style="padding:13px 15px;margin-bottom:12px">'+head+
+  '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block;margin-top:6px" role="img" aria-label="Line chart of each owner&rsquo;s official pool odds at each refresh">'+g+'</svg>'+
+  '<div class="label" style="margin:6px 0 5px">'+short(rows[sel][0])+(sel===n-1?' &middot; latest':'')+'</div>'+
+  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 16px">'+legend+'</div>'+
+  (n===1?'<div style="font-size:10.5px;color:var(--mut);margin-top:8px">One snapshot so far. Lines appear after the next refresh.</div>':'')+table+'</div>';
+}
+
+/* the whole tab. Each part sits in its own box so a tap can redraw just the parts that change. */
+function poolTabHtml(ui){
+ if(ui.M.problems.length){   // bad data: say so instead of showing made-up odds
+  return '<div class="panel" style="padding:15px;border-color:var(--red)"><div class="ptitle" style="color:var(--red)">Pool Odds unavailable</div><p style="font-size:12px;margin-top:6px;line-height:1.5">The model data has a problem, so no odds are shown:</p><ul style="font-size:12px;color:var(--mut);margin:6px 0 0 16px;list-style:disc">'+ui.M.problems.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul></div>';
+ }
+ return '<div id="poolStrip">'+poolStripHtml(ui)+'</div>'+
+  '<div id="poolOdds">'+poolOddsHtml(ui)+'</div>'+
+  '<div id="poolPicker">'+poolPickerHtml(ui)+'</div>'+
+  '<div id="poolMatter">'+poolMatterHtml(ui)+'</div>'+
+  '<div id="poolChart">'+poolChartHtml(POOL_SNAPSHOTS)+'</div>'+
+  '<div id="poolTracker">'+poolTrackerHtml(ui)+'</div>'+
+  '<div id="poolCard">'+poolCardHtml(ui)+'</div>';
+}
+
+/* build the model, run the official odds once, and fill in the lookups the picker needs.
+   data is optional and only used by tests (e.g. {bracket:sampleBracket}). */
+function poolStart(ui,data){
+ ui.M=poolBuild(data);
+ ui.picks={};ui.notes=[];ui.pHome={};ui.impact={};
+ if(ui.M.problems.length)return ui;
+ ui.official=ui.M.run({});
+ ui.current=ui.official;
+ ui.official.games.forEach(function(g){ui.pHome[g.id]=g.pA;ui.impact[g.id]=g.impact;});
+ /* picks start empty on every load, so this finds nothing; it is the safety net if that ever changes */
+ var rec=poolReconcilePicks(ui.M,ui.picks);ui.picks=rec.picks;ui.notes=rec.notes;
+ return ui;
+}
+/* set ui.current from ui.picks: the official result itself when there are no picks; otherwise a
+   what-if run, which uses the smaller WHATIF_SIMS count so a tap answers quickly */
+function poolRecalc(ui){ui.current=poolPickCount(ui.picks)?ui.M.run(ui.picks,ui.M.settings.WHATIF_SIMS):ui.official;return ui;}
+/* Nothing is simulated when the page loads. The tab holds this placeholder until it is first opened. */
+function poolPlaceholderHtml(){return '<div class="panel" style="padding:22px;text-align:center;color:var(--mut);font-size:12px">Pool Odds &mdash; calculating the model odds&hellip;</div>';}
+/* run the official simulation and draw the tab, once */
+function poolEnsureStarted(){
+ if(POOL_UI.M)return;
+ poolStart(POOL_UI);
+ document.getElementById('tab-pool').innerHTML=poolTabHtml(POOL_UI);
+ if(typeof syncStickyTop==='function')syncStickyTop();
+}
+/* first tap on the Pool Odds tab: let the tab switch paint first, then calculate */
+function poolOpenTab(){if(!POOL_UI.M)setTimeout(poolEnsureStarted,30);}
+/* after a tap: recompute what is on screen and redraw the parts that depend on picks.
+   gameId (optional) = the one regular-season game just tapped: only its buttons are updated. */
+function poolRedraw(gameId){
+ var ui=poolRecalc(POOL_UI);
+ var open={},pick=document.getElementById('poolPicker');
+ document.getElementById('poolStrip').innerHTML=poolStripHtml(ui);
+ document.getElementById('poolOdds').innerHTML=poolOddsHtml(ui);
+ if(gameId&&!ui.M.bracket)poolTouchGame(ui,gameId);
+ else{
+  pick.querySelectorAll('details').forEach(function(d){open[d.getAttribute('data-k')]=d.open;});
+  pick.innerHTML=poolPickerHtml(ui);
+  pick.querySelectorAll('details').forEach(function(d){var k=d.getAttribute('data-k');if(k in open)d.open=open[k];});
+ }
+ document.getElementById('poolMatter').innerHTML=poolMatterHtml(ui);
+ if(typeof syncStickyTop==='function')syncStickyTop();
+}
+/* one tap/change listener for the whole tab; buttons say what they do with data-act */
+function poolWire(root){
+ root.addEventListener('click',function(ev){
+  var t=ev.target;
+  while(t&&t!==root&&!(t.getAttribute&&t.getAttribute('data-act')))t=t.parentNode;
+  if(!t||t===root||t.tagName==='SELECT')return;
+  var ui=POOL_UI,act=t.getAttribute('data-act'),res=null;
+  if(act==='snap'){   // tap a date on the odds-over-time chart: show that date's numbers
+   ui.snapSel=+t.getAttribute('data-i');
+   document.getElementById('poolChart').innerHTML=poolChartHtml(POOL_SNAPSHOTS,ui.snapSel);
+   return;
+  }
+  if(act==='reset'){ui.picks={};ui.notes=[];}
+  else if(act==='all'){ui.showAll=!ui.showAll;}
+  else if(act==='favs'){ui.picks=poolFavoritePicks(ui);ui.notes=[];}
+  else if(act==='game')res=poolPickGame(ui.M,ui.picks,t.getAttribute('data-id'),ui.M.names[+t.getAttribute('data-t')]);
+  else if(act==='slot')res=poolPickBracket(ui.M,ui.picks,t.getAttribute('data-id'),ui.M.names[+t.getAttribute('data-t')]);
+  else return;
+  if(res){ui.picks=res.picks;ui.notes=res.ok?[]:[res.note];}
+  poolRedraw(act==='game'&&res.ok?t.getAttribute('data-id'):null);
+ });
+ root.addEventListener('change',function(ev){
+  var t=ev.target;
+  if(!t||!t.getAttribute||t.getAttribute('data-act')!=='cc')return;
+  var ui=POOL_UI,id=t.getAttribute('data-id'),next=poolCopy(ui.picks);
+  delete next[id];ui.notes=[];
+  if(t.value!==''){var res=poolPickGame(ui.M,next,id,ui.M.names[+t.value]);next=res.picks;if(!res.ok)ui.notes=[res.note];}
+  ui.picks=next;
+  poolRedraw();
+ });
+}
+
 /* ===== MOUNT ===== */
 document.getElementById('tab-summary').innerHTML=statStrip()+
  '<div style="margin-bottom:12px">'+yourTeamsPanel()+'</div>'+
@@ -898,11 +2314,15 @@ document.getElementById('tab-recaps').innerHTML=
 document.getElementById('tab-previews').innerHTML=
  (typeof PREVIEWS_INTRO!=='undefined'?'<p style="font-size:11px;color:var(--mut);margin-bottom:12px">'+PREVIEWS_INTRO+'</p>':'')+
  (PREVIEWS.length?PREVIEWS.map(previewCard).join(''):'<div class="panel" style="padding:22px;text-align:center;color:var(--mut);font-size:12px">Previews populate each Sunday for the week ahead.</div>');
+/* Pool Odds tab: NOT simulated at page load. The official odds are calculated the first time the tab is opened. */
+document.getElementById('tab-pool').innerHTML=poolPlaceholderHtml();
+poolWire(document.getElementById('tab-pool'));
 document.getElementById('tab-drafters').innerHTML=draftersTab();
 document.getElementById('tab-cfp').innerHTML=cfpFieldPanel();
-var btns=document.querySelectorAll('.tabbtn');var map={summary:'tab-summary',drafters:'tab-drafters',recaps:'tab-recaps',previews:'tab-previews',cfp:'tab-cfp'};
+var btns=document.querySelectorAll('.tabbtn');var map={summary:'tab-summary',pool:'tab-pool',drafters:'tab-drafters',recaps:'tab-recaps',previews:'tab-previews',cfp:'tab-cfp'};
 btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.classList.remove('active');});b.classList.add('active');
  Object.keys(map).forEach(function(k){document.getElementById(map[k]).classList.add('hidden');});document.getElementById(map[b.dataset.tab]).classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});});});
+btns.forEach(function(b){if(b.dataset.tab==='pool')b.addEventListener('click',poolOpenTab);});
 var dbtns=document.querySelectorAll('.drafterbtn');
 dbtns.forEach(function(b){b.addEventListener('click',function(){dbtns.forEach(function(x){x.classList.remove('active');});b.classList.add('active');
  document.querySelectorAll('.drafterpane').forEach(function(p){p.classList.toggle('hidden',p.dataset.drafter!==b.dataset.drafter);});});});
@@ -920,7 +2340,8 @@ function syncStickyTop(){var dsw=document.getElementById('drafterSwitcher');var 
  // On phones, pin the header at a negative offset so only the tab bar stays on screen.
  var off=(nav&&window.innerWidth<=640)?nav.offsetTop:0;
  hdr.style.top=(-off)+'px';
- if(dsw)dsw.style.top=(hdr.offsetHeight-off)+'px';}
+ if(dsw)dsw.style.top=(hdr.offsetHeight-off)+'px';
+ var pst=document.getElementById('poolStrip');if(pst)pst.style.top=(hdr.offsetHeight-off)+'px';}   // the Pool Odds what-if bar pins just under the header too
 syncStickyTop();window.addEventListener('resize',syncStickyTop);window.addEventListener('load',syncStickyTop);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(syncStickyTop);
 var built=new Date(typeof BUILT!=='undefined'?BUILT:'2026-08-15T04:00:00-05:00');
